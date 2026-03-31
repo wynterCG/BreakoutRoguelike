@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://block001"]
+
+[ext_resource type="Script" path="res://scripts/block.gd" id="1_block"]
+[ext_resource type="Script" path="res://scripts/components/health_component.gd" id="2_health"]
+
+[node name="Block" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_block")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Visual" type="ColorRect" parent="."]
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("2_health")

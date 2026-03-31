@@ -1,0 +1,14 @@
+# Godot 4+ specific ignores
+.godot/
+*.tmp
+*.translation
+
+# Godot imported resources
+.import/
+
+# MCP plugin local files
+addons/godot_mcp/
+
+# OS files
+.DS_Store
+Thumbs.db
