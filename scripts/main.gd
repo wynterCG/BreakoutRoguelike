@@ -3,6 +3,7 @@ class_name Main
 
 const BLOCK_SCENE: PackedScene = preload("res://scenes/entities/block.tscn")
 const BALL_SCENE: PackedScene = preload("res://scenes/entities/ball.tscn")
+const MONSTERS_DIR: String = "res://data/monsters/"
 
 const GRID_COLS: int = 14
 const GRID_ROWS: int = 5
@@ -15,6 +16,7 @@ var _lives: int = 3
 var _blocks_remaining: int = 0
 var _current_ball: Ball = null
 var _game_over: bool = false
+var _monster_types: Array[MonsterData] = []
 
 @onready var _paddle: Paddle = $Paddle
 @onready var _arena: Node2D = $Arena
@@ -25,19 +27,50 @@ var _game_over: bool = false
 
 func _ready() -> void:
 	_paddle.position = Vector2(640.0, PADDLE_Y)
-	_spawn_blocks()
+	_load_monster_types()
+	_spawn_enemies()
 	_spawn_ball()
 	_update_ui()
 	var kill_zone: Area2D = _arena.get_node("BottomKillZone")
 	kill_zone.body_entered.connect(_on_kill_zone_body_entered)
 
 
-func _spawn_blocks() -> void:
+func _load_monster_types() -> void:
+	_monster_types.clear()
+	if not DirAccess.dir_exists_absolute(MONSTERS_DIR):
+		return
+
+	var dir: DirAccess = DirAccess.open(MONSTERS_DIR)
+	if not dir:
+		return
+
+	dir.list_dir_begin()
+	var file_name: String = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.ends_with(".tres"):
+			var res: Resource = ResourceLoader.load(MONSTERS_DIR + file_name)
+			if res is MonsterData:
+				_monster_types.append(res as MonsterData)
+		file_name = dir.get_next()
+	dir.list_dir_end()
+
+	# Sort by HP so lower HP monsters appear in lower rows (closer to paddle)
+	_monster_types.sort_custom(func(a: MonsterData, b: MonsterData) -> bool: return a.hp > b.hp)
+
+
+func _spawn_enemies() -> void:
 	for row: int in range(GRID_ROWS):
-		var hp: int = clampi(GRID_ROWS - row, 1, 3)
 		for col: int in range(GRID_COLS):
 			var block: Block = BLOCK_SCENE.instantiate() as Block
-			block.max_hp = hp
+
+			if _monster_types.size() > 0:
+				# Assign monster type by row, cycling through available types
+				var type_index: int = clampi(row, 0, _monster_types.size() - 1)
+				block.monster_data = _monster_types[type_index]
+			else:
+				# Fallback: no monster resources found, use legacy HP-by-row
+				block.max_hp = clampi(GRID_ROWS - row, 1, 3)
+
 			block.position = GRID_OFFSET + Vector2(col * BLOCK_SPACING_X, row * BLOCK_SPACING_Y)
 			block.destroyed.connect(_on_block_destroyed)
 			_block_container.add_child(block)

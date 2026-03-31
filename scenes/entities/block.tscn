@@ -1,16 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://block001"]
+[gd_scene format=3 uid="uid://block001"]
 
-[ext_resource type="Script" path="res://scripts/block.gd" id="1_block"]
-[ext_resource type="Script" path="res://scripts/components/health_component.gd" id="2_health"]
+[ext_resource type="Script" uid="uid://swv2pbltrx6o" path="res://scripts/block.gd" id="1_block"]
+[ext_resource type="Script" uid="uid://b841g0ckswm8v" path="res://scripts/components/health_component.gd" id="2_health"]
 
-[node name="Block" type="StaticBody2D"]
+[node name="Block" type="StaticBody2D" unique_id=207901202]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_block")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1632343551]
 
-[node name="Visual" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1397264186]
 
-[node name="HealthComponent" type="Node" parent="."]
+[node name="FillBar" type="ColorRect" parent="Background" unique_id=503227592]
+layout_mode = 0
+
+[node name="HPLabel" type="Label" parent="Background" unique_id=1922645270]
+layout_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HealthComponent" type="Node" parent="." unique_id=512670342]
 script = ExtResource("2_health")

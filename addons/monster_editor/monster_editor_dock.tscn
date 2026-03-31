@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://bn735d4c3u8at"]
+
+[ext_resource type="Script" uid="uid://dutq27p2igj61" path="res://addons/monster_editor/monster_editor_dock.gd" id="1_3u1g2"]
+
+[node name="MonsterEditorDock" type="VBoxContainer" unique_id=724709300]
+script = ExtResource("1_3u1g2")
+
+[node name="TitleLabel" type="Label" parent="." unique_id=710505113]
+layout_mode = 2
+text = "Monster Registry"
+horizontal_alignment = 1
+
+[node name="MonsterList" type="ItemList" parent="." unique_id=1240618823]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonBar" type="HBoxContainer" parent="." unique_id=1701191089]
+layout_mode = 2
+
+[node name="CreateButton" type="Button" parent="ButtonBar" unique_id=356128457]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Create"
+
+[node name="DeleteButton" type="Button" parent="ButtonBar" unique_id=1360235651]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Delete"
+
+[node name="CreateDialog" type="ConfirmationDialog" parent="." unique_id=932313789]
+title = "Create Monster"
+size = Vector2i(300, 150)
+
+[node name="NameInput" type="LineEdit" parent="CreateDialog" unique_id=627887622]
+placeholder_text = "Monster name..."
+
+[node name="DeleteDialog" type="ConfirmationDialog" parent="." unique_id=56246043]
+title = "Delete Monster"
+dialog_text = "Are you sure you want to delete this monster?"
