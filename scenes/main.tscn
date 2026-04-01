@@ -10,7 +10,6 @@ script = ExtResource("1_main")
 [node name="Arena" parent="." instance=ExtResource("3_arena")]
 
 [node name="Paddle" parent="." instance=ExtResource("2_paddle")]
-position = Vector2(640, 650)
 
 [node name="BlockContainer" type="Node2D" parent="."]
 

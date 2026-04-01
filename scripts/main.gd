@@ -98,6 +98,7 @@ func _on_kill_zone_body_entered(body: Node2D) -> void:
 		if _lives <= 0:
 			_end_game("GAME OVER")
 			body.queue_free()
+			_current_ball = null
 		else:
 			(body as Ball).reset_to_paddle()
 
@@ -107,6 +108,7 @@ func _end_game(text: String) -> void:
 	_status_label.text = text
 	_status_label.visible = true
 	_paddle.set_physics_process(false)
+	_paddle.set_process_input(false)
 	if _current_ball and is_instance_valid(_current_ball):
 		_current_ball.set_physics_process(false)
 
@@ -116,5 +118,11 @@ func _update_ui() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if _game_over and event.is_action_pressed("launch_ball"):
+	if not _game_over:
+		return
+	if event.is_action_pressed("launch_ball"):
+		get_tree().reload_current_scene()
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		get_tree().reload_current_scene()
+	elif event is InputEventScreenTouch and event.pressed:
 		get_tree().reload_current_scene()

@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BreakoutRoguelike - Code Summary</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --yellow: #d29922;
+            --red: #f85149;
+            --purple: #bc8cff;
+            --orange: #f0883e;
+            --cyan: #79c0ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: linear-gradient(135deg, #161b22 0%, #1a2332 100%);
+        }
+
+        header h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(90deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .meta-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+
+        .meta-item .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .meta-item .value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        nav {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        nav h2 {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.5rem;
+        }
+
+        nav a {
+            color: var(--accent);
+            text-decoration: none;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            display: block;
+            transition: background 0.2s;
+        }
+
+        nav a:hover {
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        nav a .nav-file {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-left: 0.25rem;
+        }
+
+        section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h2 .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-data { background: rgba(188, 140, 255, 0.2); color: var(--purple); }
+        .badge-component { background: rgba(63, 185, 80, 0.2); color: var(--green); }
+        .badge-gameplay { background: rgba(88, 166, 255, 0.2); color: var(--accent); }
+        .badge-manager { background: rgba(240, 136, 62, 0.2); color: var(--orange); }
+        .badge-editor { background: rgba(210, 153, 34, 0.2); color: var(--yellow); }
+
+        .file-path {
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+        }
+
+        .purpose {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            color: var(--cyan);
+            margin: 1.75rem 0 0.75rem;
+        }
+
+        h3:first-of-type {
+            margin-top: 0.5rem;
+        }
+
+        p { margin-bottom: 0.75rem; }
+
+        code {
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            background: var(--bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--cyan);
+        }
+
+        pre {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .keyword { color: #ff7b72; }
+        .func { color: #d2a8ff; }
+        .string { color: #a5d6ff; }
+        .comment { color: #8b949e; font-style: italic; }
+        .type { color: #79c0ff; }
+        .number { color: #79c0ff; }
+        .signal-kw { color: #ffa657; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.6rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td code {
+            color: var(--green);
+        }
+
+        .concept-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .concept-box h4 {
+            color: var(--accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .concept-box p {
+            margin-bottom: 0;
+            color: var(--text-muted);
+        }
+
+        .flow-diagram {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .layers-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin: 1rem 0;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .layer {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .layer-bg { background: #262626; color: #8b949e; }
+        .layer-fill { background: #2ea04370; color: #3fb950; }
+        .layer-label { background: transparent; border: 1px dashed #30363d; color: #e6edf3; }
+
+        .phase-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 1rem 0;
+        }
+
+        .phase {
+            display: flex;
+            align-items: stretch;
+            gap: 1rem;
+        }
+
+        .phase-marker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 40px;
+        }
+
+        .phase-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .phase-dot.done { background: var(--green); border-color: var(--green); }
+        .phase-dot.next { background: var(--yellow); border-color: var(--yellow); }
+        .phase-dot.future { background: transparent; }
+
+        .phase-line {
+            width: 2px;
+            flex-grow: 1;
+            background: var(--border);
+        }
+
+        .phase-content {
+            padding: 0 0 1.5rem;
+        }
+
+        .phase-content h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .phase-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .status-done { color: var(--green); }
+        .status-next { color: var(--yellow); }
+        .status-future { color: var(--text-muted); }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .glossary-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .glossary-item h4 {
+            color: var(--accent);
+            margin-bottom: 0.4rem;
+        }
+
+        .glossary-item p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .file-tree {
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .file-tree .folder { color: var(--accent); }
+        .file-tree .file { color: var(--text-muted); }
+        .file-tree .desc { color: #484f58; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            body {
+                padding: 0.75rem;
+            }
+
+            header {
+                padding: 1.25rem;
+                margin-bottom: 1.5rem;
+            }
+
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            header p {
+                font-size: 0.95rem;
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .meta-item {
+                padding: 0.5rem 0.6rem;
+            }
+
+            .meta-item .value {
+                font-size: 0.95rem;
+            }
+
+            nav {
+                padding: 1rem;
+            }
+
+            nav ul {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+            }
+
+            nav a .nav-file {
+                display: none;
+            }
+
+            section {
+                padding: 1.25rem;
+                margin-bottom: 1.25rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+                flex-wrap: wrap;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                white-space: nowrap;
+            }
+
+            th, td {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.85rem;
+            }
+
+            pre {
+                padding: 0.75rem;
+                font-size: 0.75rem;
+                line-height: 1.5;
+            }
+
+            code {
+                font-size: 0.8rem;
+            }
+
+            .flow-diagram {
+                padding: 1rem;
+                font-size: 0.7rem;
+                line-height: 1.6;
+            }
+
+            .file-tree {
+                padding: 0.75rem;
+                font-size: 0.75rem;
+                line-height: 1.6;
+            }
+
+            .file-tree .desc {
+                display: none;
+            }
+
+            .glossary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .layers-visual .layer {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.6rem;
+            }
+
+            .phase-content h4 {
+                font-size: 0.9rem;
+            }
+
+            .phase-content p {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            header h1 {
+                font-size: 1.3rem;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            pre, .flow-diagram, .file-tree {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>BreakoutRoguelike</h1>
+    <p>A Breakout x Roguelike hybrid built with Godot 4.6 and GDScript</p>
+    <div class="meta-grid">
+        <div class="meta-item">
+            <div class="label">Engine</div>
+            <div class="value">Godot 4.6</div>
+        </div>
+        <div class="meta-item">
+            <div class="label">Language</div>
+            <div class="value">GDScript</div>
+        </div>
+        <div class="meta-item">
+            <div class="label">Current Phase</div>
+            <div class="value">2 of 6</div>
+        </div>
+        <div class="meta-item">
+            <div class="label">Scripts</div>
+            <div class="value">8 files</div>
+        </div>
+        <div class="meta-item">
+            <div class="label">Viewport</div>
+            <div class="value">1280 x 720</div>
+        </div>
+    </div>
+</header>
+
+<!-- TABLE OF CONTENTS -->
+<nav>
+    <h2>Table of Contents</h2>
+    <ul>
+        <li><a href="#big-picture">The Big Picture <span class="nav-file">how it all connects</span></a></li>
+        <li><a href="#glossary">Godot Glossary <span class="nav-file">key concepts explained</span></a></li>
+        <li><a href="#file-structure">File Structure <span class="nav-file">project layout</span></a></li>
+        <li><a href="#monster-data">MonsterData <span class="nav-file">monster_data.gd</span></a></li>
+        <li><a href="#health-component">HealthComponent <span class="nav-file">health_component.gd</span></a></li>
+        <li><a href="#paddle">Paddle <span class="nav-file">paddle.gd</span></a></li>
+        <li><a href="#ball">Ball <span class="nav-file">ball.gd</span></a></li>
+        <li><a href="#block">Block (Enemy Brick) <span class="nav-file">block.gd</span></a></li>
+        <li><a href="#main">Main (Game Manager) <span class="nav-file">main.gd</span></a></li>
+        <li><a href="#plugin">Editor Plugin <span class="nav-file">plugin.gd</span></a></li>
+        <li><a href="#dock">Monster Editor Dock <span class="nav-file">monster_editor_dock.gd</span></a></li>
+        <li><a href="#signals-map">Signal Map <span class="nav-file">who talks to who</span></a></li>
+        <li><a href="#game-loop">Game Loop <span class="nav-file">frame-by-frame breakdown</span></a></li>
+        <li><a href="#roadmap">Roadmap <span class="nav-file">what's built and what's next</span></a></li>
+    </ul>
+</nav>
+
+<!-- BIG PICTURE -->
+<section id="big-picture">
+    <h2>The Big Picture</h2>
+    <p class="purpose">Think of the game as a team of specialists. Each script has one clear job, and they communicate by sending signals (like passing notes).</p>
+
+    <div class="flow-diagram">
+                     MonsterData (.tres files on disk)
+                              |
+                         loaded by
+                              |
+     main.gd ----creates----> block.gd ----uses----> health_component.gd
+        |                        |                          |
+        |                   ball hits it              emits "died"
+        |                        |                          |
+        |                   hit() called           block removes itself
+        |                                                   |
+        +---- listens for "destroyed" signal ---------------+
+        |
+        +---- counts remaining blocks
+        |      if 0 left -> "YOU WIN!"
+        |
+        +---- kill zone detects ball falling past paddle
+               lose a life, or "GAME OVER" if 0 lives
+
+     paddle.gd <---- player input (A/D or Left/Right arrows)
+        |
+     ball.gd ---- bounces off paddle, walls, blocks
+        |
+     kill zone ---- ball fell past paddle = lose a life
+    </div>
+</section>
+
+<!-- GLOSSARY -->
+<section id="glossary">
+    <h2>Godot Glossary</h2>
+    <p class="purpose">Key Godot and programming concepts used throughout the codebase, explained in plain language.</p>
+
+    <div class="glossary-grid">
+        <div class="glossary-item">
+            <h4>extends</h4>
+            <p>Means "this script <em>is a type of</em>" something. <code>extends CharacterBody2D</code> means "this script is a type of physics body that I can move with code." It inherits all the built-in behavior of that type.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>class_name</h4>
+            <p>Gives your script a global name so other scripts can refer to it. <code>class_name Ball</code> lets any script say <code>var b: Ball</code> instead of loading the file manually.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>signal</h4>
+            <p>An announcement system. A script can <em>emit</em> (shout) a signal, and other scripts can <em>connect</em> (listen) for it. Like a doorbell &mdash; the button doesn't know who's inside, it just rings.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>@export</h4>
+            <p>Makes a variable show up in the Godot editor's Inspector panel. You can tweak values visually without touching code. Like a settings dial on the outside of a machine.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>@onready</h4>
+            <p>Grabs a reference to a child node, but waits until the scene is fully loaded first. <code>@onready var _paddle = $Paddle</code> is like saying "once everything's set up, remember where the paddle is."</p>
+        </div>
+        <div class="glossary-item">
+            <h4>@tool</h4>
+            <p>Makes a script run inside the Godot <em>editor</em>, not just during gameplay. Used for editor plugins and tools that help you build the game.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>_ready()</h4>
+            <p>A built-in function that Godot calls <strong>once</strong> when the node first enters the scene. Used for initialization &mdash; setting up shapes, colors, connecting signals.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>_physics_process(delta)</h4>
+            <p>Called every physics frame (60 times per second). Use this for movement and collision. <code>delta</code> is the time since the last frame (~0.016 sec), used to keep movement smooth regardless of framerate.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>CharacterBody2D</h4>
+            <p>A physics body you move with code. It doesn't float or fall on its own &mdash; you tell it exactly where to go. Used for the paddle and ball where we want precise, arcade-style control.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>StaticBody2D</h4>
+            <p>A physics body that <strong>doesn't move</strong> but other things can collide with it. Used for blocks/enemies &mdash; they sit still and the ball bounces off them.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>Resource</h4>
+            <p>A data container that can be saved to disk as a <code>.tres</code> file. Think of it like a config file or a "character sheet" &mdash; it holds values but isn't a game object itself.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>PackedScene</h4>
+            <p>A <code>.tscn</code> file loaded into memory, ready to be stamped out as copies. <code>preload()</code> loads it at startup. <code>.instantiate()</code> creates a new copy. Like a cookie cutter &mdash; load once, stamp many.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>Vector2</h4>
+            <p>Two numbers bundled together: X (horizontal) and Y (vertical). Used for positions, directions, sizes. <code>Vector2(100, 200)</code> means "100 pixels right, 200 pixels down."</p>
+        </div>
+        <div class="glossary-item">
+            <h4>queue_free()</h4>
+            <p>Tells Godot "delete this node at the end of the current frame." Safer than instant deletion because other code might still be referencing it this frame.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>.connect()</h4>
+            <p>Wires a signal to a function. <code>button.pressed.connect(my_func)</code> means "when this button is pressed, call my_func." It's how scripts talk to each other without knowing about each other.</p>
+        </div>
+        <div class="glossary-item">
+            <h4>.emit()</h4>
+            <p>Fires a signal. Anyone connected to it will have their function called. <code>destroyed.emit()</code> means "announce that I was destroyed."</p>
+        </div>
+    </div>
+</section>
+
+<!-- FILE STRUCTURE -->
+<section id="file-structure">
+    <h2>File Structure</h2>
+    <p class="purpose">How the project is organized. Game logic scripts are in <code>scripts/</code>, scene files in <code>scenes/</code>, and the editor tool in <code>addons/</code>.</p>
+
+    <div class="file-tree">
+<span class="folder">res://</span>
+<span class="folder">  addons/</span>
+<span class="folder">    monster_editor/</span>          <span class="desc">&larr; Editor plugin for managing monsters</span>
+<span class="file">      plugin.cfg</span>              <span class="desc">&larr; Plugin metadata (name, version)</span>
+<span class="file">      plugin.gd</span>               <span class="desc">&larr; Loads/unloads the dock panel</span>
+<span class="file">      monster_editor_dock.gd</span>  <span class="desc">&larr; Dock UI logic (list, create, delete)</span>
+<span class="file">      monster_editor_dock.tscn</span> <span class="desc">&larr; Dock scene layout</span>
+<span class="folder">  data/</span>
+<span class="folder">    monsters/</span>                 <span class="desc">&larr; Monster type definitions</span>
+<span class="file">      grunt.tres</span>              <span class="desc">&larr; 1 HP, green</span>
+<span class="file">      warrior.tres</span>            <span class="desc">&larr; 2 HP, yellow</span>
+<span class="file">      brute.tres</span>              <span class="desc">&larr; 3 HP, red</span>
+<span class="folder">  scenes/</span>
+<span class="folder">    entities/</span>                 <span class="desc">&larr; Reusable game objects</span>
+<span class="file">      ball.tscn</span>               <span class="desc">&larr; Ball scene (CharacterBody2D + circle)</span>
+<span class="file">      block.tscn</span>              <span class="desc">&larr; Block scene (StaticBody2D + visuals)</span>
+<span class="file">      paddle.tscn</span>             <span class="desc">&larr; Paddle scene (CharacterBody2D + arc)</span>
+<span class="folder">    levels/</span>
+<span class="file">      arena.tscn</span>              <span class="desc">&larr; Walls and kill zone</span>
+<span class="file">    main.tscn</span>                <span class="desc">&larr; Main game scene (entry point)</span>
+<span class="folder">  scripts/</span>
+<span class="folder">    components/</span>
+<span class="file">      health_component.gd</span>    <span class="desc">&larr; Reusable HP tracker</span>
+<span class="folder">    data/</span>
+<span class="file">      monster_data.gd</span>        <span class="desc">&larr; MonsterData resource class</span>
+<span class="file">    ball.gd</span>                  <span class="desc">&larr; Ball movement + bouncing</span>
+<span class="file">    block.gd</span>                 <span class="desc">&larr; Enemy brick with HP bar</span>
+<span class="file">    main.gd</span>                  <span class="desc">&larr; Game manager (spawning, lives, win/lose)</span>
+<span class="file">    paddle.gd</span>                <span class="desc">&larr; Player-controlled arc paddle</span>
+<span class="file">  CLAUDE.md</span>                  <span class="desc">&larr; AI coding rules and game design doc</span>
+<span class="file">  project.godot</span>              <span class="desc">&larr; Godot project settings</span>
+    </div>
+</section>
+
+<!-- MONSTER DATA -->
+<section id="monster-data">
+    <h2>MonsterData <span class="badge badge-data">Data</span></h2>
+    <div class="file-path">res://scripts/data/monster_data.gd</div>
+    <p class="purpose">A "trading card" that describes a monster type. It's pure data &mdash; not a game object. Saved as <code>.tres</code> files that the game loads at runtime.</p>
+
+    <h3>What it contains</h3>
+    <table>
+        <tr><th>Field</th><th>Type</th><th>Default</th><th>What it does</th></tr>
+        <tr><td><code>monster_name</code></td><td>String</td><td><code>""</code></td><td>Display name (e.g., "Brute")</td></tr>
+        <tr><td><code>hp</code></td><td>int</td><td><code>1</code></td><td>How many ball hits to destroy</td></tr>
+        <tr><td><code>color</code></td><td>Color</td><td>Green</td><td>The fill color of the HP bar</td></tr>
+        <tr><td><code>size</code></td><td>Vector2</td><td><code>60 x 24</code></td><td>Width and height in pixels</td></tr>
+    </table>
+
+    <h3>Full code</h3>
+    <pre><span class="keyword">extends</span> <span class="type">Resource</span>
+<span class="keyword">class_name</span> MonsterData
+
+<span class="keyword">@export</span> <span class="keyword">var</span> monster_name: <span class="type">String</span> = <span class="string">""</span>
+<span class="keyword">@export</span> <span class="keyword">var</span> hp: <span class="type">int</span> = <span class="number">1</span>
+<span class="keyword">@export</span> <span class="keyword">var</span> color: <span class="type">Color</span> = <span class="type">Color</span>(<span class="number">0.2</span>, <span class="number">0.8</span>, <span class="number">0.2</span>)
+<span class="keyword">@export</span> <span class="keyword">var</span> size: <span class="type">Vector2</span> = <span class="type">Vector2</span>(<span class="number">60</span>, <span class="number">24</span>)</pre>
+
+    <div class="concept-box">
+        <h4>Why a Resource?</h4>
+        <p>A Resource is Godot's way of storing data in a file. Instead of hardcoding "Brute has 3 HP and is red" in the code, we put that in a <code>.tres</code> file. This means you can add, edit, and delete monster types without touching any code &mdash; just edit the file in the Godot inspector or use the Monster Editor dock.</p>
+    </div>
+</section>
+
+<!-- HEALTH COMPONENT -->
+<section id="health-component">
+    <h2>HealthComponent <span class="badge badge-component">Component</span></h2>
+    <div class="file-path">res://scripts/components/health_component.gd</div>
+    <p class="purpose">A reusable HP tracker. Instead of writing health logic inside every enemy, we write it once here and attach it as a child node to anything that needs HP.</p>
+
+    <h3>Signals (announcements it can make)</h3>
+    <table>
+        <tr><th>Signal</th><th>When it fires</th><th>Who listens</th></tr>
+        <tr><td><code>health_changed</code></td><td>Every time HP goes up or down</td><td>Block &mdash; updates the HP bar visual</td></tr>
+        <tr><td><code>died</code></td><td>When HP reaches 0</td><td>Block &mdash; emits "destroyed" and removes itself</td></tr>
+    </table>
+
+    <h3>Functions</h3>
+    <table>
+        <tr><th>Function</th><th>What it does</th></tr>
+        <tr><td><code>initialize(hp)</code></td><td>Sets starting HP. Called once when the block is created.</td></tr>
+        <tr><td><code>take_damage(amount)</code></td><td>Subtracts HP (default: 1). Uses <code>maxi()</code> to prevent going below 0. Emits <code>health_changed</code>, and if HP hits 0, also emits <code>died</code>.</td></tr>
+        <tr><td><code>get_current_hp()</code></td><td>Returns the current HP number. Other scripts call this to know how much HP is left.</td></tr>
+        <tr><td><code>is_alive()</code></td><td>Returns <code>true</code> if HP > 0.</td></tr>
+    </table>
+
+    <h3>Full code</h3>
+    <pre><span class="keyword">extends</span> <span class="type">Node</span>
+<span class="keyword">class_name</span> HealthComponent
+
+<span class="keyword">signal</span> <span class="signal-kw">health_changed</span>(current_hp: <span class="type">int</span>, max_hp: <span class="type">int</span>)
+<span class="keyword">signal</span> <span class="signal-kw">died</span>
+
+<span class="keyword">@export</span> <span class="keyword">var</span> max_hp: <span class="type">int</span> = <span class="number">1</span>
+<span class="keyword">var</span> _current_hp: <span class="type">int</span> = <span class="number">0</span>
+
+<span class="keyword">func</span> <span class="func">_ready</span>() -> <span class="type">void</span>:
+    _current_hp = max_hp
+
+<span class="keyword">func</span> <span class="func">initialize</span>(hp: <span class="type">int</span>) -> <span class="type">void</span>:
+    max_hp = hp
+    _current_hp = hp
+
+<span class="keyword">func</span> <span class="func">take_damage</span>(amount: <span class="type">int</span> = <span class="number">1</span>) -> <span class="type">void</span>:
+    _current_hp = <span class="func">maxi</span>(_current_hp - amount, <span class="number">0</span>)
+    health_changed.<span class="func">emit</span>(_current_hp, max_hp)
+    <span class="keyword">if</span> _current_hp &lt;= <span class="number">0</span>:
+        died.<span class="func">emit</span>()
+
+<span class="keyword">func</span> <span class="func">get_current_hp</span>() -> <span class="type">int</span>:
+    <span class="keyword">return</span> _current_hp
+
+<span class="keyword">func</span> <span class="func">is_alive</span>() -> <span class="type">bool</span>:
+    <span class="keyword">return</span> _current_hp > <span class="number">0</span></pre>
+
+    <div class="concept-box">
+        <h4>Why a Component?</h4>
+        <p>The "component pattern" means building features as separate, attachable pieces. Instead of every enemy having its own HP code (copy-pasted and hard to maintain), they all share one HealthComponent. When we later add enemies that heal or have shields, we only change this one file.</p>
+    </div>
+</section>
+
+<!-- PADDLE -->
+<section id="paddle">
+    <h2>Paddle <span class="badge badge-gameplay">Gameplay</span></h2>
+    <div class="file-path">res://scripts/paddle.gd</div>
+    <p class="purpose">The player-controlled arc paddle. Moves left/right with keyboard input. Its curved shape is the core aiming mechanic &mdash; where the ball hits determines which direction it bounces.</p>
+
+    <h3>Constants</h3>
+    <table>
+        <tr><th>Name</th><th>Value</th><th>What it controls</th></tr>
+        <tr><td><code>MOVE_SPEED</code></td><td>600</td><td>Pixels per second of horizontal movement</td></tr>
+        <tr><td><code>ARC_WIDTH</code></td><td>200</td><td>Total width of the paddle in pixels</td></tr>
+        <tr><td><code>ARC_HEIGHT</code></td><td>30</td><td>How deep the curve is (taller = more extreme angles)</td></tr>
+        <tr><td><code>ARC_SEGMENTS</code></td><td>16</td><td>How many straight lines make up the curve (more = smoother)</td></tr>
+        <tr><td><code>SCREEN_MARGIN</code></td><td>10</td><td>Pixels of padding from screen edges</td></tr>
+    </table>
+
+    <h3>How the arc shape works</h3>
+    <p><code>_generate_arc_points()</code> creates the curved paddle by placing 17 dots along a <strong>parabola</strong> (U-shape), then connecting them into a polygon:</p>
+
+    <pre><span class="comment">Imagine drawing this shape, point by point:</span>
+
+   \                          /      &larr; edges curve up (steep angles)
+    \                        /
+     \______________________/        &larr; center is flat (vertical bounce)
+
+<span class="comment">Then close the bottom with a flat line to make a solid shape.</span></pre>
+
+    <h3>How aiming works</h3>
+    <p><code>get_bounce_normal(hit_position)</code> is the most important function for gameplay. When the ball hits the paddle, it calculates which direction to bounce it based on <em>where</em> on the paddle it landed:</p>
+
+    <pre><span class="comment">Hit the left edge   &rarr; ball bounces up-left   (steep angle)</span>
+<span class="comment">Hit the center       &rarr; ball bounces straight up (vertical)</span>
+<span class="comment">Hit the right edge  &rarr; ball bounces up-right  (steep angle)</span></pre>
+
+    <p>It uses the <strong>derivative</strong> (slope) of the parabola at the hit point to find the surface angle, then calculates a perpendicular direction (the "normal"). This is the math that makes the ball reflect realistically off the curve.</p>
+
+    <h3>Movement</h3>
+    <p>Every physics frame (60fps), the paddle:</p>
+    <ol>
+        <li>Reads input: <code>Input.get_axis("move_left", "move_right")</code> returns -1 (left), 0 (nothing), or +1 (right)</li>
+        <li>Sets velocity: direction &times; 600 pixels/sec, horizontal only</li>
+        <li>Calls <code>move_and_slide()</code> &mdash; Godot's built-in "move and handle collisions"</li>
+        <li>Clamps position so the paddle can't go off-screen</li>
+    </ol>
+</section>
+
+<!-- BALL -->
+<section id="ball">
+    <h2>Ball <span class="badge badge-gameplay">Gameplay</span></h2>
+    <div class="file-path">res://scripts/ball.gd</div>
+    <p class="purpose">The bouncing projectile. Starts sitting on the paddle, launches when you press Space, then bounces around hitting blocks. The ball is what deals damage to enemies.</p>
+
+    <h3>Two states</h3>
+    <p>The ball is always in one of two modes, controlled by the <code>_is_launched</code> boolean:</p>
+    <table>
+        <tr><th>State</th><th>Behavior</th><th>Transitions to</th></tr>
+        <tr><td><strong>On paddle</strong> (<code>false</code>)</td><td>Follows paddle position, 40px above it. Waits for Space press.</td><td>Launched (press Space)</td></tr>
+        <tr><td><strong>Launched</strong> (<code>true</code>)</td><td>Flies in a direction at 400 px/sec, bounces off everything.</td><td>On paddle (falls into kill zone with lives remaining)</td></tr>
+    </table>
+
+    <h3>The physics frame (every tick)</h3>
+    <pre><span class="comment">Pseudocode of _physics_process():</span>
+
+<span class="keyword">if</span> not launched:
+    stick to paddle
+    <span class="keyword">if</span> Space pressed: launch upward with slight random angle
+    <span class="keyword">return</span>
+
+<span class="comment"># Ball is in flight:</span>
+move in current direction at current speed
+<span class="keyword">if</span> we hit something:
+    <span class="keyword">if</span> it's the paddle: bounce using the paddle's arc-based angle
+    <span class="keyword">else</span>: bounce using simple reflection (angle in = angle out)
+
+    <span class="comment"># Safety: prevent horizontal-only bouncing (boring infinite loop)</span>
+    <span class="keyword">if</span> vertical speed too low: force minimum vertical movement
+
+    <span class="comment"># Deal damage</span>
+    <span class="keyword">if</span> the thing we hit has a hit() method: call it</pre>
+
+    <h3>Key details</h3>
+
+    <div class="concept-box">
+        <h4>move_and_collide() vs move_and_slide()</h4>
+        <p>The paddle uses <code>move_and_slide()</code> which handles collisions automatically. The ball uses <code>move_and_collide()</code> which <em>stops at the first collision</em> and gives you collision info so you can calculate the bounce yourself. We need manual control because the ball has custom bounce logic.</p>
+    </div>
+
+    <div class="concept-box">
+        <h4>MIN_VERTICAL_RATIO safety net</h4>
+        <p>Set to 0.3. If the ball's vertical speed component drops below 30% of its total speed, it gets forced back up. Without this, the ball could get stuck bouncing horizontally between walls forever &mdash; boring and unwinnable.</p>
+    </div>
+
+    <div class="concept-box">
+        <h4>How hit() calling works</h4>
+        <p><code>if collider.has_method("hit")</code> &mdash; this checks if whatever we bounced off has a function called <code>hit()</code>. Walls don't have one (so nothing happens). Blocks do (so they take damage). This is a "duck typing" approach: "if it looks like it can be hit, hit it."</p>
+    </div>
+</section>
+
+<!-- BLOCK -->
+<section id="block">
+    <h2>Block (Enemy Brick) <span class="badge badge-gameplay">Gameplay</span></h2>
+    <div class="file-path">res://scripts/block.gd</div>
+    <p class="purpose">The enemy. A static brick that takes hits from the ball. Has an HP bar that shrinks as it takes damage, and a number showing remaining HP. Reads its stats from a MonsterData resource.</p>
+
+    <h3>Visual structure (3 layers)</h3>
+    <div class="layers-visual">
+        <div class="layer layer-bg">[Dark background] &mdash; always full-size, dark gray (#262626). This is the "empty" part of the bar.</div>
+        <div class="layer layer-fill">[Colored fill bar] &mdash; shrinks left-to-right as HP decreases. Color comes from MonsterData.</div>
+        <div class="layer layer-label">[HP number] &mdash; white text centered, shows current HP with dark shadow for readability.</div>
+    </div>
+
+    <h3>Setup flow (_ready)</h3>
+    <pre><span class="comment">1. Read stats from MonsterData (or use fallback defaults)</span>
+<span class="comment">2. Initialize HealthComponent with HP</span>
+<span class="comment">3. Create collision rectangle matching block size</span>
+<span class="comment">4. Set up dark background (full size of block)</span>
+<span class="comment">5. Set up colored fill bar (inside background, with 2px padding)</span>
+<span class="comment">6. Set up HP label (white text, centered, with shadow)</span>
+<span class="comment">7. Connect to HealthComponent signals</span></pre>
+
+    <h3>Damage flow</h3>
+    <pre><span class="comment">Ball hits block</span>
+      &darr;
+<span class="func">hit()</span> called
+      &darr;
+<span class="func">_health.take_damage()</span>
+      &darr;
+HealthComponent emits <span class="signal-kw">health_changed</span>
+      &darr;
+<span class="func">_update_visual()</span> runs:
+  - Calculates hp_ratio = current / total   <span class="comment">(e.g., 2/3 = 0.666)</span>
+  - Shrinks fill bar width proportionally    <span class="comment">(fill = inner_width * 0.666)</span>
+  - Updates HP number text                   <span class="comment">("3" &rarr; "2")</span>
+      &darr;
+<span class="keyword">if</span> HP = 0: HealthComponent emits <span class="signal-kw">died</span>
+      &darr;
+<span class="func">_on_died()</span>: emit <span class="signal-kw">destroyed</span> signal, then <span class="func">queue_free()</span> (delete self)</pre>
+
+    <h3>Fallback system</h3>
+    <p>If no <code>MonsterData</code> is assigned (e.g., during testing), the block falls back to hardcoded colors based on HP tier: 1 HP = green, 2 HP = yellow, 3 HP = red. This keeps the game playable even without any <code>.tres</code> files.</p>
+</section>
+
+<!-- MAIN -->
+<section id="main">
+    <h2>Main (Game Manager) <span class="badge badge-manager">Manager</span></h2>
+    <div class="file-path">res://scripts/main.gd</div>
+    <p class="purpose">The boss script. Sets up the game, spawns everything, tracks score and lives, and decides when you win or lose. This is the entry point &mdash; the first script that runs.</p>
+
+    <h3>Game constants</h3>
+    <table>
+        <tr><th>Name</th><th>Value</th><th>What it means</th></tr>
+        <tr><td><code>GRID_COLS</code></td><td>14</td><td>14 bricks per row</td></tr>
+        <tr><td><code>GRID_ROWS</code></td><td>5</td><td>5 rows of bricks (14 &times; 5 = 70 total)</td></tr>
+        <tr><td><code>BLOCK_SPACING_X/Y</code></td><td>70 / 30</td><td>Pixels between bricks horizontally/vertically</td></tr>
+        <tr><td><code>GRID_OFFSET</code></td><td>(145, 60)</td><td>Where the top-left brick starts on screen</td></tr>
+        <tr><td><code>PADDLE_Y</code></td><td>650</td><td>Paddle's vertical position (near the bottom)</td></tr>
+    </table>
+
+    <h3>Startup sequence (_ready)</h3>
+    <pre><span class="comment">1.</span> Position paddle at center-bottom of screen
+<span class="comment">2.</span> <span class="func">_load_monster_types()</span>     <span class="comment">&larr; Read all .tres files from data/monsters/</span>
+<span class="comment">3.</span> <span class="func">_spawn_enemies()</span>          <span class="comment">&larr; Create 14&times;5 grid of bricks</span>
+<span class="comment">4.</span> <span class="func">_spawn_ball()</span>             <span class="comment">&larr; Create ball on the paddle</span>
+<span class="comment">5.</span> <span class="func">_update_ui()</span>              <span class="comment">&larr; Show "Lives: 3"</span>
+<span class="comment">6.</span> Connect kill zone signal  <span class="comment">&larr; Detect ball falling past paddle</span></pre>
+
+    <h3>How monster loading works</h3>
+    <p><code>_load_monster_types()</code> opens the <code>res://data/monsters/</code> folder and reads every <code>.tres</code> file into a list. Then it <strong>sorts by HP descending</strong> &mdash; toughest first. This way, row 0 (top) gets the 3 HP Brutes, row 1 gets 2 HP Warriors, and rows 2-4 get 1 HP Grunts.</p>
+
+    <h3>How spawning works</h3>
+    <pre><span class="keyword">for</span> row <span class="keyword">in</span> 0..4:
+    <span class="keyword">for</span> col <span class="keyword">in</span> 0..13:
+        create a new Block from the block.tscn template
+        assign monster type based on row number
+        position it on the grid using spacing math
+        listen for its "destroyed" signal
+        add it to the game
+        increment block counter</pre>
+
+    <h3>Win/lose logic</h3>
+    <table>
+        <tr><th>Event</th><th>What happens</th></tr>
+        <tr><td>Block destroyed</td><td>Counter decreases. If 0 blocks left &rarr; <strong>"YOU WIN!"</strong></td></tr>
+        <tr><td>Ball enters kill zone</td><td>Lose a life. If lives > 0 &rarr; reset ball to paddle. If lives = 0 &rarr; <strong>"GAME OVER"</strong></td></tr>
+        <tr><td>Game over + Space</td><td>Reload the entire scene (fresh restart)</td></tr>
+    </table>
+</section>
+
+<!-- PLUGIN -->
+<section id="plugin">
+    <h2>Editor Plugin <span class="badge badge-editor">Editor Tool</span></h2>
+    <div class="file-path">res://addons/monster_editor/plugin.gd</div>
+    <p class="purpose">The plugin entry point. It does one thing: when enabled, it loads the Monster Editor dock and adds it to the Godot editor. When disabled, it removes it.</p>
+
+    <h3>Full code</h3>
+    <pre><span class="keyword">@tool</span>
+<span class="keyword">extends</span> <span class="type">EditorPlugin</span>
+
+<span class="keyword">const</span> DOCK_SCENE_PATH: <span class="type">String</span> = <span class="string">"res://addons/monster_editor/monster_editor_dock.tscn"</span>
+<span class="keyword">var</span> _dock: <span class="type">Control</span> = <span class="keyword">null</span>
+
+<span class="keyword">func</span> <span class="func">_enter_tree</span>() -> <span class="type">void</span>:
+    <span class="keyword">var</span> scene: <span class="type">PackedScene</span> = <span class="func">load</span>(DOCK_SCENE_PATH) <span class="keyword">as</span> <span class="type">PackedScene</span>
+    <span class="keyword">if</span> scene:
+        _dock = scene.<span class="func">instantiate</span>()
+        <span class="func">add_control_to_dock</span>(DOCK_SLOT_RIGHT_BL, _dock)
+
+<span class="keyword">func</span> <span class="func">_exit_tree</span>() -> <span class="type">void</span>:
+    <span class="keyword">if</span> _dock:
+        <span class="func">remove_control_from_docks</span>(_dock)
+        _dock.<span class="func">queue_free</span>()
+        _dock = <span class="keyword">null</span></pre>
+
+    <div class="concept-box">
+        <h4>Why load() instead of preload()?</h4>
+        <p><code>preload()</code> loads a file at compile time &mdash; if the file doesn't exist yet, the script fails to compile. <code>load()</code> loads at runtime, which is safer for plugins where the dock scene might not exist when the plugin script is first parsed by Godot.</p>
+    </div>
+</section>
+
+<!-- DOCK -->
+<section id="dock">
+    <h2>Monster Editor Dock <span class="badge badge-editor">Editor Tool</span></h2>
+    <div class="file-path">res://addons/monster_editor/monster_editor_dock.gd</div>
+    <p class="purpose">The management panel that appears inside the Godot editor. Shows a list of all monster types with buttons to create, delete, and edit them. Clicking a monster opens it in Godot's Inspector.</p>
+
+    <h3>UI layout</h3>
+    <pre>+----------------------------------+
+|        Monster Registry          |  &larr; TitleLabel
++----------------------------------+
+|  Brute  (HP: 3)                  |
+|  Grunt  (HP: 1)                  |  &larr; ItemList (clickable)
+|  Warrior  (HP: 2)                |
++----------------------------------+
+|  [ Create ]     [ Delete ]       |  &larr; ButtonBar
++----------------------------------+</pre>
+
+    <h3>What each button does</h3>
+    <table>
+        <tr><th>Action</th><th>Steps</th></tr>
+        <tr>
+            <td><strong>Create</strong></td>
+            <td>
+                1. Popup dialog with a text field<br>
+                2. Type a name (e.g., "Fire Imp")<br>
+                3. Creates a new <code>.tres</code> file named <code>fire_imp.tres</code> with default stats<br>
+                4. Tells Godot to rescan filesystem<br>
+                5. Refreshes the list
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Delete</strong></td>
+            <td>
+                1. "Are you sure?" confirmation popup<br>
+                2. Deletes the <code>.tres</code> file from disk<br>
+                3. Rescans and refreshes
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Click item</strong></td>
+            <td>
+                Calls <code>EditorInterface.inspect_object(resource)</code><br>
+                This opens the monster's data in Godot's Inspector panel where you can edit name, HP, color, size visually
+            </td>
+        </tr>
+    </table>
+
+    <h3>Auto-refresh</h3>
+    <p>The dock connects to <code>EditorInterface.get_resource_filesystem().filesystem_changed</code> &mdash; this means whenever any file in the project changes, the list automatically updates. No manual refresh needed.</p>
+</section>
+
+<!-- SIGNAL MAP -->
+<section id="signals-map">
+    <h2>Signal Map</h2>
+    <p class="purpose">Every signal in the game and how they connect. Signals are how scripts communicate without directly knowing about each other.</p>
+
+    <table>
+        <tr><th>Signal</th><th>Emitted by</th><th>Listened by</th><th>What triggers it</th><th>What happens</th></tr>
+        <tr>
+            <td><code>health_changed</code></td>
+            <td>HealthComponent</td>
+            <td>Block</td>
+            <td>HP changes</td>
+            <td>HP bar visual updates (fill shrinks, number changes)</td>
+        </tr>
+        <tr>
+            <td><code>died</code></td>
+            <td>HealthComponent</td>
+            <td>Block</td>
+            <td>HP reaches 0</td>
+            <td>Block emits <code>destroyed</code> and deletes itself</td>
+        </tr>
+        <tr>
+            <td><code>destroyed</code></td>
+            <td>Block</td>
+            <td>Main</td>
+            <td>Block dies</td>
+            <td>Main decrements counter; if 0 left &rarr; "YOU WIN!"</td>
+        </tr>
+        <tr>
+            <td><code>body_entered</code></td>
+            <td>BottomKillZone (Area2D)</td>
+            <td>Main</td>
+            <td>Ball falls past paddle</td>
+            <td>Lose a life or game over</td>
+        </tr>
+        <tr>
+            <td><code>pressed</code></td>
+            <td>Create/Delete Buttons</td>
+            <td>Monster Editor Dock</td>
+            <td>Button clicked in editor</td>
+            <td>Show create/delete dialog</td>
+        </tr>
+        <tr>
+            <td><code>confirmed</code></td>
+            <td>Create/Delete Dialogs</td>
+            <td>Monster Editor Dock</td>
+            <td>User confirms action</td>
+            <td>Create or delete .tres file</td>
+        </tr>
+        <tr>
+            <td><code>item_selected</code></td>
+            <td>MonsterList (ItemList)</td>
+            <td>Monster Editor Dock</td>
+            <td>Click a monster in list</td>
+            <td>Opens resource in Inspector</td>
+        </tr>
+        <tr>
+            <td><code>filesystem_changed</code></td>
+            <td>EditorFileSystem</td>
+            <td>Monster Editor Dock</td>
+            <td>Any project file changes</td>
+            <td>Refresh the monster list</td>
+        </tr>
+    </table>
+</section>
+
+<!-- GAME LOOP -->
+<section id="game-loop">
+    <h2>Game Loop</h2>
+    <p class="purpose">What happens every single frame (60 times per second) while the game is running.</p>
+
+    <pre><span class="comment">Every frame (~16ms):</span>
+
+<span class="comment">1. INPUT PHASE</span>
+   Read keyboard: is Left/Right/A/D pressed? Is Space pressed?
+
+<span class="comment">2. PADDLE UPDATE</span>
+   Calculate velocity from input direction &times; 600
+   Move paddle horizontally
+   Clamp to screen edges
+
+<span class="comment">3. BALL UPDATE</span>
+   <span class="keyword">if</span> ball is on paddle:
+       Snap ball position to 40px above paddle center
+       <span class="keyword">if</span> Space pressed: launch with random slight angle
+   <span class="keyword">else</span> (ball is flying):
+       Move ball: position += direction &times; speed &times; delta
+       <span class="keyword">if</span> collision detected:
+           <span class="keyword">if</span> hit paddle: calculate bounce angle from arc shape
+           <span class="keyword">else</span>: simple reflection
+           <span class="keyword">if</span> too horizontal: force vertical minimum
+           <span class="keyword">if</span> hit something with hit(): call it (deals damage)
+
+<span class="comment">4. BLOCK REACTIONS (triggered by ball hits)</span>
+   Block.hit() &rarr; HealthComponent.take_damage()
+   &rarr; health_changed signal &rarr; update HP bar and number
+   &rarr; if HP = 0: died signal &rarr; destroyed signal &rarr; queue_free()
+
+<span class="comment">5. GAME STATE CHECK</span>
+   <span class="keyword">if</span> block destroyed: decrement counter
+       <span class="keyword">if</span> counter = 0: "YOU WIN!"
+   <span class="keyword">if</span> ball in kill zone: lose life
+       <span class="keyword">if</span> lives = 0: "GAME OVER"
+       <span class="keyword">else</span>: reset ball to paddle
+
+<span class="comment">6. RENDER</span>
+   Godot draws everything to screen automatically</pre>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+    <h2>Roadmap</h2>
+    <p class="purpose">Where the project stands and what's planned next.</p>
+
+    <div class="phase-timeline">
+        <div class="phase">
+            <div class="phase-marker">
+                <div class="phase-dot done"></div>
+                <div class="phase-line"></div>
+            </div>
+            <div class="phase-content">
+                <h4 class="status-done">Phase 1: Core Breakout Loop</h4>
+                <p>Arc paddle, ball physics, walls, breakable blocks, lives system, win/lose. The basic playable game.</p>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-marker">
+                <div class="phase-dot done"></div>
+                <div class="phase-line"></div>
+            </div>
+            <div class="phase-content">
+                <h4 class="status-done">Phase 2: Monster Data System</h4>
+                <p>MonsterData resources replace hardcoded blocks. HP bar visuals with fill + number. Editor dock plugin for managing monster types.</p>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-marker">
+                <div class="phase-dot next"></div>
+                <div class="phase-line"></div>
+            </div>
+            <div class="phase-content">
+                <h4 class="status-next">Phase 3: "Ouch Zone" Mechanic</h4>
+                <p>Balls never leave play. Missed balls bounce off a back wall behind the paddle but deal damage to the paddle. Run ends at 0 Paddle HP.</p>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-marker">
+                <div class="phase-dot future"></div>
+                <div class="phase-line"></div>
+            </div>
+            <div class="phase-content">
+                <h4 class="status-future">Phase 4: Upgrades</h4>
+                <p>Extra balls, piercing, fire trails, splitting, homing, knockback, wider paddle, extra HP, dash, shield, magnetic pull.</p>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-marker">
+                <div class="phase-dot future"></div>
+                <div class="phase-line"></div>
+            </div>
+            <div class="phase-content">
+                <h4 class="status-future">Phase 5: Roguelike Systems</h4>
+                <p>Procedural room generation, branching map, run progression, currency.</p>
+            </div>
+        </div>
+        <div class="phase">
+            <div class="phase-marker">
+                <div class="phase-dot future"></div>
+                <div class="phase-line" style="background: transparent;"></div>
+            </div>
+            <div class="phase-content">
+                <h4 class="status-future">Phase 6: Polish & Balancing</h4>
+                <p>VFX, sound, game feel, difficulty tuning, UI polish.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>Generated on March 31, 2026 &mdash; BreakoutRoguelike by wynterCG</p>
+</footer>
+
+</body>
+</html>

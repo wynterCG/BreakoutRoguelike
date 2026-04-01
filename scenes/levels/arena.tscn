@@ -6,6 +6,9 @@ size = Vector2(1300, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_side"]
 size = Vector2(20, 740)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_killzone"]
+size = Vector2(1300, 100)
+
 [node name="Arena" type="Node2D"]
 
 [node name="TopWall" type="StaticBody2D" parent="."]
@@ -59,4 +62,4 @@ collision_mask = 2
 position = Vector2(640, 730)
 
 [node name="BottomCollision" type="CollisionShape2D" parent="BottomKillZone"]
-shape = SubResource("RectangleShape2D_top")
+shape = SubResource("RectangleShape2D_killzone")
