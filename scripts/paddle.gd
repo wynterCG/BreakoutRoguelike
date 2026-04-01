@@ -54,8 +54,10 @@ func _physics_process(delta: float) -> void:
 		var direction: float = Input.get_axis("move_left", "move_right")
 		velocity = Vector2(direction * MOVE_SPEED, 0.0)
 
+	var locked_y: float = position.y
 	move_and_slide()
 	position.x = clampf(position.x, min_x, max_x)
+	position.y = locked_y
 
 
 func _generate_arc_points() -> PackedVector2Array:

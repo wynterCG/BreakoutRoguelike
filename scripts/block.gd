@@ -71,8 +71,8 @@ func _ready() -> void:
 	_health.died.connect(_on_died)
 
 
-func hit() -> void:
-	_health.take_damage()
+func hit(amount: int) -> void:
+	_health.take_damage(amount)
 
 
 func _on_health_changed(_new_hp: int, _new_max: int) -> void:

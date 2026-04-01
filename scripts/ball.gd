@@ -1,10 +1,14 @@
 extends CharacterBody2D
 class_name Ball
 
+signal hit_back_wall(ball_damage: int)
+
 const BASE_SPEED: float = 400.0
 const MIN_VERTICAL_RATIO: float = 0.3
 const PADDLE_FOLLOW_OFFSET_Y: float = -40.0
 const POST_BOUNCE_CLEARANCE_Y: float = -12.0
+
+@export var damage: int = 5
 
 var _direction: Vector2 = Vector2.ZERO
 var _speed: float = BASE_SPEED
@@ -77,11 +81,20 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 
 	# Notify blocks of hits (exclude paddle to prevent future damage conflicts)
 	if collider is not Paddle and collider.has_method("hit"):
-		collider.hit()
+		collider.hit(damage)
+
+	# Detect back wall hit for player damage
+	if collider is Node and (collider as Node).is_in_group("back_wall"):
+		hit_back_wall.emit(damage)
 
 
 func _handle_paddle_bounce(paddle: Paddle, collision: KinematicCollision2D) -> void:
-	# Calculate where on the paddle the ball hit (0.0 = left edge, 1.0 = right edge)
+	# If ball is coming from below the paddle, just reflect normally
+	if _direction.y < 0.0:
+		_direction = _direction.bounce(collision.get_normal())
+		return
+
+	# Ball hit from above — use arc-based angle calculation
 	var hit_pos: Vector2 = collision.get_position()
 	var local_pos: Vector2 = paddle.to_local(hit_pos)
 	var half_width: float = Paddle.ARC_WIDTH / 2.0
@@ -91,7 +104,7 @@ func _handle_paddle_bounce(paddle: Paddle, collision: KinematicCollision2D) -> v
 	var max_angle: float = deg_to_rad(70.0)
 	var angle: float = lerpf(-max_angle, max_angle, t)
 
-	# Always points upward regardless of how ball arrived
+	# Always points upward
 	_direction = Vector2(sin(angle), -cos(angle)).normalized()
 
 	# Place ball above the paddle to prevent re-collision

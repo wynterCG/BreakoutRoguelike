@@ -56,7 +56,6 @@ launch_ball={
 2d_physics/layer_2="Ball"
 2d_physics/layer_3="Walls"
 2d_physics/layer_4="Blocks"
-2d_physics/layer_5="KillZone"
 
 [rendering]
 
