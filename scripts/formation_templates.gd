@@ -35,6 +35,21 @@ static func get_template_name(index: int) -> String:
 
 
 static func generate(index: int, columns: int, rows: int) -> Array[FormationCell]:
+	var cells: Array[FormationCell] = _generate_raw(index, columns, rows)
+	return _deduplicate(cells)
+
+
+static func _deduplicate(cells: Array[FormationCell]) -> Array[FormationCell]:
+	var seen: Dictionary = {}
+	var result: Array[FormationCell] = []
+	for cell: FormationCell in cells:
+		if not seen.has(cell.grid_position):
+			seen[cell.grid_position] = true
+			result.append(cell)
+	return result
+
+
+static func _generate_raw(index: int, columns: int, rows: int) -> Array[FormationCell]:
 	match index:
 		0: return _full_grid(columns, rows)
 		1: return _diamond(columns, rows)
@@ -141,7 +156,7 @@ static func generate(index: int, columns: int, rows: int) -> Array[FormationCell
 
 # --- HELPERS ---
 
-static func _role_for_row(row: int, total_rows: int) -> StringName:
+static func role_for_row(row: int, total_rows: int) -> StringName:
 	var ratio: float = float(row) / float(total_rows)
 	if ratio < 0.25:
 		return &"support"
@@ -153,7 +168,7 @@ static func _role_for_row(row: int, total_rows: int) -> StringName:
 static func _make_cell(col: int, row: int, total_rows: int) -> FormationCell:
 	var cell: FormationCell = FormationCell.new()
 	cell.grid_position = Vector2i(col, row)
-	cell.role = _role_for_row(row, total_rows)
+	cell.role = role_for_row(row, total_rows)
 	return cell
 
 
@@ -587,7 +602,6 @@ static func _crown(columns: int, rows: int) -> Array[FormationCell]:
 
 static func _lightning(columns: int, rows: int) -> Array[FormationCell]:
 	var cells: Array[FormationCell] = []
-	var path: Array[Vector2i] = []
 	var cx: int = columns / 4
 	for r: int in range(mini(rows, 7)):
 		var offset: int = cx + (r % 2) * 2
@@ -754,7 +768,6 @@ static func _cloud(columns: int, rows: int) -> Array[FormationCell]:
 
 static func _mirror_v(columns: int, rows: int) -> Array[FormationCell]:
 	var cells: Array[FormationCell] = []
-	var q: int = columns / 4
 	for r: int in range(mini(rows, 5)):
 		for offset: int in [r, columns / 2 - r - 1, columns / 2 + r, columns - 1 - r]:
 			if _in_bounds(offset, r, columns, rows):

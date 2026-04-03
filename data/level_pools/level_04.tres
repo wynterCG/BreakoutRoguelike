@@ -1,0 +1,464 @@
+[gd_resource type="Resource" script_class="LevelPool" format=3 uid="uid://crtceusa4nr3a"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1_ehd2q"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="2_oykgh"]
+[ext_resource type="Script" uid="uid://c7mhj612u12gx" path="res://scripts/data/level_pool.gd" id="2_ulje5"]
+
+[sub_resource type="Resource" id="Resource_saent"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(0, 5)
+
+[sub_resource type="Resource" id="Resource_cwy52"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(0, 6)
+
+[sub_resource type="Resource" id="Resource_dj8gb"]
+script = ExtResource("2_oykgh")
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_fms7i"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(0, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_njb03"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(0, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_xy2qu"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(0, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_dqari"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(0, 4)
+
+[sub_resource type="Resource" id="Resource_qkswe"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(1, 5)
+
+[sub_resource type="Resource" id="Resource_fv68n"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(1, 6)
+
+[sub_resource type="Resource" id="Resource_mttw4"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(2, 5)
+
+[sub_resource type="Resource" id="Resource_lqdn2"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(2, 6)
+
+[sub_resource type="Resource" id="Resource_miugo"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 5)
+
+[sub_resource type="Resource" id="Resource_pitg8"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 6)
+
+[sub_resource type="Resource" id="Resource_8pyhy"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 0)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_q5y0e"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_bw7ag"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_2hg5g"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_3c0yj"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 4)
+
+[sub_resource type="Resource" id="Resource_nw542"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(4, 5)
+
+[sub_resource type="Resource" id="Resource_nhewu"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(4, 6)
+
+[sub_resource type="Resource" id="Resource_74xbe"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(5, 5)
+
+[sub_resource type="Resource" id="Resource_w1lj7"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(5, 6)
+
+[sub_resource type="Resource" id="Resource_l1q0h"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 5)
+
+[sub_resource type="Resource" id="Resource_esq80"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 6)
+
+[sub_resource type="Resource" id="Resource_os6hx"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 0)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_7edbk"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_nu060"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_86tdy"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_3ex1y"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 4)
+
+[sub_resource type="Resource" id="Resource_tsaq0"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(7, 5)
+
+[sub_resource type="Resource" id="Resource_uo7bt"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(7, 6)
+
+[sub_resource type="Resource" id="Resource_uc50t"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(8, 5)
+
+[sub_resource type="Resource" id="Resource_k2tb1"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(8, 6)
+
+[sub_resource type="Resource" id="Resource_g2lvf"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 5)
+
+[sub_resource type="Resource" id="Resource_sosmi"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 6)
+
+[sub_resource type="Resource" id="Resource_edo6x"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 0)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_42oqb"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_ge7hj"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_usatc"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_dyba7"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 4)
+
+[sub_resource type="Resource" id="Resource_lvyso"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(10, 5)
+
+[sub_resource type="Resource" id="Resource_512bw"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(10, 6)
+
+[sub_resource type="Resource" id="Resource_4md1w"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(11, 5)
+
+[sub_resource type="Resource" id="Resource_u0uem"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(11, 6)
+
+[sub_resource type="Resource" id="Resource_exuu6"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 5)
+
+[sub_resource type="Resource" id="Resource_7nfpp"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 6)
+
+[sub_resource type="Resource" id="Resource_pxk7s"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 0)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_50lhd"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_fd5jl"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_u67xp"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_mvfp2"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 4)
+
+[sub_resource type="Resource" id="Resource_0jd7j"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(13, 5)
+
+[sub_resource type="Resource" id="Resource_1gpob"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(13, 6)
+
+[sub_resource type="Resource" id="Resource_0eyur"]
+script = ExtResource("1_ehd2q")
+formation_name = "4"
+cells = Array[ExtResource("2_oykgh")]([SubResource("Resource_saent"), SubResource("Resource_cwy52"), SubResource("Resource_dj8gb"), SubResource("Resource_fms7i"), SubResource("Resource_njb03"), SubResource("Resource_xy2qu"), SubResource("Resource_dqari"), SubResource("Resource_qkswe"), SubResource("Resource_fv68n"), SubResource("Resource_mttw4"), SubResource("Resource_lqdn2"), SubResource("Resource_miugo"), SubResource("Resource_pitg8"), SubResource("Resource_8pyhy"), SubResource("Resource_q5y0e"), SubResource("Resource_bw7ag"), SubResource("Resource_2hg5g"), SubResource("Resource_3c0yj"), SubResource("Resource_nw542"), SubResource("Resource_nhewu"), SubResource("Resource_74xbe"), SubResource("Resource_w1lj7"), SubResource("Resource_l1q0h"), SubResource("Resource_esq80"), SubResource("Resource_os6hx"), SubResource("Resource_7edbk"), SubResource("Resource_nu060"), SubResource("Resource_86tdy"), SubResource("Resource_3ex1y"), SubResource("Resource_tsaq0"), SubResource("Resource_uo7bt"), SubResource("Resource_uc50t"), SubResource("Resource_k2tb1"), SubResource("Resource_g2lvf"), SubResource("Resource_sosmi"), SubResource("Resource_edo6x"), SubResource("Resource_42oqb"), SubResource("Resource_ge7hj"), SubResource("Resource_usatc"), SubResource("Resource_dyba7"), SubResource("Resource_lvyso"), SubResource("Resource_512bw"), SubResource("Resource_4md1w"), SubResource("Resource_u0uem"), SubResource("Resource_exuu6"), SubResource("Resource_7nfpp"), SubResource("Resource_pxk7s"), SubResource("Resource_50lhd"), SubResource("Resource_fd5jl"), SubResource("Resource_u67xp"), SubResource("Resource_mvfp2"), SubResource("Resource_0jd7j"), SubResource("Resource_1gpob")])
+
+[sub_resource type="Resource" id="Resource_2ujfi"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 0)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_4ms0d"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(7, 0)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_g3te1"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(4, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_cv5rd"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(5, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_n5f3e"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_1ily5"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(7, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_d6vx5"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(8, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_b5j33"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_52l36"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(10, 1)
+role = &"support"
+
+[sub_resource type="Resource" id="Resource_epji5"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(2, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_mfp73"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_11x6g"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_03imy"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(7, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_xyy41"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(11, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_nibqb"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 2)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_s38gh"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(0, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_iidgq"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(1, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_hlfcd"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(2, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_q2r3v"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_ds2mp"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(4, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_oxhsv"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(5, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_pdrdu"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_luiuw"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(7, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_012pr"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(8, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_n0x1x"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_7r1sh"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(10, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_v2lkp"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(11, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_ln2de"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 3)
+role = &"tank"
+
+[sub_resource type="Resource" id="Resource_dj78b"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(1, 4)
+
+[sub_resource type="Resource" id="Resource_fu1qc"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(2, 4)
+
+[sub_resource type="Resource" id="Resource_ssi7c"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 4)
+
+[sub_resource type="Resource" id="Resource_p47ft"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(7, 4)
+
+[sub_resource type="Resource" id="Resource_lecdx"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 4)
+
+[sub_resource type="Resource" id="Resource_kkpnx"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(2, 5)
+
+[sub_resource type="Resource" id="Resource_15r1k"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(3, 5)
+
+[sub_resource type="Resource" id="Resource_kmvqf"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 5)
+
+[sub_resource type="Resource" id="Resource_skxh5"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(7, 5)
+
+[sub_resource type="Resource" id="Resource_71oet"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(11, 5)
+
+[sub_resource type="Resource" id="Resource_io0wq"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(12, 5)
+
+[sub_resource type="Resource" id="Resource_sd4ag"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(4, 6)
+
+[sub_resource type="Resource" id="Resource_kpytn"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(5, 6)
+
+[sub_resource type="Resource" id="Resource_1ayqc"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(6, 6)
+
+[sub_resource type="Resource" id="Resource_kxhec"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(7, 6)
+
+[sub_resource type="Resource" id="Resource_cifpn"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(8, 6)
+
+[sub_resource type="Resource" id="Resource_44yb7"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(9, 6)
+
+[sub_resource type="Resource" id="Resource_x70e6"]
+script = ExtResource("2_oykgh")
+grid_position = Vector2i(10, 6)
+
+[sub_resource type="Resource" id="Resource_11yjf"]
+script = ExtResource("1_ehd2q")
+formation_name = "yityuty"
+grid_columns = 13
+cells = Array[ExtResource("2_oykgh")]([SubResource("Resource_2ujfi"), SubResource("Resource_4ms0d"), SubResource("Resource_g3te1"), SubResource("Resource_cv5rd"), SubResource("Resource_n5f3e"), SubResource("Resource_1ily5"), SubResource("Resource_d6vx5"), SubResource("Resource_b5j33"), SubResource("Resource_52l36"), SubResource("Resource_epji5"), SubResource("Resource_mfp73"), SubResource("Resource_11x6g"), SubResource("Resource_03imy"), SubResource("Resource_xyy41"), SubResource("Resource_nibqb"), SubResource("Resource_s38gh"), SubResource("Resource_iidgq"), SubResource("Resource_hlfcd"), SubResource("Resource_q2r3v"), SubResource("Resource_ds2mp"), SubResource("Resource_oxhsv"), SubResource("Resource_pdrdu"), SubResource("Resource_luiuw"), SubResource("Resource_012pr"), SubResource("Resource_n0x1x"), SubResource("Resource_7r1sh"), SubResource("Resource_v2lkp"), SubResource("Resource_ln2de"), SubResource("Resource_dj78b"), SubResource("Resource_fu1qc"), SubResource("Resource_ssi7c"), SubResource("Resource_p47ft"), SubResource("Resource_lecdx"), SubResource("Resource_kkpnx"), SubResource("Resource_15r1k"), SubResource("Resource_kmvqf"), SubResource("Resource_skxh5"), SubResource("Resource_71oet"), SubResource("Resource_io0wq"), SubResource("Resource_sd4ag"), SubResource("Resource_kpytn"), SubResource("Resource_1ayqc"), SubResource("Resource_kxhec"), SubResource("Resource_cifpn"), SubResource("Resource_44yb7"), SubResource("Resource_x70e6")])
+
+[resource]
+script = ExtResource("2_ulje5")
+level_number = 4
+formations = Array[ExtResource("1_ehd2q")]([SubResource("Resource_0eyur"), SubResource("Resource_11yjf")])

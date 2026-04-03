@@ -1,0 +1,177 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/formation_editor/formation_editor_dock.gd" id="1"]
+
+[node name="FormationEditorDock" type="HSplitContainer"]
+script = ExtResource("1")
+
+[node name="LeftPanel" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(180, 0)
+
+[node name="FormationsLabel" type="Label" parent="LeftPanel"]
+text = "FORMATIONS"
+theme_override_font_sizes/font_size = 10
+
+[node name="ButtonBar" type="HBoxContainer" parent="LeftPanel"]
+
+[node name="NewButton" type="Button" parent="LeftPanel/ButtonBar"]
+text = "New"
+size_flags_horizontal = 3
+
+[node name="DeleteButton" type="Button" parent="LeftPanel/ButtonBar"]
+text = "Delete"
+size_flags_horizontal = 3
+
+[node name="FormationList" type="ItemList" parent="LeftPanel"]
+custom_minimum_size = Vector2(0, 120)
+size_flags_vertical = 3
+
+[node name="HSeparator" type="HSeparator" parent="LeftPanel"]
+
+[node name="PoolsLabel" type="Label" parent="LeftPanel"]
+text = "LEVEL POOLS"
+theme_override_font_sizes/font_size = 10
+
+[node name="PoolScroll" type="ScrollContainer" parent="LeftPanel"]
+size_flags_vertical = 3
+
+[node name="PoolContainer" type="VBoxContainer" parent="LeftPanel/PoolScroll"]
+size_flags_horizontal = 3
+
+[node name="NewPoolButton" type="Button" parent="LeftPanel"]
+text = "+ New Level Pool"
+
+[node name="CenterPanel" type="VBoxContainer" parent="."]
+size_flags_horizontal = 3
+
+[node name="Controls" type="HFlowContainer" parent="CenterPanel"]
+
+[node name="NameLabel" type="Label" parent="CenterPanel/Controls"]
+text = "Name:"
+theme_override_font_sizes/font_size = 11
+
+[node name="NameInput" type="LineEdit" parent="CenterPanel/Controls"]
+custom_minimum_size = Vector2(100, 0)
+
+[node name="ColsLabel" type="Label" parent="CenterPanel/Controls"]
+text = "Cols:"
+theme_override_font_sizes/font_size = 11
+
+[node name="ColsInput" type="SpinBox" parent="CenterPanel/Controls"]
+custom_minimum_size = Vector2(60, 0)
+min_value = 1.0
+max_value = 20.0
+value = 14.0
+
+[node name="RowsLabel" type="Label" parent="CenterPanel/Controls"]
+text = "Rows:"
+theme_override_font_sizes/font_size = 11
+
+[node name="RowsInput" type="SpinBox" parent="CenterPanel/Controls"]
+custom_minimum_size = Vector2(60, 0)
+min_value = 1.0
+max_value = 10.0
+value = 7.0
+
+[node name="TemplateDropdown" type="OptionButton" parent="CenterPanel/Controls"]
+custom_minimum_size = Vector2(160, 0)
+
+[node name="ApplyButton" type="Button" parent="CenterPanel/Controls"]
+text = "Apply"
+
+[node name="ToolBar" type="HBoxContainer" parent="CenterPanel"]
+
+[node name="FrontButton" type="Button" parent="CenterPanel/ToolBar"]
+text = "Front"
+
+[node name="TankButton" type="Button" parent="CenterPanel/ToolBar"]
+text = "Tank"
+
+[node name="SupportButton" type="Button" parent="CenterPanel/ToolBar"]
+text = "Support"
+
+[node name="EliteButton" type="Button" parent="CenterPanel/ToolBar"]
+text = "Elite"
+
+[node name="Sep" type="VSeparator" parent="CenterPanel/ToolBar"]
+
+[node name="EraseButton" type="Button" parent="CenterPanel/ToolBar"]
+text = "Erase"
+
+[node name="Sep2" type="VSeparator" parent="CenterPanel/ToolBar"]
+
+[node name="ClearButton" type="Button" parent="CenterPanel/ToolBar"]
+text = "Clear"
+
+[node name="FillButton" type="Button" parent="CenterPanel/ToolBar"]
+text = "Fill"
+
+[node name="SplitView" type="VSplitContainer" parent="CenterPanel"]
+size_flags_vertical = 3
+
+[node name="GridScroll" type="ScrollContainer" parent="CenterPanel/SplitView"]
+custom_minimum_size = Vector2(0, 80)
+
+[node name="GridContainer" type="GridContainer" parent="CenterPanel/SplitView/GridScroll"]
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 1
+
+[node name="ArenaPreview" type="Control" parent="CenterPanel/SplitView"]
+custom_minimum_size = Vector2(0, 150)
+
+[node name="RightPanel" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(170, 0)
+
+[node name="InspectorLabel" type="Label" parent="RightPanel"]
+text = "CELL INSPECTOR"
+theme_override_font_sizes/font_size = 10
+
+[node name="CellInspector" type="VBoxContainer" parent="RightPanel"]
+
+[node name="PositionLabel" type="Label" parent="RightPanel/CellInspector"]
+text = "No cell selected"
+theme_override_font_sizes/font_size = 10
+
+[node name="RoleLabel" type="Label" parent="RightPanel/CellInspector"]
+text = "Role:"
+theme_override_font_sizes/font_size = 10
+
+[node name="RoleDropdown" type="OptionButton" parent="RightPanel/CellInspector"]
+
+[node name="MonsterLabel" type="Label" parent="RightPanel/CellInspector"]
+text = "Monster:"
+theme_override_font_sizes/font_size = 10
+
+[node name="MonsterDropdown" type="OptionButton" parent="RightPanel/CellInspector"]
+
+[node name="HSeparator" type="HSeparator" parent="RightPanel"]
+
+[node name="StatsTitle" type="Label" parent="RightPanel"]
+text = "STATS"
+theme_override_font_sizes/font_size = 10
+
+[node name="StatsLabel" type="Label" parent="RightPanel"]
+text = "Total: 0"
+theme_override_font_sizes/font_size = 10
+
+[node name="HSeparator2" type="HSeparator" parent="RightPanel"]
+
+[node name="AutoRolesButton" type="Button" parent="RightPanel"]
+text = "Auto-assign Roles"
+
+[node name="SaveButton" type="Button" parent="RightPanel"]
+text = "Save Formation"
+
+[node name="CreateDialog" type="ConfirmationDialog" parent="."]
+title = "New Formation"
+size = Vector2i(300, 150)
+
+[node name="NameInput" type="LineEdit" parent="CreateDialog"]
+offset_top = 8.0
+offset_right = 280.0
+offset_bottom = 39.0
+placeholder_text = "Formation name..."
+
+[node name="DeleteDialog" type="ConfirmationDialog" parent="."]
+title = "Delete Formation"
+dialog_text = "Are you sure you want to delete this formation?"

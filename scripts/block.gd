@@ -33,7 +33,7 @@ func _ready() -> void:
 	var block_color: Color = Color.WHITE
 
 	if monster_data:
-		hp = monster_data.hp
+		hp = max_hp if max_hp > 1 else monster_data.hp
 		block_color = monster_data.color
 		_block_size = Vector2(maxf(monster_data.size.x, 10.0), maxf(monster_data.size.y, 10.0))
 	else:

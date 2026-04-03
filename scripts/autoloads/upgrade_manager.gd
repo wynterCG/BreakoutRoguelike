@@ -11,7 +11,7 @@ var damage_reduction: float = 0.0
 var regen_rate: float = 0.0
 var ball_speed_bonus: float = 0.0
 var paddle_width_bonus: float = 0.0
-var thorns_damage: float = 0.0
+var thorns_damage: int = 0
 
 
 func apply_upgrade(upgrade: UpgradeData) -> void:
@@ -19,7 +19,7 @@ func apply_upgrade(upgrade: UpgradeData) -> void:
 		&"ball_damage":
 			ball_damage_bonus += int(upgrade.value)
 		&"crit_chance":
-			crit_chance += upgrade.value
+			crit_chance = minf(crit_chance + upgrade.value, 1.0)
 		&"piercing":
 			piercing_count += int(upgrade.value)
 		&"split_shot":
@@ -27,7 +27,7 @@ func apply_upgrade(upgrade: UpgradeData) -> void:
 		&"aoe_damage":
 			aoe_damage += int(upgrade.value)
 		&"lifesteal":
-			lifesteal_percent += upgrade.value
+			lifesteal_percent = minf(lifesteal_percent + upgrade.value, 1.0)
 		&"max_hp":
 			max_hp_bonus += int(upgrade.value)
 		&"damage_reduction":
@@ -66,4 +66,4 @@ func reset() -> void:
 	regen_rate = 0.0
 	ball_speed_bonus = 0.0
 	paddle_width_bonus = 0.0
-	thorns_damage = 0.0
+	thorns_damage = 0

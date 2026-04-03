@@ -52,16 +52,15 @@ func _show_pick_round() -> void:
 	_title_label.text = "Choose an Upgrade (" + str(_current_pick + 1) + "/" + str(PICKS_PER_LEVEL) + ")"
 
 	# Clear old cards
+	# Remove old cards immediately (not queue_free, which waits until end of frame)
 	for child: Node in _card_container.get_children():
+		_card_container.remove_child(child)
 		child.queue_free()
 
 	# Pick 3 random upgrades
 	var shuffled: Array[UpgradeData] = _all_upgrades.duplicate()
 	shuffled.shuffle()
 	var count: int = mini(CARDS_PER_PICK, shuffled.size())
-
-	# Wait a frame for old cards to be freed
-	await get_tree().process_frame
 
 	for i: int in range(count):
 		var card: UpgradeCard = UPGRADE_CARD_SCENE.instantiate() as UpgradeCard

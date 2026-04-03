@@ -6,9 +6,8 @@ const BALL_SCENE: PackedScene = preload("res://scenes/entities/ball.tscn")
 const MONSTERS_DIR: String = "res://data/monsters/"
 
 const LEVEL_POOLS_DIR: String = "res://data/level_pools/"
-const ARENA_WIDTH: float = 980.0
 const ARENA_HEIGHT: float = 200.0
-const GRID_OFFSET: Vector2 = Vector2(145.0, 60.0)
+const GRID_Y_OFFSET: float = 60.0
 const PADDLE_Y: float = 650.0
 const PLAYER_MAX_HP: int = 100
 const HP_SCALE_PER_LEVEL: float = 0.2
@@ -133,8 +132,12 @@ func _spawn_from_formation(formation: FormationData) -> void:
 	else:
 		cells = formation.cells
 
-	var col_spacing: float = ARENA_WIDTH / float(formation.grid_columns)
-	var row_spacing: float = ARENA_HEIGHT / float(formation.grid_rows)
+	var block_w: float = 60.0
+	var block_h: float = 24.0
+	var spacing_x: float = block_w + 10.0
+	var spacing_y: float = block_h + 6.0
+	var total_w: float = float(formation.grid_columns) * spacing_x
+	var offset_x: float = (1280.0 - total_w) / 2.0 + spacing_x / 2.0
 
 	for cell: FormationCell in cells:
 		var monster: MonsterData = _resolve_monster(cell, _level)
@@ -146,9 +149,9 @@ func _spawn_from_formation(formation: FormationData) -> void:
 		var base_hp: int = monster.hp
 		block.max_hp = int(ceilf(float(base_hp) * (1.0 + float(_level - 1) * HP_SCALE_PER_LEVEL)))
 
-		var pixel_pos: Vector2 = GRID_OFFSET + Vector2(
-			float(cell.grid_position.x) * col_spacing,
-			float(cell.grid_position.y) * row_spacing
+		var pixel_pos: Vector2 = Vector2(
+			offset_x + float(cell.grid_position.x) * spacing_x,
+			GRID_Y_OFFSET + float(cell.grid_position.y) * spacing_y
 		)
 		block.position = pixel_pos
 		block.destroyed.connect(_on_block_destroyed)
@@ -180,8 +183,10 @@ func _resolve_monster(cell: FormationCell, level: int) -> MonsterData:
 
 
 func _spawn_fallback_grid() -> void:
-	var col_spacing: float = ARENA_WIDTH / 14.0
-	var row_spacing: float = ARENA_HEIGHT / 5.0
+	var spacing_x: float = 70.0
+	var spacing_y: float = 30.0
+	var total_w: float = 14.0 * spacing_x
+	var offset_x: float = (1280.0 - total_w) / 2.0 + spacing_x / 2.0
 	for row: int in range(5):
 		for col: int in range(14):
 			var block: Block = BLOCK_SCENE.instantiate() as Block
@@ -191,7 +196,7 @@ func _spawn_fallback_grid() -> void:
 				block.max_hp = int(ceilf(float(monster.hp) * (1.0 + float(_level - 1) * HP_SCALE_PER_LEVEL)))
 			else:
 				block.max_hp = 1
-			block.position = GRID_OFFSET + Vector2(float(col) * col_spacing, float(row) * row_spacing)
+			block.position = Vector2(offset_x + float(col) * spacing_x, GRID_Y_OFFSET + float(row) * spacing_y)
 			block.destroyed.connect(_on_block_destroyed)
 			_block_container.add_child(block)
 			_blocks_remaining += 1
@@ -234,6 +239,7 @@ func _start_next_level() -> void:
 	for child: Node in _block_container.get_children():
 		child.queue_free()
 	_blocks_remaining = 0
+	_regen_accumulator = 0.0
 
 	# Apply max HP bonus
 	var total_max_hp: int = PLAYER_MAX_HP + UpgradeManager.max_hp_bonus
@@ -297,9 +303,13 @@ func _on_ball_split_requested(pos: Vector2, count: int) -> void:
 		split_ball.heal_player.connect(_on_ball_heal_player)
 		add_child(split_ball)
 
-		# Despawn after 5 seconds
+		# Despawn after 5 seconds (check validity to avoid crash on scene reload)
 		var timer: SceneTreeTimer = get_tree().create_timer(5.0)
-		timer.timeout.connect(split_ball.queue_free)
+		var ball_ref: Ball = split_ball
+		timer.timeout.connect(func() -> void:
+			if is_instance_valid(ball_ref):
+				ball_ref.queue_free()
+		)
 
 
 func _on_player_health_changed(_current_hp: int, _max_hp: int) -> void:
