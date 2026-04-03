@@ -7,3 +7,5 @@ script = ExtResource("1")
 monster_name = "Brute"
 hp = 5
 color = Color(0.9, 0.2, 0.2, 1)
+min_level = 5
+role = &"tank"

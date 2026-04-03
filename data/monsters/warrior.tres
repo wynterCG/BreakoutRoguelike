@@ -8,3 +8,5 @@ monster_name = "Warrior"
 hp = 2
 color = Color(0.9, 0.7, 0.1, 1)
 size = Vector2(60, 24)
+min_level = 3
+role = &"tank"
