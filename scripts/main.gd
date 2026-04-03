@@ -5,10 +5,9 @@ const BLOCK_SCENE: PackedScene = preload("res://scenes/entities/block.tscn")
 const BALL_SCENE: PackedScene = preload("res://scenes/entities/ball.tscn")
 const MONSTERS_DIR: String = "res://data/monsters/"
 
-const GRID_COLS: int = 14
-const GRID_ROWS: int = 5
-const BLOCK_SPACING_X: float = 70.0
-const BLOCK_SPACING_Y: float = 30.0
+const LEVEL_POOLS_DIR: String = "res://data/level_pools/"
+const ARENA_WIDTH: float = 980.0
+const ARENA_HEIGHT: float = 200.0
 const GRID_OFFSET: Vector2 = Vector2(145.0, 60.0)
 const PADDLE_Y: float = 650.0
 const PLAYER_MAX_HP: int = 100
@@ -105,20 +104,94 @@ func _load_monster_types() -> void:
 
 
 func _spawn_enemies() -> void:
-	for row: int in range(GRID_ROWS):
-		for col: int in range(GRID_COLS):
+	var pool: LevelPool = _load_level_pool(_level)
+	var formation: FormationData = null
+
+	if pool and pool.formations.size() > 0:
+		formation = pool.formations[randi() % pool.formations.size()]
+
+	if formation:
+		_spawn_from_formation(formation)
+	else:
+		_spawn_fallback_grid()
+
+
+func _load_level_pool(level: int) -> LevelPool:
+	var path: String = LEVEL_POOLS_DIR + "level_%02d.tres" % level
+	if ResourceLoader.exists(path):
+		var res: Resource = ResourceLoader.load(path)
+		if res is LevelPool:
+			return res as LevelPool
+	return null
+
+
+func _spawn_from_formation(formation: FormationData) -> void:
+	var cells: Array[FormationCell] = []
+
+	if formation.template_index >= 0:
+		cells = FormationTemplates.generate(formation.template_index, formation.grid_columns, formation.grid_rows)
+	else:
+		cells = formation.cells
+
+	var col_spacing: float = ARENA_WIDTH / float(formation.grid_columns)
+	var row_spacing: float = ARENA_HEIGHT / float(formation.grid_rows)
+
+	for cell: FormationCell in cells:
+		var monster: MonsterData = _resolve_monster(cell, _level)
+		if not monster:
+			continue
+
+		var block: Block = BLOCK_SCENE.instantiate() as Block
+		block.monster_data = monster
+		var base_hp: int = monster.hp
+		block.max_hp = int(ceilf(float(base_hp) * (1.0 + float(_level - 1) * HP_SCALE_PER_LEVEL)))
+
+		var pixel_pos: Vector2 = GRID_OFFSET + Vector2(
+			float(cell.grid_position.x) * col_spacing,
+			float(cell.grid_position.y) * row_spacing
+		)
+		block.position = pixel_pos
+		block.destroyed.connect(_on_block_destroyed)
+		_block_container.add_child(block)
+		_blocks_remaining += 1
+
+
+func _resolve_monster(cell: FormationCell, level: int) -> MonsterData:
+	if cell.monster_override:
+		return cell.monster_override
+
+	var candidates: Array[MonsterData] = []
+	for monster: MonsterData in _monster_types:
+		if monster.min_level <= level and monster.role == cell.role:
+			candidates.append(monster)
+
+	if candidates.is_empty():
+		for monster: MonsterData in _monster_types:
+			if monster.min_level <= level:
+				candidates.append(monster)
+
+	if candidates.is_empty() and _monster_types.size() > 0:
+		return _monster_types[0]
+
+	if candidates.is_empty():
+		return null
+
+	return candidates[randi() % candidates.size()]
+
+
+func _spawn_fallback_grid() -> void:
+	var col_spacing: float = ARENA_WIDTH / 14.0
+	var row_spacing: float = ARENA_HEIGHT / 5.0
+	for row: int in range(5):
+		for col: int in range(14):
 			var block: Block = BLOCK_SCENE.instantiate() as Block
-
 			if _monster_types.size() > 0:
-				var type_index: int = clampi(row, 0, _monster_types.size() - 1)
-				block.monster_data = _monster_types[type_index]
-				# Scale HP by level
-				var base_hp: int = _monster_types[type_index].hp
-				block.max_hp = int(ceilf(float(base_hp) * (1.0 + float(_level - 1) * HP_SCALE_PER_LEVEL)))
+				var monster: MonsterData = _monster_types[0]
+				block.monster_data = monster
+				block.max_hp = int(ceilf(float(monster.hp) * (1.0 + float(_level - 1) * HP_SCALE_PER_LEVEL)))
 			else:
-				block.max_hp = clampi(GRID_ROWS - row, 1, 3)
-
-			block.position = GRID_OFFSET + Vector2(col * BLOCK_SPACING_X, row * BLOCK_SPACING_Y)
+				block.max_hp = 1
+			block.position = GRID_OFFSET + Vector2(float(col) * col_spacing, float(row) * row_spacing)
 			block.destroyed.connect(_on_block_destroyed)
 			_block_container.add_child(block)
 			_blocks_remaining += 1
