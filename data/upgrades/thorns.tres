@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1")
-upgrade_name = "Magnet Pull"
-description = "Ball curves toward paddle when below it."
-category = &"utility"
-effect_id = &"magnet_pull"
-value = 30.0
+upgrade_name = "Thorns"
+description = "When ball hits the back wall, a random block takes 2 damage. Pain shared."
+category = &"defense"
+effect_id = &"thorns"
+value = 2.0

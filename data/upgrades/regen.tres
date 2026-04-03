@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 upgrade_name = "Regen"
-description = "Heal 1 HP per second passively."
+description = "Heal 1 HP every 10s. Stacking speeds it up."
 category = &"defense"
 effect_id = &"regen"
 value = 1.0

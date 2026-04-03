@@ -28,6 +28,7 @@ var _block_size: Vector2 = Vector2(BLOCK_WIDTH, BLOCK_HEIGHT)
 
 
 func _ready() -> void:
+	add_to_group("blocks")
 	var hp: int = max_hp
 	var block_color: Color = Color.WHITE
 

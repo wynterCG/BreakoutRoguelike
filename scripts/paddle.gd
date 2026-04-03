@@ -18,7 +18,12 @@ var _touch_target_x: float = 640.0
 
 func _ready() -> void:
 	_screen_width = get_viewport_rect().size.x
-	var arc_points: PackedVector2Array = _generate_arc_points()
+	apply_width_upgrade()
+
+
+func apply_width_upgrade() -> void:
+	var effective_width: float = UpgradeManager.get_effective_paddle_width(ARC_WIDTH)
+	var arc_points: PackedVector2Array = _generate_arc_points_with_width(effective_width)
 	_collision.polygon = arc_points
 	_visual.polygon = arc_points
 	_visual.color = Color(0.2, 0.6, 1.0)
@@ -42,7 +47,8 @@ func _input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var half_width: float = ARC_WIDTH / 2.0
+	var effective_width: float = UpgradeManager.get_effective_paddle_width(ARC_WIDTH)
+	var half_width: float = effective_width / 2.0
 	var min_x: float = SCREEN_MARGIN + half_width
 	var max_x: float = _screen_width - SCREEN_MARGIN - half_width
 
@@ -60,9 +66,9 @@ func _physics_process(delta: float) -> void:
 	position.y = locked_y
 
 
-func _generate_arc_points() -> PackedVector2Array:
+func _generate_arc_points_with_width(width: float) -> PackedVector2Array:
 	var points: PackedVector2Array = PackedVector2Array()
-	var half_width: float = ARC_WIDTH / 2.0
+	var half_width: float = width / 2.0
 	# Top surface: the arc (concave upward — ball sits in the curve)
 	for i: int in range(ARC_SEGMENTS + 1):
 		var t: float = float(i) / float(ARC_SEGMENTS)

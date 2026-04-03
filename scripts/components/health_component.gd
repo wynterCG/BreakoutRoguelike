@@ -27,6 +27,13 @@ func take_damage(amount: int = 1) -> void:
 		died.emit()
 
 
+func heal(amount: int) -> void:
+	if _current_hp <= 0:
+		return
+	_current_hp = mini(_current_hp + amount, max_hp)
+	health_changed.emit(_current_hp, max_hp)
+
+
 func get_current_hp() -> int:
 	return _current_hp
 

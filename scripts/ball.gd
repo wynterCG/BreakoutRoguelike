@@ -2,11 +2,14 @@ extends CharacterBody2D
 class_name Ball
 
 signal hit_back_wall(ball_damage: int)
+signal heal_player(amount: int)
+signal split_requested(pos: Vector2, count: int)
 
 const BASE_SPEED: float = 400.0
 const MIN_VERTICAL_RATIO: float = 0.3
 const PADDLE_FOLLOW_OFFSET_Y: float = -40.0
 const POST_BOUNCE_CLEARANCE_Y: float = -12.0
+const AOE_RADIUS: float = 80.0
 
 @export var damage: int = 5
 
@@ -14,6 +17,7 @@ var _direction: Vector2 = Vector2.ZERO
 var _speed: float = BASE_SPEED
 var _is_launched: bool = false
 var _paddle: Paddle = null
+var _piercing_remaining: int = 0
 
 @onready var _collision: CollisionShape2D = $CollisionShape2D
 
@@ -40,7 +44,11 @@ func _physics_process(delta: float) -> void:
 		_follow_paddle()
 		return
 
-	var motion: Vector2 = _direction * _speed * delta
+	# Reset piercing charges each frame
+	_piercing_remaining = UpgradeManager.piercing_count
+
+	var effective_speed: float = UpgradeManager.get_effective_ball_speed(_speed)
+	var motion: Vector2 = _direction * effective_speed * delta
 	var collision: KinematicCollision2D = move_and_collide(motion)
 	if collision:
 		_handle_collision(collision)
@@ -70,8 +78,13 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 	if collider is Paddle:
 		_handle_paddle_bounce(collider as Paddle, collision)
 	else:
-		# Walls and blocks: simple reflection
-		_direction = _direction.bounce(collision.get_normal())
+		# Check piercing: if we have charges and hit a block, pass through
+		var is_block: bool = collider.has_method("hit")
+		if is_block and _piercing_remaining > 0:
+			_piercing_remaining -= 1
+			# Don't bounce — ball passes through
+		else:
+			_direction = _direction.bounce(collision.get_normal())
 
 	# Ensure minimum vertical component to avoid horizontal loops
 	if absf(_direction.y) < MIN_VERTICAL_RATIO:
@@ -79,13 +92,42 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 		_direction.y = MIN_VERTICAL_RATIO * y_sign
 		_direction = _direction.normalized()
 
-	# Notify blocks of hits (exclude paddle to prevent future damage conflicts)
+	# Handle block hits (damage, crit, lifesteal, AoE, split)
 	if collider is not Paddle and collider.has_method("hit"):
-		collider.hit(damage)
+		var effective_damage: int = UpgradeManager.get_effective_ball_damage(damage)
+
+		# Critical hit (monsters only)
+		var is_crit: bool = UpgradeManager.crit_chance > 0.0 and randf() < UpgradeManager.crit_chance
+		if is_crit:
+			effective_damage *= 2
+
+		collider.hit(effective_damage)
+
+		# Lifesteal
+		if UpgradeManager.lifesteal_percent > 0.0:
+			var heal_amount: int = maxi(int(float(effective_damage) * UpgradeManager.lifesteal_percent), 1)
+			heal_player.emit(heal_amount)
+
+		# AoE Blast
+		if UpgradeManager.aoe_damage > 0 and collider is Node2D:
+			var hit_position: Vector2 = (collider as Node2D).global_position
+			var blocks: Array[Node] = get_tree().get_nodes_in_group("blocks")
+			for block_node: Node in blocks:
+				if block_node == collider:
+					continue
+				if block_node is Node2D and block_node.has_method("hit"):
+					var dist: float = (block_node as Node2D).global_position.distance_to(hit_position)
+					if dist <= AOE_RADIUS:
+						(block_node as Node2D).hit(UpgradeManager.aoe_damage)
+
+		# Split Shot
+		if UpgradeManager.split_count > 0:
+			split_requested.emit(global_position, UpgradeManager.split_count)
 
 	# Detect back wall hit for player damage
 	if collider is Node and (collider as Node).is_in_group("back_wall"):
-		hit_back_wall.emit(damage)
+		var effective_damage: int = UpgradeManager.get_effective_ball_damage(damage)
+		hit_back_wall.emit(effective_damage)
 
 
 func _handle_paddle_bounce(paddle: Paddle, collision: KinematicCollision2D) -> void:
@@ -97,8 +139,9 @@ func _handle_paddle_bounce(paddle: Paddle, collision: KinematicCollision2D) -> v
 	# Ball hit from above — use arc-based angle calculation
 	var hit_pos: Vector2 = collision.get_position()
 	var local_pos: Vector2 = paddle.to_local(hit_pos)
-	var half_width: float = Paddle.ARC_WIDTH / 2.0
-	var t: float = clampf((local_pos.x + half_width) / Paddle.ARC_WIDTH, 0.0, 1.0)
+	var effective_width: float = UpgradeManager.get_effective_paddle_width(Paddle.ARC_WIDTH)
+	var half_width: float = effective_width / 2.0
+	var t: float = clampf((local_pos.x + half_width) / effective_width, 0.0, 1.0)
 
 	# Map t to an angle: left edge = -70deg, center = straight up, right edge = +70deg
 	var max_angle: float = deg_to_rad(70.0)

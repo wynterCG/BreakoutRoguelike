@@ -11,7 +11,7 @@ var damage_reduction: float = 0.0
 var regen_rate: float = 0.0
 var ball_speed_bonus: float = 0.0
 var paddle_width_bonus: float = 0.0
-var magnet_pull_strength: float = 0.0
+var thorns_damage: float = 0.0
 
 
 func apply_upgrade(upgrade: UpgradeData) -> void:
@@ -38,8 +38,8 @@ func apply_upgrade(upgrade: UpgradeData) -> void:
 			ball_speed_bonus += upgrade.value
 		&"paddle_width":
 			paddle_width_bonus += upgrade.value
-		&"magnet_pull":
-			magnet_pull_strength += upgrade.value
+		&"thorns":
+			thorns_damage += int(upgrade.value)
 
 
 func get_effective_ball_damage(base: int) -> int:
@@ -66,4 +66,4 @@ func reset() -> void:
 	regen_rate = 0.0
 	ball_speed_bonus = 0.0
 	paddle_width_bonus = 0.0
-	magnet_pull_strength = 0.0
+	thorns_damage = 0.0

@@ -16,10 +16,10 @@ config/features=PackedStringArray("4.6", "Forward Plus")
 
 [autoload]
 
+UpgradeManager="*res://scripts/autoloads/upgrade_manager.gd"
 MCPScreenshot="*res://addons/godot_mcp/mcp_screenshot_service.gd"
 MCPInputService="*res://addons/godot_mcp/mcp_input_service.gd"
 MCPGameInspector="*res://addons/godot_mcp/mcp_game_inspector_service.gd"
-UpgradeManager="*res://scripts/autoloads/upgrade_manager.gd"
 
 [display]
 
@@ -51,12 +51,17 @@ launch_ball={
 ]
 }
 
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
 [layer_names]
 
 2d_physics/layer_1="Paddle"
 2d_physics/layer_2="Ball"
 2d_physics/layer_3="Walls"
 2d_physics/layer_4="Blocks"
+2d_physics/layer_5="KillZone"
 
 [rendering]
 

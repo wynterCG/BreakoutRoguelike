@@ -12,3 +12,4 @@ addons/godot_mcp/
 # OS files
 .DS_Store
 Thumbs.db
+.superpowers/
