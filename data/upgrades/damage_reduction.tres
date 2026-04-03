@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_name = "Damage Reduction"
+description = "Back wall self-damage reduced by 10%. Caps at 50%."
+category = &"defense"
+effect_id = &"damage_reduction"
+value = 0.1

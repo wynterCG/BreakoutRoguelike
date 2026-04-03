@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_name = "Ball Damage +"
+description = "Ball damage increases by 2. Hits monsters AND hurts you more on misses."
+category = &"offense"
+effect_id = &"ball_damage"
+value = 2.0
