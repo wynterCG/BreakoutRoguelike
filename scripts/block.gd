@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends CharacterBody2D
 class_name Block
 
 signal destroyed
@@ -26,6 +26,7 @@ var _block_size: Vector2 = Vector2(BLOCK_WIDTH, BLOCK_HEIGHT)
 @onready var _hp_label: Label = $Background/HPLabel
 @onready var _collision: CollisionShape2D = $CollisionShape2D
 @onready var _health: HealthComponent = $HealthComponent
+@onready var _movement: MovementComponent = $MovementComponent
 
 
 func _ready() -> void:
@@ -73,6 +74,26 @@ func _ready() -> void:
 
 	_health.health_changed.connect(_on_health_changed)
 	_health.died.connect(_on_died)
+
+	# Initialize movement
+	if monster_data:
+		_movement.initialize(monster_data, global_position)
+		var has_movement: bool = monster_data.drift_enabled or monster_data.zigzag_enabled \
+			or monster_data.orbit_enabled or monster_data.charge_enabled
+		if not has_movement:
+			set_physics_process(false)
+	else:
+		set_physics_process(false)
+
+
+func _physics_process(delta: float) -> void:
+	var move_velocity: Vector2 = _movement.get_movement_velocity(global_position, delta)
+	if move_velocity != Vector2.ZERO:
+		velocity = move_velocity
+		move_and_slide()
+		# Clamp to arena bounds (collision_mask=0 so walls don't stop blocks)
+		global_position.x = clampf(global_position.x, MovementComponent.ARENA_MIN_X, MovementComponent.ARENA_MAX_X)
+		global_position.y = clampf(global_position.y, MovementComponent.ARENA_MIN_Y, MovementComponent.ARENA_MAX_Y)
 
 
 func get_block_size() -> Vector2:

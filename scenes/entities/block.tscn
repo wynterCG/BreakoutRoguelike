@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" uid="uid://swv2pbltrx6o" path="res://scripts/block.gd" id="1_block"]
 [ext_resource type="Script" uid="uid://b841g0ckswm8v" path="res://scripts/components/health_component.gd" id="2_health"]
+[ext_resource type="Script" uid="uid://wwhb8c2vy3j3" path="res://scripts/components/movement_component.gd" id="3_movement"]
 
-[node name="Block" type="StaticBody2D" unique_id=207901202]
+[node name="Block" type="CharacterBody2D" unique_id=207901202]
 collision_layer = 8
-collision_mask = 2
+collision_mask = 0
 script = ExtResource("1_block")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1632343551]
@@ -22,3 +23,6 @@ vertical_alignment = 1
 
 [node name="HealthComponent" type="Node" parent="." unique_id=512670342]
 script = ExtResource("2_health")
+
+[node name="MovementComponent" type="Node" parent="." unique_id=2045809003]
+script = ExtResource("3_movement")
