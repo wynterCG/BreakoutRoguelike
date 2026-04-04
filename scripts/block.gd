@@ -5,7 +5,7 @@ const DamageNumberScene: GDScript = preload("res://scripts/ui/damage_number.gd")
 
 signal destroyed
 signal projectile_spawned(projectile: Area2D, spawn_pos: Vector2)
-signal killed(block_position: Vector2)
+signal killed(block_position: Vector2, token_value: int)
 
 const BLOCK_WIDTH: float = 60.0
 const BLOCK_HEIGHT: float = 24.0
@@ -173,7 +173,8 @@ func _on_died() -> void:
 					block_node._killed_by_explosion = true
 					block_node.hit(UpgradeManager.explosive_death_damage)
 
-	killed.emit(global_position)
+	var _token_val: int = monster_data.token_value if monster_data else 1
+	killed.emit(global_position, _token_val)
 	destroyed.emit()
 	call_deferred("queue_free")
 

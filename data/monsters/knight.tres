@@ -9,3 +9,4 @@ hp = 25
 color = Color(0.75, 0.75, 0.8, 1)
 min_level = 8
 role = "tank"
+token_value = 3

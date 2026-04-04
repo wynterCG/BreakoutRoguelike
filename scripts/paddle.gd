@@ -12,6 +12,7 @@ const PADDLE_MAX_Y: float = 680.0
 
 signal hit_by_projectile(damage: int)
 signal laser_fired(x_position: float, damage: int)
+signal token_collected(amount: int)
 
 var _screen_width: float = 0.0
 var _use_touch: bool = false
@@ -119,9 +120,12 @@ func _generate_arc_points(width: float) -> PackedVector2Array:
 
 
 func _on_hurt_zone_area_entered(area: Area2D) -> void:
+	if area.is_in_group("tokens"):
+		token_collected.emit(area.value)
+		area.queue_free()
+		return
 	if area.is_in_group("projectiles"):
 		if _shield_active:
-			# Shield absorbs the hit
 			_shield_active = false
 			_shield_timer = 15.0
 			area.queue_free()

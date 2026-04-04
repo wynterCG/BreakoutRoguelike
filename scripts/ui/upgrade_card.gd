@@ -33,15 +33,19 @@ const STAT_FORMATS: Dictionary = {
 }
 
 var _upgrade: UpgradeData = null
+var _cost: int = 0
+var _affordable: bool = true
 
 @onready var _category_bar: ColorRect = $VBox/CategoryBar
 @onready var _name_label: Label = $VBox/NameLabel
 @onready var _description_label: Label = $VBox/DescriptionLabel
 @onready var _stack_label: Label = $VBox/StackLabel
+@onready var _cost_label: Label = $VBox/CostLabel
 
 
-func setup(upgrade: UpgradeData) -> void:
+func setup(upgrade: UpgradeData, cost: int = 0) -> void:
 	_upgrade = upgrade
+	_cost = cost
 
 
 func _ready() -> void:
@@ -57,6 +61,19 @@ func _apply_data() -> void:
 	var color: Color = CATEGORY_COLORS.get(_upgrade.category, Color.WHITE)
 	_category_bar.color = color
 	_update_stack_label()
+
+	# Cost display
+	if _cost > 0:
+		_affordable = UpgradeManager.tokens >= _cost
+		_cost_label.text = "Cost: %d token%s" % [_cost, "" if _cost == 1 else "s"]
+		if _affordable:
+			_cost_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
+		else:
+			_cost_label.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
+			modulate = Color(0.4, 0.4, 0.4, 0.5)
+			mouse_filter = Control.MOUSE_FILTER_IGNORE
+	else:
+		_cost_label.text = ""
 
 
 func _update_stack_label() -> void:

@@ -9,3 +9,4 @@ hp = 40
 color = Color(0.6, 0.1, 0.15, 1)
 min_level = 6
 role = "elite"
+token_value = 5

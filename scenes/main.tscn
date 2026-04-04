@@ -28,6 +28,8 @@ script = ExtResource("4_health")
 
 [node name="HPLabel" type="Label" parent="UI"]
 
+[node name="TokenLabel" type="Label" parent="UI"]
+
 [node name="StatusLabel" type="Label" parent="UI"]
 visible = false
 anchors_preset = 8

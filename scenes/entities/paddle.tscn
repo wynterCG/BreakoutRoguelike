@@ -13,6 +13,6 @@ script = ExtResource("1_paddle")
 
 [node name="HurtZone" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 16
+collision_mask = 48
 
 [node name="HurtShape" type="CollisionShape2D" parent="HurtZone"]

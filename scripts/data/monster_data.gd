@@ -6,6 +6,7 @@ class_name MonsterData
 @export var color: Color = Color(0.2, 0.8, 0.2)
 @export var min_level: int = 1
 @export_enum("front", "tank", "support", "elite") var role: String = "front"
+@export_range(1, 10) var token_value: int = 1
 
 @export_group("Movement")
 @export var drift_enabled: bool = false

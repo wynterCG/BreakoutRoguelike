@@ -1,5 +1,7 @@
 extends Node
 
+var tokens: int = 0
+
 var ball_damage_bonus: int = 0
 var crit_chance: float = 0.0
 var piercing_count: int = 0
@@ -80,7 +82,19 @@ func get_effective_paddle_width(base: float) -> float:
 	return base * (1.0 + paddle_width_bonus)
 
 
+func add_token(amount: int = 1) -> void:
+	tokens += amount
+
+
+func spend_tokens(amount: int) -> bool:
+	if tokens >= amount:
+		tokens -= amount
+		return true
+	return false
+
+
 func reset() -> void:
+	tokens = 0
 	ball_damage_bonus = 0
 	crit_chance = 0.0
 	piercing_count = 0

@@ -244,5 +244,3 @@ func reset_to_paddle() -> void:
 	velocity = Vector2.ZERO
 	_split_hit_counter = 0
 	_follow_paddle()
-
-

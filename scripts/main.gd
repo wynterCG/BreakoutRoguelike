@@ -29,6 +29,7 @@ var _regen_accumulator: float = 0.0
 @onready var _hp_bar_bg: ColorRect = $UI/HPBarBackground
 @onready var _hp_bar_fill: ColorRect = $UI/HPBarFill
 @onready var _hp_label: Label = $UI/HPLabel
+@onready var _token_label: Label = $UI/TokenLabel
 @onready var _player_health: HealthComponent = $PlayerHealth
 @onready var _upgrade_selection: UpgradeSelection = $UpgradeSelection
 
@@ -41,6 +42,7 @@ func _ready() -> void:
 	_upgrade_selection.all_picks_done.connect(_on_all_picks_done)
 	_paddle.hit_by_projectile.connect(_on_paddle_hit_by_projectile)
 	_paddle.laser_fired.connect(_on_laser_fired)
+	_paddle.token_collected.connect(_on_token_collected)
 	_load_monster_types()
 	_spawn_enemies()
 	_spawn_ball()
@@ -81,6 +83,21 @@ func _setup_hp_bar() -> void:
 	_hp_label.add_theme_constant_override("shadow_offset_x", 1)
 	_hp_label.add_theme_constant_override("shadow_offset_y", 1)
 	_update_hp_bar()
+
+	# Token display (top right)
+	_token_label.position = Vector2(1100.0, 10.0)
+	_token_label.size = Vector2(160.0, 30.0)
+	_token_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_token_label.add_theme_font_size_override("font_size", 16)
+	_token_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
+	_token_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	_token_label.add_theme_constant_override("shadow_offset_x", 1)
+	_token_label.add_theme_constant_override("shadow_offset_y", 1)
+	_update_token_display()
+
+
+func _update_token_display() -> void:
+	_token_label.text = "Tokens: " + str(UpgradeManager.tokens)
 
 
 func _load_monster_types() -> void:
@@ -252,9 +269,17 @@ func _start_upgrade_selection() -> void:
 		if child is Ball and child != _current_ball:
 			child.queue_free()
 
-	# Destroy projectiles
+	# Destroy projectiles and tokens
 	for proj: Node in get_tree().get_nodes_in_group("projectiles"):
 		proj.queue_free()
+	for token: Node in get_tree().get_nodes_in_group("tokens"):
+		token.queue_free()
+
+	# Hide game UI during upgrade selection
+	_hp_bar_bg.visible = false
+	_hp_bar_fill.visible = false
+	_hp_label.visible = false
+	_token_label.visible = false
 
 	# Freeze gameplay
 	if _current_ball and is_instance_valid(_current_ball):
@@ -268,7 +293,13 @@ func _start_upgrade_selection() -> void:
 
 func _on_all_picks_done() -> void:
 	get_tree().paused = false
+	# Restore game UI
+	_hp_bar_bg.visible = true
+	_hp_bar_fill.visible = true
+	_hp_label.visible = true
+	_token_label.visible = true
 	_level += 1
+	_update_token_display()
 	_start_next_level()
 
 
@@ -284,9 +315,11 @@ func _start_next_level() -> void:
 		if child is Ball and child != _current_ball:
 			child.queue_free()
 
-	# Destroy projectiles
+	# Destroy projectiles and tokens
 	for proj: Node in get_tree().get_nodes_in_group("projectiles"):
 		proj.queue_free()
+	for token: Node in get_tree().get_nodes_in_group("tokens"):
+		token.queue_free()
 
 	# Apply max HP bonus
 	var total_max_hp: int = PLAYER_MAX_HP + UpgradeManager.max_hp_bonus
@@ -345,12 +378,23 @@ func _on_projectile_spawned(projectile: Area2D, spawn_pos: Vector2) -> void:
 	projectile.global_position = spawn_pos
 
 
-func _on_block_killed(_block_position: Vector2) -> void:
+func _on_block_killed(block_position: Vector2, token_value: int) -> void:
+	# Spawn single token with full value
+	var token: TokenPickup = TokenPickup.new()
+	token.value = token_value
+	token.global_position = block_position
+	add_child(token)
+
 	# HP on Kill
 	if UpgradeManager.hp_on_kill > 0:
 		_player_health.heal(UpgradeManager.hp_on_kill)
 		_update_hp_bar()
 		DamageNumber.spawn(self, Vector2(640.0, HP_BAR_Y - 15.0), UpgradeManager.hp_on_kill, Color(0.2, 1.0, 0.2))
+
+
+func _on_token_collected(amount: int) -> void:
+	UpgradeManager.add_token(amount)
+	_update_token_display()
 
 
 func _on_laser_fired(x_pos: float, laser_damage: int) -> void:
