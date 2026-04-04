@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1")
-monster_name = "Grunt"
-hp = 1
-color = Color(0.2, 0.8, 0.2, 1)
-min_level = 1
-role = "front"
+monster_name = "Dragon"
+hp = 80
+color = Color(0.6, 0.06, 0.59, 1)
+min_level = 20
+role = "elite"

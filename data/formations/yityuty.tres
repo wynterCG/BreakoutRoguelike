@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://cmau2sxn1n86e"]
-
-[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_nvgqb"]
-[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="2_hhbf5"]
-
-[resource]
-script = ExtResource("2_hhbf5")
-formation_name = "yityuty"

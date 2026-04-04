@@ -5,26 +5,26 @@
 
 [sub_resource type="Resource" id="f1"]
 script = ExtResource("1")
-formation_name = "V-Shape"
-grid_columns = 14
-grid_rows = 4
-template_index = 2
+formation_name = "Grand Fortress"
+grid_columns = 16
+grid_rows = 7
+template_index = 80
 
 [sub_resource type="Resource" id="f2"]
 script = ExtResource("1")
-formation_name = "Wave"
-grid_columns = 14
-grid_rows = 4
-template_index = 10
+formation_name = "Web"
+grid_columns = 16
+grid_rows = 7
+template_index = 95
 
 [sub_resource type="Resource" id="f3"]
 script = ExtResource("1")
-formation_name = "Scattered"
-grid_columns = 14
-grid_rows = 4
-template_index = 5
+formation_name = "Dense Maze"
+grid_columns = 16
+grid_rows = 7
+template_index = 40
 
 [resource]
 script = ExtResource("2")
-level_number = 2
+level_number = 24
 formations = Array[ExtResource("1")]([SubResource("f1"), SubResource("f2"), SubResource("f3")])

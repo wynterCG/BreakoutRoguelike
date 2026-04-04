@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://dsxt8dj6bnv2h"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_yjjy4"]
+
+[sub_resource type="Resource" id="Resource_5kbnq"]
+script = ExtResource("1_yjjy4")
+grid_position = Vector2i(7, 2)
+size_scale = Vector2(1.8, 1.8)
+
+[sub_resource type="Resource" id="Resource_jj08k"]
+script = ExtResource("1_yjjy4")
+grid_position = Vector2i(11, 2)
+size_scale = Vector2(1.8, 1.8)
+
+[sub_resource type="Resource" id="Resource_8rs5p"]
+script = ExtResource("1_yjjy4")
+grid_position = Vector2i(2, 2)
+size_scale = Vector2(1.8, 1.8)
+
+[sub_resource type="Resource" id="Resource_u3mqd"]
+script = ExtResource("1_yjjy4")
+grid_position = Vector2i(6, 2)
+size_scale = Vector2(1.8, 1.8)
+
+[resource]
+script = ExtResource("1")
+formation_name = "Dots"
+grid_rows = 3
+cells = Array[ExtResource("1_yjjy4")]([SubResource("Resource_5kbnq"), SubResource("Resource_jj08k"), SubResource("Resource_8rs5p"), SubResource("Resource_u3mqd")])

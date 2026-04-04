@@ -18,6 +18,7 @@ var _speed: float = BASE_SPEED
 var _is_launched: bool = false
 var _paddle: Paddle = null
 var _piercing_remaining: int = 0
+var _split_hit_counter: int = 0
 
 @onready var _collision: CollisionShape2D = $CollisionShape2D
 
@@ -121,9 +122,12 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 					if dist <= AOE_RADIUS:
 						(block_node as Node2D).hit(UpgradeManager.aoe_damage)
 
-		# Split Shot
+		# Split Shot (every 3 hits)
 		if UpgradeManager.split_count > 0:
-			split_requested.emit(global_position, UpgradeManager.split_count)
+			_split_hit_counter += 1
+			if _split_hit_counter >= 3:
+				_split_hit_counter = 0
+				split_requested.emit(global_position, UpgradeManager.split_count)
 
 	# Detect back wall hit for player damage
 	if collider is Node and (collider as Node).is_in_group("back_wall"):
@@ -209,4 +213,5 @@ func reset_to_paddle() -> void:
 	_speed = BASE_SPEED
 	_direction = Vector2.ZERO
 	velocity = Vector2.ZERO
+	_split_hit_counter = 0
 	_follow_paddle()

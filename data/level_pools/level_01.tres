@@ -1,24 +1,83 @@
-[gd_resource type="Resource" script_class="LevelPool" format=3 uid="uid://cdeaixoxmtlnk"]
+[gd_resource type="Resource" script_class="LevelPool" format=3 uid="uid://2jlmmofv0jq3"]
 
-[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1_ft0pb"]
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://c7mhj612u12gx" path="res://scripts/data/level_pool.gd" id="2"]
 [ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="2_dcdj4"]
-[ext_resource type="Script" uid="uid://c7mhj612u12gx" path="res://scripts/data/level_pool.gd" id="2_ylv7f"]
+
+[sub_resource type="Resource" id="Resource_5kbnq"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(7, 2)
+size_scale = Vector2(1.8, 1.8)
+
+[sub_resource type="Resource" id="Resource_jj08k"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(11, 2)
+size_scale = Vector2(1.8, 1.8)
+
+[sub_resource type="Resource" id="Resource_8rs5p"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(2, 2)
+size_scale = Vector2(1.8, 1.8)
+
+[sub_resource type="Resource" id="Resource_u3mqd"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(6, 2)
+size_scale = Vector2(1.8, 1.8)
 
 [sub_resource type="Resource" id="Resource_ylv7f"]
-script = ExtResource("2_dcdj4")
-grid_position = Vector2i(4, 3)
-size_scale = Vector2(2, 3)
+script = ExtResource("1")
+formation_name = "Dots"
+grid_rows = 3
+cells = Array[ExtResource("2_dcdj4")]([SubResource("Resource_5kbnq"), SubResource("Resource_jj08k"), SubResource("Resource_8rs5p"), SubResource("Resource_u3mqd")])
 
-[sub_resource type="Resource" id="Resource_dcdj4"]
+[sub_resource type="Resource" id="Resource_b6pcr"]
 script = ExtResource("2_dcdj4")
-grid_position = Vector2i(9, 3)
-size_scale = Vector2(2, 3)
+grid_position = Vector2i(1, 1)
+size_scale = Vector2(3, 3)
+
+[sub_resource type="Resource" id="Resource_wowvc"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(12, 1)
+size_scale = Vector2(3, 3)
 
 [sub_resource type="Resource" id="Resource_rff2v"]
-script = ExtResource("1_ft0pb")
-formation_name = "iopiop"
-cells = Array[ExtResource("2_dcdj4")]([SubResource("Resource_ylv7f"), SubResource("Resource_dcdj4")])
+script = ExtResource("1")
+formation_name = "Diagonal"
+grid_rows = 3
+cells = Array[ExtResource("2_dcdj4")]([SubResource("Resource_b6pcr"), SubResource("Resource_wowvc")])
+
+[sub_resource type="Resource" id="Resource_ipb3c"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(0, 1)
+
+[sub_resource type="Resource" id="Resource_vqrqm"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(5, 1)
+
+[sub_resource type="Resource" id="Resource_rxwfs"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(13, 1)
+
+[sub_resource type="Resource" id="Resource_40y5b"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(8, 1)
+
+[sub_resource type="Resource" id="Resource_u6ubg"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(6, 2)
+size_scale = Vector2(1, 3)
+
+[sub_resource type="Resource" id="Resource_qr4gn"]
+script = ExtResource("2_dcdj4")
+grid_position = Vector2i(7, 2)
+size_scale = Vector2(1, 3)
+
+[sub_resource type="Resource" id="Resource_dcdj4"]
+script = ExtResource("1")
+formation_name = "Scattered"
+grid_rows = 3
+cells = Array[ExtResource("2_dcdj4")]([SubResource("Resource_ipb3c"), SubResource("Resource_vqrqm"), SubResource("Resource_rxwfs"), SubResource("Resource_40y5b"), SubResource("Resource_u6ubg"), SubResource("Resource_qr4gn")])
 
 [resource]
-script = ExtResource("2_ylv7f")
-formations = Array[ExtResource("1_ft0pb")]([SubResource("Resource_rff2v")])
+script = ExtResource("2")
+formations = Array[ExtResource("1")]([SubResource("Resource_ylv7f"), SubResource("Resource_rff2v"), SubResource("Resource_dcdj4")])

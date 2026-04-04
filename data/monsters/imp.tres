@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MonsterData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/monster_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+monster_name = "Imp"
+hp = 10
+color = Color(0.9, 0.5, 0.2, 1)
+min_level = 8
+role = "support"
