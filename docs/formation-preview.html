@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formation Templates Preview — v3 Symmetric</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #1a1a2e; color: #eee; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+h1 { text-align: center; margin-bottom: 5px; color: #e94560; }
+.subtitle { text-align: center; color: #888; margin-bottom: 15px; font-size: 13px; }
+h2 { color: #e94560; margin: 30px 0 10px; border-bottom: 2px solid #e94560; padding-bottom: 5px; }
+.category-desc { color: #aaa; margin-bottom: 15px; font-style: italic; font-size: 13px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; }
+.formation { background: #16213e; border-radius: 8px; padding: 15px; border: 1px solid #0f3460; }
+.formation h3 { color: #e94560; margin-bottom: 3px; font-size: 14px; }
+.formation .desc { color: #999; font-size: 11px; margin-bottom: 8px; }
+.arena { position: relative; background: #2a2a3e; border-radius: 4px; overflow: hidden; margin-top: 5px; }
+.cell { position: absolute; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; color: #111; border: 1px solid rgba(0,0,0,0.3); flex-direction: column; line-height: 1; }
+.cell.front { background: #a6e3a1; }
+.cell.tank { background: #fab387; }
+.cell.support { background: #f38ba8; }
+.cell.elite { background: #cba6f7; }
+.legend { display: flex; gap: 15px; justify-content: center; margin: 15px 0; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; }
+.legend-color { width: 14px; height: 14px; border-radius: 2px; }
+.size-info { font-size: 6px; color: rgba(0,0,0,0.4); }
+</style>
+</head>
+<body>
+<h1>Formation Templates v3 — Symmetric Layouts</h1>
+<p class="subtitle">All formations are horizontally symmetric. Max ~20 blocks. Size scaling for variety. Roles determine movement.</p>
+<div class="legend">
+  <div class="legend-item"><div class="legend-color" style="background:#a6e3a1"></div>Front (static)</div>
+  <div class="legend-item"><div class="legend-color" style="background:#fab387"></div>Tank (drift)</div>
+  <div class="legend-item"><div class="legend-color" style="background:#f38ba8"></div>Support (zigzag/orbit)</div>
+  <div class="legend-item"><div class="legend-color" style="background:#cba6f7"></div>Elite (charge/orbit)</div>
+</div>
+
+<div id="formations"></div>
+
+<script>
+const SCALE = 0.30;
+const BW = 60, BH = 24, SX = 70, SY = 30;
+const COLS = 14;
+const MID = (COLS - 1) / 2; // 6.5
+
+function c(x, y, role, sx=1, sy=1) { return { x, y, role, sx, sy }; }
+
+// Mirror helper: place a cell and its horizontal mirror. If x is center (6 or 7 for 14-col), just place once.
+function sym(x, y, role, sx=1, sy=1) {
+  const mx = COLS - 1 - x;
+  if (mx === x) return [c(x, y, role, sx, sy)];
+  return [c(x, y, role, sx, sy), c(mx, y, role, sx, sy)];
+}
+// Center cell (between 6 and 7)
+function center(y, role, sx=1, sy=1) {
+  return [c(6, y, role, sx, sy), c(7, y, role, sx, sy)];
+}
+// Single center at 6.5 — place at 6 with 2x width to span center
+function mid(y, role, sx=2, sy=1) {
+  return [c(6, y, role, sx, sy)];
+}
+
+const formations = [];
+function F(name, desc, rows, cells) { formations.push({name, desc, cols: COLS, rows, cells: cells.flat()}); }
+
+// === CATEGORY 1: Introduction (0-7) — Front only ===
+
+F("0 — Trio", "Three targets to start", 2, [
+  mid(0, 'F', 2, 1.5),
+  sym(4, 1, 'F')
+]);
+
+F("1 — Five Spread", "Spread out, easy pickings", 3, [
+  sym(3, 0, 'F'), mid(0, 'F'),
+  sym(5, 2, 'F')
+]);
+
+F("2 — Big Center", "One big target + small flanks", 3, [
+  mid(0, 'F', 3, 2),
+  sym(2, 2, 'F'), sym(4, 2, 'F')
+]);
+
+F("3 — Diamond", "Classic diamond shape", 4, [
+  mid(0, 'F', 2, 1),
+  sym(4, 1, 'F', 1.5, 1), sym(5, 1, 'F'),
+  sym(3, 2, 'F', 1.5, 1), sym(5, 2, 'F'),
+  mid(3, 'F', 2, 1)
+]);
+
+F("4 — Pyramid", "Pyramid growing wider", 4, [
+  mid(0, 'F', 2, 1.5),
+  sym(5, 1, 'F', 1.5, 1),
+  sym(4, 2, 'F'), sym(5, 2, 'F'),
+  sym(3, 3, 'F'), sym(5, 3, 'F'), mid(3, 'F')
+]);
+
+F("5 — Wings", "Spread wings shape", 3, [
+  mid(0, 'F', 2, 1.5),
+  sym(4, 0, 'F', 1.5, 1),
+  sym(2, 1, 'F', 2, 1),
+  sym(1, 2, 'F', 1.5, 1.5)
+]);
+
+F("6 — Arch", "Curved arch", 4, [
+  sym(5, 0, 'F', 1.5, 1),
+  sym(3, 1, 'F', 1.5, 1.5),
+  sym(2, 2, 'F', 1.5, 1.5),
+  sym(3, 3, 'F'), mid(3, 'F', 2, 1)
+]);
+
+F("7 — Scatter Ring", "Ring of blocks", 4, [
+  sym(4, 0, 'F', 1.5, 1),
+  sym(2, 1, 'F'), sym(5, 1, 'F'),
+  sym(2, 2, 'F'), sym(5, 2, 'F'),
+  sym(4, 3, 'F', 1.5, 1)
+]);
+
+// === CATEGORY 2: Tank Walls (8-14) ===
+
+F("8 — Shield Line", "Wide tank barrier", 4, [
+  sym(3, 0, 'T', 2, 1.5), mid(0, 'T', 2, 1.5),
+  sym(4, 2, 'F'), sym(5, 2, 'F'),
+  mid(3, 'F', 1.5, 1)
+]);
+
+F("9 — Big Guard", "Huge center tank", 4, [
+  mid(0, 'T', 3, 2.5),
+  sym(2, 1, 'F'), sym(4, 1, 'F'),
+  sym(3, 3, 'F', 1.5, 1)
+]);
+
+F("10 — Twin Shields", "Two big drifting tanks", 4, [
+  sym(3, 0, 'T', 2.5, 2),
+  sym(5, 2, 'F'), mid(2, 'F', 2, 1),
+  sym(4, 3, 'F')
+]);
+
+F("11 — Bunker", "U-shape tank walls", 5, [
+  sym(3, 0, 'T', 1.5, 1),
+  sym(3, 2, 'T', 1, 1.5),
+  sym(4, 4, 'T', 1.5, 1), mid(4, 'T', 1.5, 1),
+  sym(5, 1, 'F', 1.5, 1),
+  mid(2, 'F', 2, 1.5)
+]);
+
+F("12 — Pillars", "Tall tank columns", 5, [
+  sym(3, 0, 'T', 1, 3), mid(0, 'T', 1, 3),
+  sym(1, 1, 'F', 1.5, 1),
+  sym(5, 2, 'F'), sym(5, 3, 'F'),
+  sym(1, 4, 'F')
+]);
+
+F("13 — Gate", "Tank walls with center gap", 5, [
+  sym(3, 0, 'T', 1, 3),
+  sym(4, 0, 'T', 1.5, 1),
+  mid(1, 'F', 2, 2),
+  sym(5, 3, 'F'), mid(4, 'F', 1.5, 1)
+]);
+
+F("14 — Barricade", "Three wide tank slabs", 3, [
+  sym(2, 0, 'T', 2.5, 1.5), mid(0, 'T', 2.5, 1.5),
+  sym(4, 2, 'F', 1.5, 1), mid(2, 'F', 1.5, 1)
+]);
+
+// === CATEGORY 3: Support Formations (15-21) ===
+
+F("15 — Orbiting Pair", "Two orbiting supports + front", 5, [
+  sym(3, 0, 'S', 2, 1.5),
+  mid(2, 'F', 2, 1.5),
+  sym(5, 3, 'F'), sym(2, 4, 'F')
+]);
+
+F("16 — Protected Orbiters", "Tank shell, support core", 5, [
+  sym(3, 0, 'T', 2, 1.5),
+  mid(1, 'S', 2.5, 2),
+  sym(4, 3, 'S', 1.5, 1),
+  sym(2, 4, 'F'), mid(4, 'F')
+]);
+
+F("17 — Flankers", "Support on edges", 4, [
+  sym(1, 0, 'S', 1.5, 1.5), sym(1, 2, 'S', 1.5, 1.5),
+  mid(0, 'T', 2, 1.5),
+  mid(2, 'F', 2, 1), sym(5, 3, 'F')
+]);
+
+F("18 — Constellation", "Orbiting clusters", 5, [
+  sym(2, 0, 'S', 1.5, 1.5), sym(5, 0, 'S', 1.5, 1.5),
+  mid(2, 'S', 2.5, 2),
+  sym(3, 4, 'F'), sym(5, 4, 'F')
+]);
+
+F("19 — Zigzag Field", "Support scattered symmetrically", 5, [
+  sym(2, 0, 'S', 1.5, 1), mid(0, 'S', 1.5, 1),
+  sym(4, 1, 'S', 1.5, 1.5),
+  sym(1, 3, 'S'),
+  mid(4, 'F', 2, 1), sym(4, 4, 'F')
+]);
+
+F("20 — Ring Guard", "Support ring around center", 5, [
+  sym(4, 0, 'S', 1.5, 1),
+  sym(2, 1, 'S', 1.5, 1), sym(5, 1, 'S'),
+  sym(2, 3, 'S', 1.5, 1), sym(5, 3, 'S'),
+  sym(4, 4, 'S', 1.5, 1),
+  mid(2, 'F', 2, 1.5)
+]);
+
+F("21 — Layered Defense", "Front → Tank → Support", 5, [
+  sym(3, 0, 'F'), sym(5, 0, 'F'), mid(0, 'F'),
+  sym(3, 1, 'T', 2, 1.5), mid(1, 'T', 2, 1.5),
+  sym(4, 3, 'S', 2, 1.5),
+  mid(4, 'S', 2, 1.5)
+]);
+
+// === CATEGORY 4: Elite Encounters (22-28) ===
+
+F("22 — Boss Center", "Huge elite, tank guards", 5, [
+  mid(1, 'E', 3, 2.5),
+  sym(2, 0, 'T', 1.5, 1),
+  sym(2, 3, 'T', 1.5, 1),
+  sym(1, 1, 'F'), sym(5, 4, 'F')
+]);
+
+F("23 — Charge Lane", "Elite above, open rush lane", 6, [
+  mid(0, 'E', 2.5, 2),
+  sym(3, 1, 'T', 1, 3),
+  sym(1, 0, 'F', 1.5, 1),
+  sym(1, 4, 'F', 1.5, 1),
+  mid(5, 'F')
+]);
+
+F("24 — Twin Bosses", "Two elites, wall between", 5, [
+  sym(2, 0, 'E', 2, 2),
+  mid(0, 'T', 2, 1.5),
+  sym(4, 3, 'S', 1.5, 1),
+  mid(4, 'F', 2, 1)
+]);
+
+F("25 — Fortress", "Tank border, elite core", 6, [
+  sym(2, 0, 'T', 2, 1), mid(0, 'T', 2, 1),
+  sym(1, 2, 'T', 1, 2),
+  mid(2, 'E', 2.5, 2),
+  sym(4, 4, 'S', 1.5, 1),
+  mid(5, 'F', 2, 1)
+]);
+
+F("26 — Gauntlet", "Path to elite at back", 6, [
+  sym(3, 0, 'F', 1.5, 1), sym(5, 0, 'F'),
+  sym(2, 1, 'T', 2, 1.5),
+  sym(4, 3, 'S', 1.5, 1.5),
+  mid(5, 'E', 3, 2)
+]);
+
+F("27 — Pincer", "Elites charge from flanks", 5, [
+  sym(1, 0, 'E', 2, 2),
+  mid(0, 'T', 2.5, 1.5),
+  sym(4, 2, 'S'),
+  sym(4, 3, 'F'), sym(5, 3, 'F'),
+  mid(4, 'F', 1.5, 1)
+]);
+
+F("28 — Dragon's Nest", "Big elite + orbit supports", 6, [
+  mid(1, 'E', 3, 2.5),
+  sym(2, 0, 'S', 1.5, 1.5),
+  sym(1, 3, 'S', 1.5, 1),
+  sym(3, 5, 'T', 2, 1), mid(5, 'T', 2, 1),
+  sym(5, 0, 'F')
+]);
+
+// === CATEGORY 5: Mixed Chaos (29-34) ===
+
+F("29 — Full Mix", "All roles, all sizes", 6, [
+  sym(4, 0, 'F', 1.5, 1), mid(0, 'F'),
+  sym(2, 1, 'T', 2, 1.5),
+  sym(4, 2, 'S', 1.5, 1.5),
+  mid(4, 'E', 2.5, 2),
+  sym(1, 5, 'F')
+]);
+
+F("30 — Moving Maze", "Drifting tanks + zigzag support", 5, [
+  sym(2, 0, 'T', 2, 1.5), mid(0, 'T', 2, 1.5),
+  sym(1, 2, 'S', 1.5, 1), sym(4, 2, 'S', 1.5, 1), mid(2, 'S'),
+  sym(3, 4, 'T', 2, 1),
+  mid(3, 'F', 1.5, 1.5)
+]);
+
+F("31 — Siege", "Elite flanks charge a tank fort", 6, [
+  sym(1, 0, 'E', 2, 1.5),
+  sym(4, 1, 'T', 1.5, 1),
+  sym(4, 3, 'T'),
+  mid(4, 'T', 2, 1),
+  mid(2, 'F', 2, 1.5),
+  sym(1, 5, 'S')
+]);
+
+F("32 — Storm", "Elites scattered, support chaos", 6, [
+  sym(2, 0, 'E', 2, 2),
+  mid(2, 'E', 2.5, 2),
+  sym(1, 3, 'S', 1.5, 1), sym(5, 3, 'S', 1.5, 1),
+  sym(3, 5, 'F'), mid(5, 'F')
+]);
+
+F("33 — Final Stand", "Maximum intensity, symmetric", 7, [
+  sym(3, 0, 'T', 2, 1.5), mid(0, 'T', 2, 1.5),
+  sym(1, 1, 'F', 1.5, 1),
+  sym(4, 2, 'S', 2, 1.5),
+  sym(1, 3, 'T', 1.5, 1.5),
+  mid(4, 'E', 3, 2.5),
+  sym(3, 6, 'F'), mid(6, 'S', 1.5, 1)
+]);
+
+F("34 — Dragon Lair", "Multiple big elites, heavy armor", 7, [
+  sym(3, 0, 'T', 2.5, 1.5),
+  sym(1, 2, 'E', 2.5, 2),
+  mid(3, 'E', 3, 2.5),
+  sym(1, 5, 'S', 1.5, 1),
+  sym(3, 6, 'T', 2, 1), mid(6, 'T', 2, 1)
+]);
+
+// === RENDER ===
+const categories = [
+  { title: "Category 1: Introduction", desc: "Front enemies only. 3-10 blocks. Learning the ropes.", range: [0, 8] },
+  { title: "Category 2: Tank Walls", desc: "Drifting tanks as barriers. 7-12 blocks.", range: [8, 15] },
+  { title: "Category 3: Support Formations", desc: "Orbiting & zigzag support. 7-12 blocks.", range: [15, 22] },
+  { title: "Category 4: Elite Encounters", desc: "Boss-style layouts. 8-12 blocks.", range: [22, 29] },
+  { title: "Category 5: Mixed Chaos", desc: "All dynamics combined. 10-15 blocks.", range: [29, 35] },
+];
+
+const container = document.getElementById('formations');
+
+categories.forEach(cat => {
+  const section = document.createElement('div');
+  section.innerHTML = `<h2>${cat.title}</h2><p class="category-desc">${cat.desc}</p>`;
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+
+  for (let i = cat.range[0]; i < cat.range[1] && i < formations.length; i++) {
+    const f = formations[i];
+    const arenaW = f.cols * SX * SCALE;
+    const arenaH = f.rows * SY * SCALE;
+
+    let cellsHtml = '';
+    f.cells.forEach(cell => {
+      const w = BW * cell.sx * SCALE;
+      const h = BH * cell.sy * SCALE;
+      const x = (cell.x * SX + SX/2) * SCALE - w/2;
+      const y = (cell.y * SY + SY/2) * SCALE - h/2;
+      const roleClass = cell.role === 'F' ? 'front' : cell.role === 'T' ? 'tank' : cell.role === 'S' ? 'support' : 'elite';
+      const sizeLabel = (cell.sx !== 1 || cell.sy !== 1) ? `<span class="size-info">${cell.sx}x${cell.sy}</span>` : '';
+      cellsHtml += `<div class="cell ${roleClass}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px">${cell.role}${sizeLabel}</div>`;
+    });
+
+    grid.innerHTML += `
+      <div class="formation">
+        <h3>${f.name}</h3>
+        <div class="desc">${f.desc} — ${f.cells.length} blocks</div>
+        <div class="arena" style="width:${arenaW}px;height:${arenaH}px">
+          ${cellsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  section.appendChild(grid);
+  container.appendChild(section);
+});
+</script>
+</body>
+</html>

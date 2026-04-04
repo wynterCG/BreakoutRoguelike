@@ -5,24 +5,24 @@
 
 [sub_resource type="Resource" id="f1"]
 script = ExtResource("1")
-formation_name = "Dense Cross"
+formation_name = "Pool 16A"
 grid_columns = 14
 grid_rows = 7
-template_index = 65
+template_index = 15
 
 [sub_resource type="Resource" id="f2"]
 script = ExtResource("1")
-formation_name = "Walls"
+formation_name = "Pool 16B"
 grid_columns = 14
 grid_rows = 7
-template_index = 70
+template_index = 22
 
 [sub_resource type="Resource" id="f3"]
 script = ExtResource("1")
-formation_name = "Layered"
+formation_name = "Pool 16C"
 grid_columns = 14
 grid_rows = 7
-template_index = 85
+template_index = 23
 
 [resource]
 script = ExtResource("2")

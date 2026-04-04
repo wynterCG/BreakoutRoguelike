@@ -5,24 +5,24 @@
 
 [sub_resource type="Resource" id="f1"]
 script = ExtResource("1")
-formation_name = "Shield Wall"
+formation_name = "Pool 12A"
 grid_columns = 14
 grid_rows = 7
-template_index = 50
+template_index = 15
 
 [sub_resource type="Resource" id="f2"]
 script = ExtResource("1")
-formation_name = "Maze"
+formation_name = "Pool 12B"
 grid_columns = 14
 grid_rows = 7
-template_index = 40
+template_index = 17
 
 [sub_resource type="Resource" id="f3"]
 script = ExtResource("1")
-formation_name = "Grid Gaps"
+formation_name = "Pool 12C"
 grid_columns = 14
 grid_rows = 7
-template_index = 4
+template_index = 18
 
 [resource]
 script = ExtResource("2")

@@ -5,23 +5,23 @@
 
 [sub_resource type="Resource" id="f1"]
 script = ExtResource("1")
-formation_name = "V-Shape"
+formation_name = "Pool 2A"
 grid_columns = 14
-grid_rows = 4
-template_index = 2
+grid_rows = 7
+template_index = 1
 
 [sub_resource type="Resource" id="f2"]
 script = ExtResource("1")
-formation_name = "Wave"
+formation_name = "Pool 2B"
 grid_columns = 14
-grid_rows = 4
-template_index = 10
+grid_rows = 7
+template_index = 3
 
 [sub_resource type="Resource" id="f3"]
 script = ExtResource("1")
-formation_name = "Scattered"
+formation_name = "Pool 2C"
 grid_columns = 14
-grid_rows = 4
+grid_rows = 7
 template_index = 5
 
 [resource]

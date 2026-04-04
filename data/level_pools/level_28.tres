@@ -5,24 +5,24 @@
 
 [sub_resource type="Resource" id="f1"]
 script = ExtResource("1")
-formation_name = "Citadel"
-grid_columns = 18
-grid_rows = 8
-template_index = 50
+formation_name = "Pool 28A"
+grid_columns = 14
+grid_rows = 7
+template_index = 27
 
 [sub_resource type="Resource" id="f2"]
 script = ExtResource("1")
-formation_name = "Legion"
-grid_columns = 18
-grid_rows = 8
-template_index = 0
+formation_name = "Pool 28B"
+grid_columns = 14
+grid_rows = 7
+template_index = 33
 
 [sub_resource type="Resource" id="f3"]
 script = ExtResource("1")
-formation_name = "Final Stand"
-grid_columns = 18
-grid_rows = 8
-template_index = 85
+formation_name = "Pool 28C"
+grid_columns = 14
+grid_rows = 7
+template_index = 34
 
 [resource]
 script = ExtResource("2")
