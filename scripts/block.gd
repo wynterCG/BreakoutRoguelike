@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name Block
 
 signal destroyed
+signal projectile_spawned(projectile: Area2D, spawn_pos: Vector2)
 
 const BLOCK_WIDTH: float = 60.0
 const BLOCK_HEIGHT: float = 24.0
@@ -20,6 +21,7 @@ static var _FALLBACK_COLORS: Array[Color] = [
 
 var _total_hp: int = 1
 var _block_size: Vector2 = Vector2(BLOCK_WIDTH, BLOCK_HEIGHT)
+var _paddle_ref: Paddle = null
 
 @onready var _background: ColorRect = $Background
 @onready var _fill_bar: ColorRect = $Background/FillBar
@@ -27,6 +29,7 @@ var _block_size: Vector2 = Vector2(BLOCK_WIDTH, BLOCK_HEIGHT)
 @onready var _collision: CollisionShape2D = $CollisionShape2D
 @onready var _health: HealthComponent = $HealthComponent
 @onready var _movement: MovementComponent = $MovementComponent
+@onready var _shooting: ShootingComponent = $ShootingComponent
 
 
 func _ready() -> void:
@@ -85,6 +88,15 @@ func _ready() -> void:
 	else:
 		set_physics_process(false)
 
+	# Initialize shooting
+	if monster_data and _paddle_ref:
+		_shooting.initialize(monster_data, func() -> Vector2: return _paddle_ref.global_position)
+		_shooting.projectile_spawned.connect(func(proj: Area2D, pos: Vector2) -> void: projectile_spawned.emit(proj, pos))
+
+
+func set_paddle(paddle: Paddle) -> void:
+	_paddle_ref = paddle
+
 
 func _physics_process(delta: float) -> void:
 	var move_velocity: Vector2 = _movement.get_movement_velocity(global_position, delta)
@@ -109,6 +121,7 @@ func _on_health_changed(_new_hp: int, _new_max: int) -> void:
 
 
 func _on_died() -> void:
+	_shooting.set_physics_process(false)
 	destroyed.emit()
 	call_deferred("queue_free")
 

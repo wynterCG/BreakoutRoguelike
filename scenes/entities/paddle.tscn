@@ -10,3 +10,9 @@ script = ExtResource("1_paddle")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+
+[node name="HurtZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
+
+[node name="HurtShape" type="CollisionShape2D" parent="HurtZone"]

@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://bvransorlxdpl"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_nlfmm"]
+[ext_resource type="Resource" uid="uid://7jki2u0aute2" path="res://data/monsters/shaman.tres" id="2_qe7tl"]
+[ext_resource type="Resource" uid="uid://y551syelrvln" path="res://data/monsters/slime.tres" id="3_qe7tl"]
+
+[sub_resource type="Resource" id="Resource_yckeg"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(7, 0)
+role = &"support"
+monster_override = ExtResource("2_qe7tl")
+size_scale = Vector2(2, 1.5)
+
+[sub_resource type="Resource" id="Resource_7m81o"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(5, 1)
+role = &"support"
+monster_override = ExtResource("2_qe7tl")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_3psxo"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(9, 1)
+role = &"support"
+monster_override = ExtResource("2_qe7tl")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_kmp3n"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(4, 2)
+role = &"support"
+monster_override = ExtResource("2_qe7tl")
+
+[sub_resource type="Resource" id="Resource_f42sc"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(10, 2)
+role = &"support"
+monster_override = ExtResource("2_qe7tl")
+
+[sub_resource type="Resource" id="Resource_qpnej"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(3, 3)
+monster_override = ExtResource("3_qe7tl")
+
+[sub_resource type="Resource" id="Resource_6aerc"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(11, 3)
+monster_override = ExtResource("3_qe7tl")
+
+[sub_resource type="Resource" id="Resource_3y5le"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(5, 3)
+
+[sub_resource type="Resource" id="Resource_k7brc"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(9, 3)
+
+[sub_resource type="Resource" id="Resource_tlroj"]
+script = ExtResource("1_nlfmm")
+grid_position = Vector2i(7, 3)
+
+[resource]
+script = ExtResource("1")
+formation_name = "L3 Pyramid"
+grid_columns = 15
+cells = Array[ExtResource("1_nlfmm")]([SubResource("Resource_yckeg"), SubResource("Resource_7m81o"), SubResource("Resource_3psxo"), SubResource("Resource_kmp3n"), SubResource("Resource_f42sc"), SubResource("Resource_qpnej"), SubResource("Resource_6aerc"), SubResource("Resource_3y5le"), SubResource("Resource_k7brc"), SubResource("Resource_tlroj")])

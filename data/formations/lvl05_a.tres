@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://dpc52wxs4wtc5"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_u2ais"]
+
+[resource]
+script = ExtResource("1")
+formation_name = "L5 Pyramid"
+grid_columns = 15
+template_index = 4

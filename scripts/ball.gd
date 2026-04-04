@@ -208,6 +208,12 @@ func _axis_reflect(collision: KinematicCollision2D) -> void:
 	_direction = _direction.normalized()
 
 
+func launch_with_direction(dir: Vector2, spd: float = BASE_SPEED) -> void:
+	_is_launched = true
+	_direction = dir.normalized()
+	_speed = spd
+
+
 func reset_to_paddle() -> void:
 	_is_launched = false
 	_speed = BASE_SPEED

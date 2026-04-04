@@ -1,11 +1,8 @@
-[gd_resource type="Resource" script_class="MonsterData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="MonsterData" format=3 uid="uid://y551syelrvln"]
 
-[ext_resource type="Script" path="res://scripts/data/monster_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://d4k23n6uuvve" path="res://scripts/data/monster_data.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
 monster_name = "Slime"
 hp = 5
-color = Color(0.2, 0.8, 0.2, 1)
-min_level = 1
-role = "front"

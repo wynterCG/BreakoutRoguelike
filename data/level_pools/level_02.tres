@@ -1,30 +1,150 @@
-[gd_resource type="Resource" script_class="LevelPool" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="LevelPool" format=3 uid="uid://cmj83s1mswsmx"]
 
-[ext_resource type="Script" path="res://scripts/data/formation_data.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/data/level_pool.gd" id="2"]
+[ext_resource type="Script" uid="uid://c7mhj612u12gx" path="res://scripts/data/level_pool.gd" id="1"]
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="2_c0wcl"]
+[ext_resource type="Resource" uid="uid://btnwnxlxs807j" path="res://data/monsters/shield.tres" id="3_5h0yf"]
 
-[sub_resource type="Resource" id="f1"]
-script = ExtResource("1")
-formation_name = "Pool 2A"
-grid_columns = 14
-grid_rows = 7
-template_index = 1
+[sub_resource type="Resource" id="Resource_n2x7b"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(3, 0)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
 
-[sub_resource type="Resource" id="f2"]
-script = ExtResource("1")
-formation_name = "Pool 2B"
-grid_columns = 14
-grid_rows = 7
-template_index = 3
+[sub_resource type="Resource" id="Resource_6ub27"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(11, 0)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
 
-[sub_resource type="Resource" id="f3"]
-script = ExtResource("1")
-formation_name = "Pool 2C"
-grid_columns = 14
-grid_rows = 7
-template_index = 5
+[sub_resource type="Resource" id="Resource_4enef"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(7, 0)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+
+[sub_resource type="Resource" id="Resource_4fp1b"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(5, 2)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+
+[sub_resource type="Resource" id="Resource_hordb"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(9, 2)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+
+[sub_resource type="Resource" id="Resource_6ogvh"]
+script = ExtResource("2")
+formation_name = "L2 Five Spread"
+grid_columns = 15
+cells = Array[ExtResource("2_c0wcl")]([SubResource("Resource_n2x7b"), SubResource("Resource_6ub27"), SubResource("Resource_4enef"), SubResource("Resource_4fp1b"), SubResource("Resource_hordb")])
+
+[sub_resource type="Resource" id="Resource_5h0yf"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(7, 0)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_afak2"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(5, 1)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_qf2se"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(9, 1)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_kaaa4"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(4, 2)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_hn87x"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(10, 2)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_vxs6l"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(7, 3)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_hn3g8"]
+script = ExtResource("2")
+formation_name = "L2 Diamond"
+grid_columns = 15
+cells = Array[ExtResource("2_c0wcl")]([SubResource("Resource_5h0yf"), SubResource("Resource_afak2"), SubResource("Resource_qf2se"), SubResource("Resource_kaaa4"), SubResource("Resource_hn87x"), SubResource("Resource_vxs6l")])
+
+[sub_resource type="Resource" id="Resource_qe7rc"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(7, 0)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(2, 1.5)
+
+[sub_resource type="Resource" id="Resource_lb2y6"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(4, 0)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_smvny"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(10, 0)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_htdrt"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(2, 1)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(2, 1)
+
+[sub_resource type="Resource" id="Resource_efhld"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(12, 1)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(2, 1)
+
+[sub_resource type="Resource" id="Resource_s3q5i"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(1, 2)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1.5)
+
+[sub_resource type="Resource" id="Resource_hjaeh"]
+script = ExtResource("2_c0wcl")
+grid_position = Vector2i(13, 2)
+role = &"tank"
+monster_override = ExtResource("3_5h0yf")
+size_scale = Vector2(1.5, 1.5)
+
+[sub_resource type="Resource" id="Resource_56maj"]
+script = ExtResource("2")
+formation_name = "L2 Wings"
+grid_columns = 15
+cells = Array[ExtResource("2_c0wcl")]([SubResource("Resource_qe7rc"), SubResource("Resource_lb2y6"), SubResource("Resource_smvny"), SubResource("Resource_htdrt"), SubResource("Resource_efhld"), SubResource("Resource_s3q5i"), SubResource("Resource_hjaeh")])
 
 [resource]
-script = ExtResource("2")
+script = ExtResource("1")
 level_number = 2
-formations = Array[ExtResource("1")]([SubResource("f1"), SubResource("f2"), SubResource("f3")])
+formations = Array[ExtResource("2")]([SubResource("Resource_6ogvh"), SubResource("Resource_hn3g8"), SubResource("Resource_56maj")])

@@ -85,6 +85,7 @@ static func _generate_raw(index: int, _columns: int, _rows: int) -> Array[Format
 
 
 # --- HELPERS ---
+# 15-column grid: center = col 7, mirror = 14 - x
 
 static func role_for_row(row: int, total_rows: int) -> StringName:
 	var ratio: float = float(row) / float(total_rows)
@@ -104,17 +105,17 @@ static func _cell(col: int, row: int, role: StringName, sx: float = 1.0, sy: flo
 	return c
 
 
-# Symmetric pair: place at x and mirror at (13 - x) for 14-col grid
+# Symmetric pair: place at x and mirror at (14 - x) for 15-col grid
 static func _sym(x: int, y: int, role: StringName, sx: float = 1.0, sy: float = 1.0) -> Array[FormationCell]:
-	var mx: int = 13 - x
+	var mx: int = 14 - x
 	if mx == x:
 		return [_cell(x, y, role, sx, sy)]
 	return [_cell(x, y, role, sx, sy), _cell(mx, y, role, sx, sy)]
 
 
-# Center block spanning columns 6-7
-static func _mid(y: int, role: StringName, sx: float = 2.0, sy: float = 1.0) -> Array[FormationCell]:
-	return [_cell(6, y, role, sx, sy)]
+# Center cell at column 7
+static func _mid(y: int, role: StringName, sx: float = 1.0, sy: float = 1.0) -> Array[FormationCell]:
+	return [_cell(7, y, role, sx, sy)]
 
 
 # --- CATEGORY 1: Introduction (Front only) ---
@@ -144,12 +145,10 @@ static func _t02_big_center() -> Array[FormationCell]:
 
 static func _t03_diamond() -> Array[FormationCell]:
 	var cells: Array[FormationCell] = []
-	cells.append_array(_mid(0, &"front", 2.0, 1.0))
-	cells.append_array(_sym(4, 1, &"front", 1.5, 1.0))
-	cells.append_array(_sym(5, 1, &"front"))
-	cells.append_array(_sym(3, 2, &"front", 1.5, 1.0))
-	cells.append_array(_sym(5, 2, &"front"))
-	cells.append_array(_mid(3, &"front", 2.0, 1.0))
+	cells.append_array(_mid(0, &"front", 1.5, 1.0))
+	cells.append_array(_sym(5, 1, &"front", 1.5, 1.0))
+	cells.append_array(_sym(4, 2, &"front", 1.5, 1.0))
+	cells.append_array(_mid(3, &"front", 1.5, 1.0))
 	return cells
 
 
@@ -158,7 +157,6 @@ static func _t04_pyramid() -> Array[FormationCell]:
 	cells.append_array(_mid(0, &"front", 2.0, 1.5))
 	cells.append_array(_sym(5, 1, &"front", 1.5, 1.0))
 	cells.append_array(_sym(4, 2, &"front"))
-	cells.append_array(_sym(5, 2, &"front"))
 	cells.append_array(_sym(3, 3, &"front"))
 	cells.append_array(_sym(5, 3, &"front"))
 	cells.append_array(_mid(3, &"front"))
@@ -179,19 +177,19 @@ static func _t06_arch() -> Array[FormationCell]:
 	cells.append_array(_sym(5, 0, &"front", 1.5, 1.0))
 	cells.append_array(_sym(3, 1, &"front", 1.5, 1.5))
 	cells.append_array(_sym(2, 2, &"front", 1.5, 1.5))
-	cells.append_array(_sym(3, 3, &"front"))
+	cells.append_array(_sym(4, 3, &"front"))
 	cells.append_array(_mid(3, &"front", 2.0, 1.0))
 	return cells
 
 
 static func _t07_scatter_ring() -> Array[FormationCell]:
 	var cells: Array[FormationCell] = []
-	cells.append_array(_sym(4, 0, &"front", 1.5, 1.0))
-	cells.append_array(_sym(2, 1, &"front"))
+	cells.append_array(_sym(5, 0, &"front", 1.5, 1.0))
+	cells.append_array(_sym(3, 1, &"front"))
 	cells.append_array(_sym(5, 1, &"front"))
-	cells.append_array(_sym(2, 2, &"front"))
+	cells.append_array(_sym(3, 2, &"front"))
 	cells.append_array(_sym(5, 2, &"front"))
-	cells.append_array(_sym(4, 3, &"front", 1.5, 1.0))
+	cells.append_array(_sym(5, 3, &"front", 1.5, 1.0))
 	return cells
 
 
@@ -202,7 +200,7 @@ static func _t08_shield_line() -> Array[FormationCell]:
 	cells.append_array(_sym(3, 0, &"tank", 2.0, 1.5))
 	cells.append_array(_mid(0, &"tank", 2.0, 1.5))
 	cells.append_array(_sym(4, 2, &"front"))
-	cells.append_array(_sym(5, 2, &"front"))
+	cells.append_array(_sym(6, 2, &"front"))
 	cells.append_array(_mid(3, &"front", 1.5, 1.0))
 	return cells
 
@@ -219,9 +217,9 @@ static func _t09_big_guard() -> Array[FormationCell]:
 static func _t10_twin_shields() -> Array[FormationCell]:
 	var cells: Array[FormationCell] = []
 	cells.append_array(_sym(3, 0, &"tank", 2.5, 2.0))
-	cells.append_array(_sym(5, 2, &"front"))
+	cells.append_array(_sym(6, 2, &"front"))
 	cells.append_array(_mid(2, &"front", 2.0, 1.0))
-	cells.append_array(_sym(4, 3, &"front"))
+	cells.append_array(_sym(5, 3, &"front"))
 	return cells
 
 
@@ -229,7 +227,7 @@ static func _t11_bunker() -> Array[FormationCell]:
 	var cells: Array[FormationCell] = []
 	cells.append_array(_sym(3, 0, &"tank", 1.5, 1.0))
 	cells.append_array(_sym(3, 2, &"tank", 1.0, 1.5))
-	cells.append_array(_sym(4, 4, &"tank", 1.5, 1.0))
+	cells.append_array(_sym(5, 4, &"tank", 1.5, 1.0))
 	cells.append_array(_mid(4, &"tank", 1.5, 1.0))
 	cells.append_array(_sym(5, 1, &"front", 1.5, 1.0))
 	cells.append_array(_mid(2, &"front", 2.0, 1.5))
@@ -249,10 +247,10 @@ static func _t12_pillars() -> Array[FormationCell]:
 
 static func _t13_gate() -> Array[FormationCell]:
 	var cells: Array[FormationCell] = []
-	cells.append_array(_sym(3, 0, &"tank", 1.0, 3.0))
-	cells.append_array(_sym(4, 0, &"tank", 1.5, 1.0))
+	cells.append_array(_sym(4, 0, &"tank", 1.0, 3.0))
+	cells.append_array(_sym(5, 0, &"tank", 1.5, 1.0))
 	cells.append_array(_mid(1, &"front", 2.0, 2.0))
-	cells.append_array(_sym(5, 3, &"front"))
+	cells.append_array(_sym(6, 3, &"front"))
 	cells.append_array(_mid(4, &"front", 1.5, 1.0))
 	return cells
 
@@ -320,12 +318,12 @@ static func _t19_zigzag_field() -> Array[FormationCell]:
 
 static func _t20_ring_guard() -> Array[FormationCell]:
 	var cells: Array[FormationCell] = []
-	cells.append_array(_sym(4, 0, &"support", 1.5, 1.0))
-	cells.append_array(_sym(2, 1, &"support", 1.5, 1.0))
+	cells.append_array(_sym(5, 0, &"support", 1.5, 1.0))
+	cells.append_array(_sym(3, 1, &"support", 1.5, 1.0))
 	cells.append_array(_sym(5, 1, &"support"))
-	cells.append_array(_sym(2, 3, &"support", 1.5, 1.0))
+	cells.append_array(_sym(3, 3, &"support", 1.5, 1.0))
 	cells.append_array(_sym(5, 3, &"support"))
-	cells.append_array(_sym(4, 4, &"support", 1.5, 1.0))
+	cells.append_array(_sym(5, 4, &"support", 1.5, 1.0))
 	cells.append_array(_mid(2, &"front", 2.0, 1.5))
 	return cells
 
@@ -357,7 +355,7 @@ static func _t22_boss_center() -> Array[FormationCell]:
 static func _t23_charge_lane() -> Array[FormationCell]:
 	var cells: Array[FormationCell] = []
 	cells.append_array(_mid(0, &"elite", 2.5, 2.0))
-	cells.append_array(_sym(3, 1, &"tank", 1.0, 3.0))
+	cells.append_array(_sym(4, 1, &"tank", 1.0, 3.0))
 	cells.append_array(_sym(1, 0, &"front", 1.5, 1.0))
 	cells.append_array(_sym(1, 4, &"front", 1.5, 1.0))
 	cells.append_array(_mid(5, &"front"))
@@ -399,8 +397,8 @@ static func _t27_pincer() -> Array[FormationCell]:
 	cells.append_array(_sym(1, 0, &"elite", 2.0, 2.0))
 	cells.append_array(_mid(0, &"tank", 2.5, 1.5))
 	cells.append_array(_sym(4, 2, &"support"))
-	cells.append_array(_sym(4, 3, &"front"))
 	cells.append_array(_sym(5, 3, &"front"))
+	cells.append_array(_sym(6, 3, &"front"))
 	cells.append_array(_mid(4, &"front", 1.5, 1.0))
 	return cells
 
@@ -423,7 +421,7 @@ static func _t29_full_mix() -> Array[FormationCell]:
 	cells.append_array(_sym(4, 0, &"front", 1.5, 1.0))
 	cells.append_array(_mid(0, &"front"))
 	cells.append_array(_sym(2, 1, &"tank", 2.0, 1.5))
-	cells.append_array(_sym(4, 2, &"support", 1.5, 1.5))
+	cells.append_array(_sym(5, 2, &"support", 1.5, 1.5))
 	cells.append_array(_mid(4, &"elite", 2.5, 2.0))
 	cells.append_array(_sym(1, 5, &"front"))
 	return cells

@@ -1,0 +1,60 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://bkmxmrfnj32tl"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_6h6f3"]
+[ext_resource type="Resource" uid="uid://btnwnxlxs807j" path="res://data/monsters/shield.tres" id="2_lk5jn"]
+
+[sub_resource type="Resource" id="Resource_6h6f3"]
+script = ExtResource("1_6h6f3")
+grid_position = Vector2i(7, 0)
+role = &"tank"
+monster_override = ExtResource("2_lk5jn")
+size_scale = Vector2(2, 1.5)
+
+[sub_resource type="Resource" id="Resource_lk5jn"]
+script = ExtResource("1_6h6f3")
+grid_position = Vector2i(4, 0)
+role = &"tank"
+monster_override = ExtResource("2_lk5jn")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_pkbaa"]
+script = ExtResource("1_6h6f3")
+grid_position = Vector2i(10, 0)
+role = &"tank"
+monster_override = ExtResource("2_lk5jn")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_kf3un"]
+script = ExtResource("1_6h6f3")
+grid_position = Vector2i(2, 1)
+role = &"tank"
+monster_override = ExtResource("2_lk5jn")
+size_scale = Vector2(2, 1)
+
+[sub_resource type="Resource" id="Resource_pn52t"]
+script = ExtResource("1_6h6f3")
+grid_position = Vector2i(12, 1)
+role = &"tank"
+monster_override = ExtResource("2_lk5jn")
+size_scale = Vector2(2, 1)
+
+[sub_resource type="Resource" id="Resource_wold8"]
+script = ExtResource("1_6h6f3")
+grid_position = Vector2i(1, 2)
+role = &"tank"
+monster_override = ExtResource("2_lk5jn")
+size_scale = Vector2(1.5, 1.5)
+
+[sub_resource type="Resource" id="Resource_p421o"]
+script = ExtResource("1_6h6f3")
+grid_position = Vector2i(13, 2)
+role = &"tank"
+monster_override = ExtResource("2_lk5jn")
+size_scale = Vector2(1.5, 1.5)
+
+[resource]
+script = ExtResource("1")
+formation_name = "L2 Wings"
+grid_columns = 15
+cells = Array[ExtResource("1_6h6f3")]([SubResource("Resource_6h6f3"), SubResource("Resource_lk5jn"), SubResource("Resource_pkbaa"), SubResource("Resource_kf3un"), SubResource("Resource_pn52t"), SubResource("Resource_wold8"), SubResource("Resource_p421o")])

@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://haiinwj6k4g8"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_gso2d"]
+[ext_resource type="Resource" uid="uid://7jki2u0aute2" path="res://data/monsters/shaman.tres" id="2_hvm3a"]
+
+[sub_resource type="Resource" id="Resource_gso2d"]
+script = ExtResource("1_gso2d")
+grid_position = Vector2i(2, 2)
+role = &"support"
+monster_override = ExtResource("2_hvm3a")
+
+[sub_resource type="Resource" id="Resource_hvm3a"]
+script = ExtResource("1_gso2d")
+grid_position = Vector2i(12, 2)
+role = &"support"
+monster_override = ExtResource("2_hvm3a")
+
+[sub_resource type="Resource" id="Resource_fxwic"]
+script = ExtResource("1_gso2d")
+grid_position = Vector2i(4, 2)
+role = &"support"
+monster_override = ExtResource("2_hvm3a")
+
+[sub_resource type="Resource" id="Resource_v8y7v"]
+script = ExtResource("1_gso2d")
+grid_position = Vector2i(10, 2)
+role = &"support"
+monster_override = ExtResource("2_hvm3a")
+
+[sub_resource type="Resource" id="Resource_xm4cm"]
+script = ExtResource("1_gso2d")
+grid_position = Vector2i(7, 0)
+role = &"support"
+monster_override = ExtResource("2_hvm3a")
+
+[resource]
+script = ExtResource("1")
+formation_name = "L3 Big Center"
+grid_columns = 15
+cells = Array[ExtResource("1_gso2d")]([SubResource("Resource_gso2d"), SubResource("Resource_hvm3a"), SubResource("Resource_fxwic"), SubResource("Resource_v8y7v"), SubResource("Resource_xm4cm")])

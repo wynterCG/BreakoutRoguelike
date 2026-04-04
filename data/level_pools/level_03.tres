@@ -1,30 +1,173 @@
-[gd_resource type="Resource" script_class="LevelPool" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="LevelPool" format=3 uid="uid://1iufxskg441c"]
 
-[ext_resource type="Script" path="res://scripts/data/formation_data.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/data/level_pool.gd" id="2"]
+[ext_resource type="Script" uid="uid://c7mhj612u12gx" path="res://scripts/data/level_pool.gd" id="1"]
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="2_xly5d"]
+[ext_resource type="Resource" uid="uid://7jki2u0aute2" path="res://data/monsters/shaman.tres" id="3_3mfu0"]
+[ext_resource type="Resource" uid="uid://y551syelrvln" path="res://data/monsters/slime.tres" id="4_dfa4v"]
 
-[sub_resource type="Resource" id="f1"]
-script = ExtResource("1")
-formation_name = "Pool 3A"
-grid_columns = 14
-grid_rows = 7
-template_index = 2
+[sub_resource type="Resource" id="Resource_d7rpm"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(2, 2)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
 
-[sub_resource type="Resource" id="f2"]
-script = ExtResource("1")
-formation_name = "Pool 3B"
-grid_columns = 14
-grid_rows = 7
-template_index = 4
+[sub_resource type="Resource" id="Resource_w8nc8"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(12, 2)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
 
-[sub_resource type="Resource" id="f3"]
-script = ExtResource("1")
-formation_name = "Pool 3C"
-grid_columns = 14
-grid_rows = 7
-template_index = 6
+[sub_resource type="Resource" id="Resource_kjqms"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(4, 2)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+
+[sub_resource type="Resource" id="Resource_mb81t"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(10, 2)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+
+[sub_resource type="Resource" id="Resource_hwrxi"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(7, 0)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+
+[sub_resource type="Resource" id="Resource_mdwmc"]
+script = ExtResource("2")
+formation_name = "L3 Big Center"
+grid_columns = 15
+cells = Array[ExtResource("2_xly5d")]([SubResource("Resource_d7rpm"), SubResource("Resource_w8nc8"), SubResource("Resource_kjqms"), SubResource("Resource_mb81t"), SubResource("Resource_hwrxi")])
+
+[sub_resource type="Resource" id="Resource_yckeg"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(7, 0)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+size_scale = Vector2(2, 1.5)
+
+[sub_resource type="Resource" id="Resource_7m81o"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(5, 1)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_3psxo"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(9, 1)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_kmp3n"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(4, 2)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+
+[sub_resource type="Resource" id="Resource_f42sc"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(10, 2)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+
+[sub_resource type="Resource" id="Resource_qpnej"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(3, 3)
+monster_override = ExtResource("4_dfa4v")
+
+[sub_resource type="Resource" id="Resource_6aerc"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(11, 3)
+monster_override = ExtResource("4_dfa4v")
+
+[sub_resource type="Resource" id="Resource_3y5le"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(5, 3)
+
+[sub_resource type="Resource" id="Resource_k7brc"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(9, 3)
+
+[sub_resource type="Resource" id="Resource_tlroj"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(7, 3)
+
+[sub_resource type="Resource" id="Resource_erh16"]
+script = ExtResource("2")
+formation_name = "L3 Pyramid"
+grid_columns = 15
+cells = Array[ExtResource("2_xly5d")]([SubResource("Resource_yckeg"), SubResource("Resource_7m81o"), SubResource("Resource_3psxo"), SubResource("Resource_kmp3n"), SubResource("Resource_f42sc"), SubResource("Resource_qpnej"), SubResource("Resource_6aerc"), SubResource("Resource_3y5le"), SubResource("Resource_k7brc"), SubResource("Resource_tlroj")])
+
+[sub_resource type="Resource" id="Resource_tbhy6"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(5, 0)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_j4xik"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(9, 0)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_ki3gk"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(3, 1)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+size_scale = Vector2(1.5, 1.5)
+
+[sub_resource type="Resource" id="Resource_vqxxy"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(11, 1)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+size_scale = Vector2(1.5, 1.5)
+
+[sub_resource type="Resource" id="Resource_0kptn"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(2, 2)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+size_scale = Vector2(1.5, 1.5)
+
+[sub_resource type="Resource" id="Resource_2uktm"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(12, 2)
+role = &"support"
+monster_override = ExtResource("3_3mfu0")
+size_scale = Vector2(1.5, 1.5)
+
+[sub_resource type="Resource" id="Resource_05lv5"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(4, 3)
+monster_override = ExtResource("4_dfa4v")
+
+[sub_resource type="Resource" id="Resource_mbf3l"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(10, 3)
+monster_override = ExtResource("4_dfa4v")
+
+[sub_resource type="Resource" id="Resource_vkupf"]
+script = ExtResource("2_xly5d")
+grid_position = Vector2i(7, 3)
+monster_override = ExtResource("4_dfa4v")
+size_scale = Vector2(2, 1)
+
+[sub_resource type="Resource" id="Resource_dfa4v"]
+script = ExtResource("2")
+formation_name = "L3 Arch"
+grid_columns = 15
+cells = Array[ExtResource("2_xly5d")]([SubResource("Resource_tbhy6"), SubResource("Resource_j4xik"), SubResource("Resource_ki3gk"), SubResource("Resource_vqxxy"), SubResource("Resource_0kptn"), SubResource("Resource_2uktm"), SubResource("Resource_05lv5"), SubResource("Resource_mbf3l"), SubResource("Resource_vkupf")])
 
 [resource]
-script = ExtResource("2")
+script = ExtResource("1")
 level_number = 3
-formations = Array[ExtResource("1")]([SubResource("f1"), SubResource("f2"), SubResource("f3")])
+formations = Array[ExtResource("2")]([SubResource("Resource_mdwmc"), SubResource("Resource_erh16"), SubResource("Resource_dfa4v")])

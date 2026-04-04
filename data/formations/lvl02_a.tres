@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://diofuryvthxk3"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_51qjj"]
+[ext_resource type="Resource" uid="uid://btnwnxlxs807j" path="res://data/monsters/shield.tres" id="2_cpbw7"]
+
+[sub_resource type="Resource" id="Resource_51qjj"]
+script = ExtResource("1_51qjj")
+grid_position = Vector2i(3, 0)
+role = &"tank"
+monster_override = ExtResource("2_cpbw7")
+
+[sub_resource type="Resource" id="Resource_cpbw7"]
+script = ExtResource("1_51qjj")
+grid_position = Vector2i(11, 0)
+role = &"tank"
+monster_override = ExtResource("2_cpbw7")
+
+[sub_resource type="Resource" id="Resource_addpo"]
+script = ExtResource("1_51qjj")
+grid_position = Vector2i(7, 0)
+role = &"tank"
+monster_override = ExtResource("2_cpbw7")
+
+[sub_resource type="Resource" id="Resource_b8etf"]
+script = ExtResource("1_51qjj")
+grid_position = Vector2i(5, 2)
+role = &"tank"
+monster_override = ExtResource("2_cpbw7")
+
+[sub_resource type="Resource" id="Resource_v3d5g"]
+script = ExtResource("1_51qjj")
+grid_position = Vector2i(9, 2)
+role = &"tank"
+monster_override = ExtResource("2_cpbw7")
+
+[resource]
+script = ExtResource("1")
+formation_name = "L2 Five Spread"
+grid_columns = 15
+cells = Array[ExtResource("1_51qjj")]([SubResource("Resource_51qjj"), SubResource("Resource_cpbw7"), SubResource("Resource_addpo"), SubResource("Resource_b8etf"), SubResource("Resource_v3d5g")])

@@ -39,6 +39,7 @@ func _ready() -> void:
 	_player_health.health_changed.connect(_on_player_health_changed)
 	_player_health.died.connect(_on_player_died)
 	_upgrade_selection.all_picks_done.connect(_on_all_picks_done)
+	_paddle.hit_by_projectile.connect(_on_paddle_hit_by_projectile)
 	_load_monster_types()
 	_spawn_enemies()
 	_spawn_ball()
@@ -173,8 +174,10 @@ func _spawn_from_formation(formation: FormationData) -> void:
 			offset_x + float(cell.grid_position.x) * spacing_x,
 			row_y.get(cell.grid_position.y, GRID_Y_OFFSET)
 		)
+		block.set_paddle(_paddle)
 		block.position = pixel_pos
 		block.destroyed.connect(_on_block_destroyed)
+		block.projectile_spawned.connect(_on_projectile_spawned)
 		_block_container.add_child(block)
 		_blocks_remaining += 1
 
@@ -216,8 +219,10 @@ func _spawn_fallback_grid() -> void:
 				block.max_hp = int(ceilf(float(monster.hp) * (1.0 + float(_level - 1) * HP_SCALE_PER_LEVEL)))
 			else:
 				block.max_hp = 1
+			block.set_paddle(_paddle)
 			block.position = Vector2(offset_x + float(col) * spacing_x, GRID_Y_OFFSET + float(row) * spacing_y)
 			block.destroyed.connect(_on_block_destroyed)
+			block.projectile_spawned.connect(_on_projectile_spawned)
 			_block_container.add_child(block)
 			_blocks_remaining += 1
 
@@ -242,6 +247,10 @@ func _start_upgrade_selection() -> void:
 	for child: Node in get_children():
 		if child is Ball and child != _current_ball:
 			child.queue_free()
+
+	# Destroy projectiles
+	for proj: Node in get_tree().get_nodes_in_group("projectiles"):
+		proj.queue_free()
 
 	# Freeze gameplay
 	if _current_ball and is_instance_valid(_current_ball):
@@ -270,6 +279,10 @@ func _start_next_level() -> void:
 	for child: Node in get_children():
 		if child is Ball and child != _current_ball:
 			child.queue_free()
+
+	# Destroy projectiles
+	for proj: Node in get_tree().get_nodes_in_group("projectiles"):
+		proj.queue_free()
 
 	# Apply max HP bonus
 	var total_max_hp: int = PLAYER_MAX_HP + UpgradeManager.max_hp_bonus
@@ -314,6 +327,18 @@ func _on_ball_hit_back_wall(ball_damage: int) -> void:
 				random_block.hit(UpgradeManager.thorns_damage)
 
 
+func _on_paddle_hit_by_projectile(damage: int) -> void:
+	if _game_over:
+		return
+	var reduced: int = maxi(int(float(damage) * (1.0 - UpgradeManager.damage_reduction)), 1)
+	_player_health.take_damage(reduced)
+
+
+func _on_projectile_spawned(projectile: Area2D, spawn_pos: Vector2) -> void:
+	add_child(projectile)
+	projectile.global_position = spawn_pos
+
+
 func _on_ball_heal_player(amount: int) -> void:
 	_player_health.heal(amount)
 	_update_hp_bar()
@@ -325,9 +350,7 @@ func _on_ball_split_requested(pos: Vector2, count: int) -> void:
 		var dir: Vector2 = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, -0.3)).normalized()
 		# Offset spawn position away from block to prevent spawning inside it
 		split_ball.global_position = pos + dir * 20.0
-		split_ball._is_launched = true
-		split_ball._direction = dir
-		split_ball._speed = Ball.BASE_SPEED
+		split_ball.launch_with_direction(dir)
 		split_ball.modulate = Color(0.5, 0.5, 0.5, 0.7)
 		var ball_ref: Ball = split_ball
 		split_ball.hit_back_wall.connect(func(ball_damage: int) -> void:

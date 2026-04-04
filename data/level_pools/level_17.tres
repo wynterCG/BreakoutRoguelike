@@ -1,30 +1,12 @@
-[gd_resource type="Resource" script_class="LevelPool" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="LevelPool" load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://scripts/data/formation_data.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/data/level_pool.gd" id="2"]
-
-[sub_resource type="Resource" id="f1"]
-script = ExtResource("1")
-formation_name = "Pool 17A"
-grid_columns = 14
-grid_rows = 7
-template_index = 22
-
-[sub_resource type="Resource" id="f2"]
-script = ExtResource("1")
-formation_name = "Pool 17B"
-grid_columns = 14
-grid_rows = 7
-template_index = 24
-
-[sub_resource type="Resource" id="f3"]
-script = ExtResource("1")
-formation_name = "Pool 17C"
-grid_columns = 14
-grid_rows = 7
-template_index = 25
+[ext_resource type="Script" path="res://scripts/data/level_pool.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/data/formation_data.gd" id="2"]
+[ext_resource type="Resource" path="res://data/formations/lvl17_a.tres" id="3"]
+[ext_resource type="Resource" path="res://data/formations/lvl17_b.tres" id="4"]
+[ext_resource type="Resource" path="res://data/formations/lvl17_c.tres" id="5"]
 
 [resource]
-script = ExtResource("2")
+script = ExtResource("1")
 level_number = 17
-formations = Array[ExtResource("1")]([SubResource("f1"), SubResource("f2"), SubResource("f3")])
+formations = Array[ExtResource("2")]([ExtResource("3"), ExtResource("4"), ExtResource("5")])

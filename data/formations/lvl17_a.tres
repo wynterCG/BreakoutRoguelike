@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://cgdmwggjep2ul"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_j1l0j"]
+
+[resource]
+script = ExtResource("1")
+formation_name = "L17 Boss Center"
+grid_columns = 15
+template_index = 22

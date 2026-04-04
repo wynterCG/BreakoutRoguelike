@@ -10,6 +10,9 @@ const ZIGZAG_BOUND: float = 80.0
 const CHARGE_HOLD_TIME: float = 0.5
 const CHARGE_TARGET_OFFSET: float = 60.0
 const MAX_COMBINED_SPEED: float = 200.0
+const AVOIDANCE_RADIUS: float = 150.0
+const AVOIDANCE_STRENGTH: float = 80.0
+const AVOIDANCE_REBUILD_INTERVAL: float = 0.3
 
 enum ChargeState { IDLE, CHARGING, HOLDING, RETURNING }
 
@@ -30,10 +33,16 @@ var _orbit_angle: float = 0.0
 var _charge_state: ChargeState = ChargeState.IDLE
 var _charge_timer: float = 0.0
 
+# Avoidance state
+var _avoidance_timer: float = 0.0
+var _nearby_blocks: Array[Node2D] = []
+var _owner_block: Node2D = null
+
 
 func initialize(data: MonsterData, spawn_pos: Vector2) -> void:
 	_monster_data = data
 	_spawn_position = spawn_pos
+	_owner_block = get_parent() as Node2D
 
 	# Randomize starting directions
 	_drift_direction = 1.0 if randf() > 0.5 else -1.0
@@ -44,6 +53,8 @@ func initialize(data: MonsterData, spawn_pos: Vector2) -> void:
 
 	if data.charge_enabled:
 		_charge_timer = data.charge_interval * randf()
+
+	_avoidance_timer = AVOIDANCE_REBUILD_INTERVAL * randf()
 
 
 func get_movement_velocity(current_pos: Vector2, delta: float) -> Vector2:
@@ -63,6 +74,9 @@ func get_movement_velocity(current_pos: Vector2, delta: float) -> Vector2:
 
 	if _monster_data.charge_enabled:
 		combined += _calc_charge(current_pos, delta)
+
+	# Soft avoidance
+	combined += _calc_avoidance(current_pos, delta)
 
 	# Clamp combined speed
 	if combined.length() > MAX_COMBINED_SPEED:
@@ -165,3 +179,40 @@ func _calc_charge(current_pos: Vector2, delta: float) -> Vector2:
 			return Vector2(0.0, signf(diff_y) * speed * 0.5)
 
 	return Vector2.ZERO
+
+
+func _calc_avoidance(current_pos: Vector2, delta: float) -> Vector2:
+	# Rebuild neighbor list periodically
+	_avoidance_timer -= delta
+	if _avoidance_timer <= 0.0:
+		_avoidance_timer = AVOIDANCE_REBUILD_INTERVAL
+		_rebuild_nearby_blocks(current_pos)
+
+	# Push away from nearby blocks
+	var repulsion: Vector2 = Vector2.ZERO
+	for block: Node2D in _nearby_blocks:
+		if not is_instance_valid(block):
+			continue
+		var diff: Vector2 = current_pos - block.global_position
+		var dist: float = diff.length()
+		if dist < 1.0:
+			repulsion += Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized() * AVOIDANCE_STRENGTH
+		elif dist < AVOIDANCE_RADIUS:
+			var strength: float = AVOIDANCE_STRENGTH * (1.0 - dist / AVOIDANCE_RADIUS)
+			repulsion += diff.normalized() * strength
+
+	return repulsion
+
+
+func _rebuild_nearby_blocks(current_pos: Vector2) -> void:
+	_nearby_blocks.clear()
+	if not _owner_block or not is_instance_valid(_owner_block):
+		return
+	var all_blocks: Array[Node] = _owner_block.get_tree().get_nodes_in_group("blocks")
+	for block_node: Node in all_blocks:
+		if block_node == _owner_block:
+			continue
+		if block_node is Node2D:
+			var dist: float = current_pos.distance_to((block_node as Node2D).global_position)
+			if dist < AVOIDANCE_RADIUS:
+				_nearby_blocks.append(block_node as Node2D)

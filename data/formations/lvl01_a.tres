@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://bntl75mfbdddy"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_p8q3s"]
+
+[sub_resource type="Resource" id="Resource_cqqx6"]
+script = ExtResource("1_p8q3s")
+grid_position = Vector2i(11, 2)
+
+[sub_resource type="Resource" id="Resource_qbivd"]
+script = ExtResource("1_p8q3s")
+grid_position = Vector2i(3, 2)
+
+[sub_resource type="Resource" id="Resource_0rn5l"]
+script = ExtResource("1_p8q3s")
+grid_position = Vector2i(7, 1)
+size_scale = Vector2(2, 1.5)
+
+[resource]
+script = ExtResource("1")
+formation_name = "L1 Trio"
+grid_columns = 15
+cells = Array[ExtResource("1_p8q3s")]([SubResource("Resource_cqqx6"), SubResource("Resource_qbivd"), SubResource("Resource_0rn5l")])

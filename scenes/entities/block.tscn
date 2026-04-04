@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://swv2pbltrx6o" path="res://scripts/block.gd" id="1_block"]
 [ext_resource type="Script" uid="uid://b841g0ckswm8v" path="res://scripts/components/health_component.gd" id="2_health"]
 [ext_resource type="Script" uid="uid://wwhb8c2vy3j3" path="res://scripts/components/movement_component.gd" id="3_movement"]
+[ext_resource type="Script" uid="uid://5v3cid14270l" path="res://scripts/components/shooting_component.gd" id="4_shooting"]
 
 [node name="Block" type="CharacterBody2D" unique_id=207901202]
 collision_layer = 8
@@ -26,3 +27,6 @@ script = ExtResource("2_health")
 
 [node name="MovementComponent" type="Node" parent="." unique_id=2045809003]
 script = ExtResource("3_movement")
+
+[node name="ShootingComponent" type="Node" parent="." unique_id=1842957539]
+script = ExtResource("4_shooting")

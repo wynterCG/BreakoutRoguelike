@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://bwyxjp1hkyfm1"]
+
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_ddayv"]
+[ext_resource type="Resource" uid="uid://btnwnxlxs807j" path="res://data/monsters/shield.tres" id="2_sr2f1"]
+
+[sub_resource type="Resource" id="Resource_ddayv"]
+script = ExtResource("1_ddayv")
+grid_position = Vector2i(7, 0)
+role = &"tank"
+monster_override = ExtResource("2_sr2f1")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_sr2f1"]
+script = ExtResource("1_ddayv")
+grid_position = Vector2i(5, 1)
+role = &"tank"
+monster_override = ExtResource("2_sr2f1")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_doajf"]
+script = ExtResource("1_ddayv")
+grid_position = Vector2i(9, 1)
+role = &"tank"
+monster_override = ExtResource("2_sr2f1")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_cvafj"]
+script = ExtResource("1_ddayv")
+grid_position = Vector2i(4, 2)
+role = &"tank"
+monster_override = ExtResource("2_sr2f1")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_sf4q1"]
+script = ExtResource("1_ddayv")
+grid_position = Vector2i(10, 2)
+role = &"tank"
+monster_override = ExtResource("2_sr2f1")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_q7p8h"]
+script = ExtResource("1_ddayv")
+grid_position = Vector2i(7, 3)
+role = &"tank"
+monster_override = ExtResource("2_sr2f1")
+size_scale = Vector2(1.5, 1)
+
+[resource]
+script = ExtResource("1")
+formation_name = "L2 Diamond"
+grid_columns = 15
+cells = Array[ExtResource("1_ddayv")]([SubResource("Resource_ddayv"), SubResource("Resource_sr2f1"), SubResource("Resource_doajf"), SubResource("Resource_cvafj"), SubResource("Resource_sf4q1"), SubResource("Resource_q7p8h")])

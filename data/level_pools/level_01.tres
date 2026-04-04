@@ -1,30 +1,40 @@
-[gd_resource type="Resource" script_class="LevelPool" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="LevelPool" format=3 uid="uid://bhc8gottlbknp"]
 
-[ext_resource type="Script" path="res://scripts/data/formation_data.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/data/level_pool.gd" id="2"]
+[ext_resource type="Script" uid="uid://c7mhj612u12gx" path="res://scripts/data/level_pool.gd" id="1"]
+[ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="4_rff2v"]
 
-[sub_resource type="Resource" id="f1"]
-script = ExtResource("1")
-formation_name = "Pool 1A"
-grid_columns = 14
-grid_rows = 7
-template_index = 0
+[sub_resource type="Resource" id="Resource_ylv7f"]
+script = ExtResource("4_rff2v")
+grid_position = Vector2i(11, 2)
 
-[sub_resource type="Resource" id="f2"]
-script = ExtResource("1")
-formation_name = "Pool 1B"
-grid_columns = 14
-grid_rows = 7
+[sub_resource type="Resource" id="Resource_dcdj4"]
+script = ExtResource("4_rff2v")
+grid_position = Vector2i(3, 2)
+
+[sub_resource type="Resource" id="Resource_rff2v"]
+script = ExtResource("4_rff2v")
+grid_position = Vector2i(7, 1)
+size_scale = Vector2(2, 1.5)
+
+[sub_resource type="Resource" id="Resource_k84wf"]
+script = ExtResource("2")
+formation_name = "L1 Trio"
+grid_columns = 15
+cells = Array[ExtResource("4_rff2v")]([SubResource("Resource_ylv7f"), SubResource("Resource_dcdj4"), SubResource("Resource_rff2v")])
+
+[sub_resource type="Resource" id="Resource_lbppi"]
+script = ExtResource("2")
+formation_name = "L1 Five Spread"
+grid_columns = 15
 template_index = 1
 
-[sub_resource type="Resource" id="f3"]
-script = ExtResource("1")
-formation_name = "Pool 1C"
-grid_columns = 14
-grid_rows = 7
+[sub_resource type="Resource" id="Resource_jehux"]
+script = ExtResource("2")
+formation_name = "L1 Big Center"
+grid_columns = 15
 template_index = 2
 
 [resource]
-script = ExtResource("2")
-level_number = 1
-formations = Array[ExtResource("1")]([SubResource("f1"), SubResource("f2"), SubResource("f3")])
+script = ExtResource("1")
+formations = Array[ExtResource("2")]([SubResource("Resource_k84wf"), SubResource("Resource_lbppi"), SubResource("Resource_jehux")])

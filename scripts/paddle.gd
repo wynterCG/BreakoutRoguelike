@@ -8,16 +8,21 @@ const ARC_SEGMENTS: int = 16
 const SCREEN_MARGIN: float = 10.0
 const MAX_TOUCH_SPEED: float = 3000.0
 
+signal hit_by_projectile(damage: int)
+
 var _screen_width: float = 0.0
 var _use_touch: bool = false
 var _touch_target_x: float = 640.0
 
 @onready var _collision: CollisionPolygon2D = $CollisionPolygon2D
 @onready var _visual: Polygon2D = $Polygon2D
+@onready var _hurt_zone: Area2D = $HurtZone
+@onready var _hurt_shape: CollisionShape2D = $HurtZone/HurtShape
 
 
 func _ready() -> void:
 	_screen_width = get_viewport_rect().size.x
+	_hurt_zone.area_entered.connect(_on_hurt_zone_area_entered)
 	apply_width_upgrade()
 
 
@@ -27,6 +32,11 @@ func apply_width_upgrade() -> void:
 	_collision.polygon = arc_points
 	_visual.polygon = arc_points
 	_visual.color = Color(0.2, 0.6, 1.0)
+
+	# Update hurt zone to match paddle width
+	var hurt_rect: RectangleShape2D = RectangleShape2D.new()
+	hurt_rect.size = Vector2(effective_width, ARC_HEIGHT + 10.0)
+	_hurt_shape.shape = hurt_rect
 
 
 func _input(event: InputEvent) -> void:
@@ -81,3 +91,9 @@ func _generate_arc_points_with_width(width: float) -> PackedVector2Array:
 	points.append(Vector2(half_width, 5.0))
 	points.append(Vector2(-half_width, 5.0))
 	return points
+
+
+func _on_hurt_zone_area_entered(area: Area2D) -> void:
+	if area.is_in_group("projectiles"):
+		hit_by_projectile.emit(area.damage)
+		area.queue_free()
