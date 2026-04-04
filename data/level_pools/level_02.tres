@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://c7mhj612u12gx" path="res://scripts/data/level_pool.gd" id="1"]
 [ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1_c0wcl"]
-[ext_resource type="Resource" path="res://data/formations/diamond.tres" id="2"]
 [ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="3_5h0yf"]
 
 [sub_resource type="Resource" id="Resource_2ujfi"]
@@ -226,4 +225,4 @@ cells = Array[ExtResource("3_5h0yf")]([SubResource("Resource_2ujfi"), SubResourc
 [resource]
 script = ExtResource("1")
 level_number = 2
-formations = Array[ExtResource("1_c0wcl")]([ExtResource("2"), SubResource("Resource_11yjf")])
+formations = Array[ExtResource("1_c0wcl")]([SubResource("Resource_11yjf")])

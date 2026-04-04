@@ -16,6 +16,7 @@ static var _FALLBACK_COLORS: Array[Color] = [
 
 @export var monster_data: MonsterData = null
 @export var max_hp: int = 1
+@export var size_scale: Vector2 = Vector2(1.0, 1.0)
 
 var _total_hp: int = 1
 var _block_size: Vector2 = Vector2(BLOCK_WIDTH, BLOCK_HEIGHT)
@@ -35,10 +36,11 @@ func _ready() -> void:
 	if monster_data:
 		hp = max_hp if max_hp > 1 else monster_data.hp
 		block_color = monster_data.color
-		_block_size = Vector2(maxf(monster_data.size.x, 10.0), maxf(monster_data.size.y, 10.0))
 	else:
 		var color_index: int = clampi(hp - 1, 0, _FALLBACK_COLORS.size() - 1)
 		block_color = _FALLBACK_COLORS[color_index]
+
+	_block_size = Vector2(BLOCK_WIDTH * size_scale.x, BLOCK_HEIGHT * size_scale.y)
 
 	_total_hp = hp
 	_health.initialize(hp)
@@ -58,11 +60,12 @@ func _ready() -> void:
 	_fill_bar.size = Vector2(_block_size.x - BAR_PADDING * 2.0, _block_size.y - BAR_PADDING * 2.0)
 	_fill_bar.color = block_color
 
-	# HP label centered on the block
+	# HP label centered on the block (relative to Background parent)
 	_hp_label.position = Vector2.ZERO
 	_hp_label.size = _block_size
 	_hp_label.text = str(hp)
-	_hp_label.add_theme_font_size_override("font_size", 14)
+	var font_scale: float = clampf(minf(size_scale.x, size_scale.y), 0.7, 3.0)
+	_hp_label.add_theme_font_size_override("font_size", int(14.0 * font_scale))
 	_hp_label.add_theme_color_override("font_color", Color.WHITE)
 	_hp_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.7))
 	_hp_label.add_theme_constant_override("shadow_offset_x", 1)
@@ -70,6 +73,10 @@ func _ready() -> void:
 
 	_health.health_changed.connect(_on_health_changed)
 	_health.died.connect(_on_died)
+
+
+func get_block_size() -> Vector2:
+	return _block_size
 
 
 func hit(amount: int) -> void:

@@ -131,12 +131,12 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 		hit_back_wall.emit(effective_damage)
 
 
-func _handle_paddle_bounce(paddle: Paddle, collision: KinematicCollision2D) -> void:
+func _handle_paddle_bounce(paddle: Paddle, _col: KinematicCollision2D) -> void:
 	var diff: Vector2 = global_position - paddle.global_position
 
 	if diff.y > 0.0:
-		# Ball is below paddle — force it upward
-		_direction.y = -absf(_direction.y)
+		# Ball is below paddle — force it downward (away from paddle)
+		_direction.y = absf(_direction.y)
 		_direction = _direction.normalized()
 		return
 
@@ -172,9 +172,15 @@ func _axis_reflect(collision: KinematicCollision2D) -> void:
 		var collider_pos: Vector2 = (collider as Node2D).global_position
 		var diff: Vector2 = global_position - collider_pos
 
-		# Block is wider than tall (60x24), so scale Y by aspect ratio
-		var scaled_dx: float = absf(diff.x) / 60.0
-		var scaled_dy: float = absf(diff.y) / 24.0
+		# Use actual block dimensions for aspect ratio calculation
+		var block_w: float = 60.0
+		var block_h: float = 24.0
+		if collider.has_method("get_block_size"):
+			var bs: Vector2 = collider.get_block_size()
+			block_w = bs.x
+			block_h = bs.y
+		var scaled_dx: float = absf(diff.x) / block_w
+		var scaled_dy: float = absf(diff.y) / block_h
 
 		if scaled_dx > scaled_dy:
 			# Side hit — flip X, ensure ball moves away from block

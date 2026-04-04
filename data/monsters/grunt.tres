@@ -7,6 +7,5 @@ script = ExtResource("1")
 monster_name = "Grunt"
 hp = 1
 color = Color(0.2, 0.8, 0.2, 1)
-size = Vector2(60, 24)
 min_level = 1
-role = &"front"
+role = "front"

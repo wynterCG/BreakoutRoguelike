@@ -62,6 +62,11 @@ var _monster_data_list: Array[MonsterData] = []
 @onready var _cell_position_label: Label = $RightPanel/CellInspector/PositionLabel
 @onready var _cell_role_dropdown: OptionButton = $RightPanel/CellInspector/RoleDropdown
 @onready var _cell_monster_dropdown: OptionButton = $RightPanel/CellInspector/MonsterDropdown
+@onready var _width_slider: HSlider = $RightPanel/CellInspector/WidthScaleBox/WidthSlider
+@onready var _width_value: SpinBox = $RightPanel/CellInspector/WidthScaleBox/WidthValue
+@onready var _height_slider: HSlider = $RightPanel/CellInspector/HeightScaleBox/HeightSlider
+@onready var _height_value: SpinBox = $RightPanel/CellInspector/HeightScaleBox/HeightValue
+@onready var _reset_size_btn: Button = $RightPanel/CellInspector/ResetSizeButton
 @onready var _stats_label: Label = $RightPanel/StatsLabel
 @onready var _auto_roles_btn: Button = $RightPanel/AutoRolesButton
 @onready var _save_btn: Button = $RightPanel/SaveButton
@@ -98,6 +103,11 @@ func _connect_signals() -> void:
 	_save_btn.pressed.connect(_on_save)
 	_cell_role_dropdown.item_selected.connect(_on_cell_role_changed)
 	_cell_monster_dropdown.item_selected.connect(_on_cell_monster_changed)
+	_width_slider.value_changed.connect(_on_width_scale_changed)
+	_width_value.value_changed.connect(_on_width_scale_changed)
+	_height_slider.value_changed.connect(_on_height_scale_changed)
+	_height_value.value_changed.connect(_on_height_scale_changed)
+	_reset_size_btn.pressed.connect(_on_reset_size)
 	_cols_input.value_changed.connect(_on_grid_size_changed)
 	_rows_input.value_changed.connect(_on_grid_size_changed)
 	_formation_name_input.text_changed.connect(_on_name_changed)
@@ -200,6 +210,7 @@ func _on_formation_selected(index: int) -> void:
 		new_cell.grid_position = cell.grid_position
 		new_cell.role = cell.role
 		new_cell.monster_override = cell.monster_override
+		new_cell.size_scale = cell.size_scale
 		_current_formation.cells.append(new_cell)
 	_load_formation_into_editor()
 
@@ -299,7 +310,6 @@ func _rebuild_grid() -> void:
 			var pos: Vector2i = Vector2i(c, r)
 
 			var panel: PanelContainer = PanelContainer.new()
-			panel.custom_minimum_size = CELL_SIZE
 
 			var sb: StyleBoxFlat = StyleBoxFlat.new()
 			sb.corner_radius_top_left = 2
@@ -314,13 +324,18 @@ func _rebuild_grid() -> void:
 
 			if filled.has(pos):
 				var cell: FormationCell = filled[pos]
+				panel.custom_minimum_size = Vector2(CELL_SIZE.x * cell.size_scale.x, CELL_SIZE.y * cell.size_scale.y)
 				sb.bg_color = ROLE_COLORS.get(cell.role, Color.WHITE)
 				var label_text: String = cell.role.left(1).to_upper()
 				if cell.monster_override:
 					label_text = cell.monster_override.monster_name.left(3)
+				if cell.size_scale != Vector2(1.0, 1.0):
+					label_text += "\n%.1fx%.1f" % [cell.size_scale.x, cell.size_scale.y]
+					label.add_theme_font_size_override("font_size", 7)
 				label.text = label_text
 				label.add_theme_color_override("font_color", Color(0.1, 0.1, 0.1))
 			else:
+				panel.custom_minimum_size = CELL_SIZE
 				sb.bg_color = Color(0.18, 0.18, 0.22)
 				sb.border_color = Color(0.3, 0.3, 0.35)
 				sb.border_width_top = 1
@@ -388,21 +403,40 @@ func _update_arena_preview() -> void:
 		Color(0.5, 0.5, 0.5)
 	)
 
-	# Blocks from formation (same centering logic as main.gd)
+	# Blocks from formation (row-based alignment matching main.gd)
 	var cells: Array[FormationCell] = _get_current_cells()
 	var block_w: float = 60.0
 	var block_h: float = 24.0
 	var spacing_x: float = block_w + 10.0
-	var spacing_y: float = block_h + 6.0
+	var gap_y: float = 6.0
 	var total_w: float = float(_current_formation.grid_columns) * spacing_x
 	var offset_x: float = (GAME_WIDTH - total_w) / 2.0 + spacing_x / 2.0
 	var grid_y: float = 60.0
 
+	# Calculate row heights
+	var row_max_h: Dictionary = {}
 	for cell: FormationCell in cells:
-		var px: float = offset_x + float(cell.grid_position.x) * spacing_x - block_w / 2.0
-		var py: float = grid_y + float(cell.grid_position.y) * spacing_y - block_h / 2.0
+		var row: int = cell.grid_position.y
+		var cell_h: float = block_h * cell.size_scale.y
+		if not row_max_h.has(row) or cell_h > row_max_h[row]:
+			row_max_h[row] = cell_h
+
+	# Build cumulative Y offsets
+	var row_y: Dictionary = {}
+	var current_y: float = grid_y
+	for row: int in range(_current_formation.grid_rows):
+		var tallest: float = row_max_h.get(row, block_h)
+		row_y[row] = current_y + tallest / 2.0
+		current_y += tallest + gap_y
+
+	# Draw blocks
+	for cell: FormationCell in cells:
+		var scaled_w: float = block_w * cell.size_scale.x
+		var scaled_h: float = block_h * cell.size_scale.y
+		var px: float = offset_x + float(cell.grid_position.x) * spacing_x - scaled_w / 2.0
+		var py: float = row_y.get(cell.grid_position.y, grid_y) - scaled_h / 2.0
 		var color: Color = ROLE_COLORS.get(cell.role, Color.WHITE)
-		_draw_preview_rect(Vector2(px, py), Vector2(block_w, block_h), color)
+		_draw_preview_rect(Vector2(px, py), Vector2(scaled_w, scaled_h), color)
 
 
 func _draw_preview_rect(game_pos: Vector2, game_size: Vector2, color: Color) -> void:
@@ -575,6 +609,11 @@ func _select_cell_for_inspector(pos: Vector2i) -> void:
 	else:
 		_cell_monster_dropdown.selected = 0
 
+	_width_slider.set_value_no_signal(cell.size_scale.x)
+	_width_value.set_value_no_signal(cell.size_scale.x)
+	_height_slider.set_value_no_signal(cell.size_scale.y)
+	_height_value.set_value_no_signal(cell.size_scale.y)
+
 
 func _on_cell_role_changed(index: int) -> void:
 	if _selected_cell_index < 0 or not _current_formation:
@@ -597,6 +636,45 @@ func _on_cell_monster_changed(index: int) -> void:
 		_current_formation.cells[_selected_cell_index].monster_override = null
 	elif index - 1 < _monster_data_list.size():
 		_current_formation.cells[_selected_cell_index].monster_override = _monster_data_list[index - 1]
+	_rebuild_grid()
+
+
+func _on_width_scale_changed(value: float) -> void:
+	if _selected_cell_index < 0 or not _current_formation:
+		return
+	if _selected_cell_index >= _current_formation.cells.size():
+		return
+	if is_equal_approx(_current_formation.cells[_selected_cell_index].size_scale.x, value):
+		return
+	_current_formation.cells[_selected_cell_index].size_scale.x = value
+	_width_slider.set_value_no_signal(value)
+	_width_value.set_value_no_signal(value)
+	_rebuild_grid()
+
+
+func _on_height_scale_changed(value: float) -> void:
+	if _selected_cell_index < 0 or not _current_formation:
+		return
+	if _selected_cell_index >= _current_formation.cells.size():
+		return
+	if is_equal_approx(_current_formation.cells[_selected_cell_index].size_scale.y, value):
+		return
+	_current_formation.cells[_selected_cell_index].size_scale.y = value
+	_height_slider.set_value_no_signal(value)
+	_height_value.set_value_no_signal(value)
+	_rebuild_grid()
+
+
+func _on_reset_size() -> void:
+	if _selected_cell_index < 0 or not _current_formation:
+		return
+	if _selected_cell_index >= _current_formation.cells.size():
+		return
+	_current_formation.cells[_selected_cell_index].size_scale = Vector2(1.0, 1.0)
+	_width_slider.set_value_no_signal(1.0)
+	_width_value.set_value_no_signal(1.0)
+	_height_slider.set_value_no_signal(1.0)
+	_height_value.set_value_no_signal(1.0)
 	_rebuild_grid()
 
 

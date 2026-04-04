@@ -144,6 +144,51 @@ theme_override_font_sizes/font_size = 10
 
 [node name="MonsterDropdown" type="OptionButton" parent="RightPanel/CellInspector"]
 
+[node name="SizeSep" type="HSeparator" parent="RightPanel/CellInspector"]
+
+[node name="WidthLabel" type="Label" parent="RightPanel/CellInspector"]
+text = "Width Scale:"
+theme_override_font_sizes/font_size = 10
+
+[node name="WidthScaleBox" type="HBoxContainer" parent="RightPanel/CellInspector"]
+
+[node name="WidthSlider" type="HSlider" parent="RightPanel/CellInspector/WidthScaleBox"]
+size_flags_horizontal = 3
+min_value = 0.5
+max_value = 3.0
+step = 0.1
+value = 1.0
+
+[node name="WidthValue" type="SpinBox" parent="RightPanel/CellInspector/WidthScaleBox"]
+custom_minimum_size = Vector2(60, 0)
+min_value = 0.5
+max_value = 3.0
+step = 0.1
+value = 1.0
+
+[node name="HeightLabel" type="Label" parent="RightPanel/CellInspector"]
+text = "Height Scale:"
+theme_override_font_sizes/font_size = 10
+
+[node name="HeightScaleBox" type="HBoxContainer" parent="RightPanel/CellInspector"]
+
+[node name="HeightSlider" type="HSlider" parent="RightPanel/CellInspector/HeightScaleBox"]
+size_flags_horizontal = 3
+min_value = 0.5
+max_value = 3.0
+step = 0.1
+value = 1.0
+
+[node name="HeightValue" type="SpinBox" parent="RightPanel/CellInspector/HeightScaleBox"]
+custom_minimum_size = Vector2(60, 0)
+min_value = 0.5
+max_value = 3.0
+step = 0.1
+value = 1.0
+
+[node name="ResetSizeButton" type="Button" parent="RightPanel/CellInspector"]
+text = "Reset Size"
+
 [node name="HSeparator" type="HSeparator" parent="RightPanel"]
 
 [node name="StatsTitle" type="Label" parent="RightPanel"]

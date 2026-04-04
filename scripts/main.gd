@@ -135,10 +135,29 @@ func _spawn_from_formation(formation: FormationData) -> void:
 	var block_w: float = 60.0
 	var block_h: float = 24.0
 	var spacing_x: float = block_w + 10.0
-	var spacing_y: float = block_h + 6.0
+	var gap_y: float = 6.0
+
+	# Row-based Y alignment: find tallest block per row
+	var row_max_h: Dictionary = {}
+	for cell: FormationCell in cells:
+		var row: int = cell.grid_position.y
+		var cell_h: float = block_h * cell.size_scale.y
+		if not row_max_h.has(row) or cell_h > row_max_h[row]:
+			row_max_h[row] = cell_h
+
+	# Build cumulative Y offsets (row index -> Y center of row)
+	var row_y: Dictionary = {}
+	var current_y: float = GRID_Y_OFFSET
+	for row: int in range(formation.grid_rows):
+		var tallest: float = row_max_h.get(row, block_h)
+		row_y[row] = current_y + tallest / 2.0
+		current_y += tallest + gap_y
+
+	# X centering (unchanged)
 	var total_w: float = float(formation.grid_columns) * spacing_x
 	var offset_x: float = (1280.0 - total_w) / 2.0 + spacing_x / 2.0
 
+	# Spawn blocks
 	for cell: FormationCell in cells:
 		var monster: MonsterData = _resolve_monster(cell, _level)
 		if not monster:
@@ -146,12 +165,13 @@ func _spawn_from_formation(formation: FormationData) -> void:
 
 		var block: Block = BLOCK_SCENE.instantiate() as Block
 		block.monster_data = monster
+		block.size_scale = cell.size_scale
 		var base_hp: int = monster.hp
 		block.max_hp = int(ceilf(float(base_hp) * (1.0 + float(_level - 1) * HP_SCALE_PER_LEVEL)))
 
 		var pixel_pos: Vector2 = Vector2(
 			offset_x + float(cell.grid_position.x) * spacing_x,
-			GRID_Y_OFFSET + float(cell.grid_position.y) * spacing_y
+			row_y.get(cell.grid_position.y, GRID_Y_OFFSET)
 		)
 		block.position = pixel_pos
 		block.destroyed.connect(_on_block_destroyed)
@@ -218,6 +238,11 @@ func _on_block_destroyed() -> void:
 
 
 func _start_upgrade_selection() -> void:
+	# Destroy split balls
+	for child: Node in get_children():
+		if child is Ball and child != _current_ball:
+			child.queue_free()
+
 	# Freeze gameplay
 	if _current_ball and is_instance_valid(_current_ball):
 		_current_ball.set_physics_process(false)
@@ -240,6 +265,11 @@ func _start_next_level() -> void:
 		child.queue_free()
 	_blocks_remaining = 0
 	_regen_accumulator = 0.0
+
+	# Destroy split balls
+	for child: Node in get_children():
+		if child is Ball and child != _current_ball:
+			child.queue_free()
 
 	# Apply max HP bonus
 	var total_max_hp: int = PLAYER_MAX_HP + UpgradeManager.max_hp_bonus
@@ -299,13 +329,17 @@ func _on_ball_split_requested(pos: Vector2, count: int) -> void:
 		split_ball._direction = dir
 		split_ball._speed = Ball.BASE_SPEED
 		split_ball.modulate = Color(0.5, 0.5, 0.5, 0.7)
-		split_ball.hit_back_wall.connect(_on_ball_hit_back_wall)
+		var ball_ref: Ball = split_ball
+		split_ball.hit_back_wall.connect(func(ball_damage: int) -> void:
+			_on_ball_hit_back_wall(ball_damage)
+			if is_instance_valid(ball_ref):
+				ball_ref.queue_free()
+		)
 		split_ball.heal_player.connect(_on_ball_heal_player)
 		add_child(split_ball)
 
 		# Despawn after 5 seconds (check validity to avoid crash on scene reload)
 		var timer: SceneTreeTimer = get_tree().create_timer(5.0)
-		var ball_ref: Ball = split_ball
 		timer.timeout.connect(func() -> void:
 			if is_instance_valid(ball_ref):
 				ball_ref.queue_free()
