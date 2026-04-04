@@ -5,8 +5,14 @@
 [resource]
 script = ExtResource("1")
 monster_name = "Imp"
-hp = 10
+hp = 25
 color = Color(0.9, 0.5, 0.2, 1)
 min_level = 4
 role = "support"
 token_value = 2
+zigzag_enabled = true
+zigzag_speed = 35.0
+shoot_straight_enabled = true
+shoot_straight_speed = 120.0
+shoot_straight_interval = 4.0
+shoot_straight_damage = 3

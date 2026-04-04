@@ -5,9 +5,11 @@
 [resource]
 script = ExtResource("1")
 monster_name = "Shield"
-hp = 15
+hp = 35
 color = Color(0.5, 0.5, 0.55, 1)
 min_level = 2
 role = "tank"
 token_value = 2
 drift_enabled = true
+drift_enabled = true
+drift_speed = 20.0

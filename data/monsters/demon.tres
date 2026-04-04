@@ -5,8 +5,16 @@
 [resource]
 script = ExtResource("1")
 monster_name = "Demon"
-hp = 40
+hp = 80
 color = Color(0.6, 0.1, 0.15, 1)
 min_level = 6
 role = "elite"
 token_value = 5
+charge_enabled = true
+charge_speed = 100.0
+charge_interval = 4.0
+shoot_spread_enabled = true
+shoot_spread_speed = 110.0
+shoot_spread_interval = 5.0
+shoot_spread_damage = 3
+shoot_spread_count = 3

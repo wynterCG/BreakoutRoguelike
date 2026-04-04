@@ -5,8 +5,22 @@
 [resource]
 script = ExtResource("1")
 monster_name = "Dragon"
-hp = 80
+hp = 150
 color = Color(0.6, 0.06, 0.59, 1)
 min_level = 15
 role = "elite"
 token_value = 8
+orbit_enabled = true
+orbit_speed = 30.0
+orbit_radius = 20.0
+drift_enabled = true
+drift_speed = 15.0
+shoot_burst_enabled = true
+shoot_burst_speed = 120.0
+shoot_burst_interval = 4.0
+shoot_burst_damage = 3
+shoot_burst_count = 3
+shoot_aimed_enabled = true
+shoot_aimed_speed = 90.0
+shoot_aimed_interval = 6.0
+shoot_aimed_damage = 5

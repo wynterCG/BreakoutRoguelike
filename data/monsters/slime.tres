@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1")
 monster_name = "Slime"
-hp = 5
+hp = 10

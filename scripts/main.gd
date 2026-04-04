@@ -10,7 +10,7 @@ const ARENA_HEIGHT: float = 200.0
 const GRID_Y_OFFSET: float = 60.0
 const PADDLE_Y: float = 640.0
 const PLAYER_MAX_HP: int = 100
-const HP_SCALE_PER_LEVEL: float = 0.1
+const HP_SCALE_PER_LEVEL: float = 0.15
 
 const HP_BAR_WIDTH: float = 1200.0
 const HP_BAR_HEIGHT: float = 20.0

@@ -5,8 +5,10 @@
 [resource]
 script = ExtResource("1")
 monster_name = "Goblin"
-hp = 10
+hp = 20
 color = Color(0.6, 0.8, 0.2, 1)
 min_level = 3
 role = "front"
 token_value = 1
+drift_enabled = true
+drift_speed = 30.0
