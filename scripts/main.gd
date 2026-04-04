@@ -8,7 +8,7 @@ const MONSTERS_DIR: String = "res://data/monsters/"
 const LEVEL_POOLS_DIR: String = "res://data/level_pools/"
 const ARENA_HEIGHT: float = 200.0
 const GRID_Y_OFFSET: float = 60.0
-const PADDLE_Y: float = 650.0
+const PADDLE_Y: float = 640.0
 const PLAYER_MAX_HP: int = 100
 const HP_SCALE_PER_LEVEL: float = 0.1
 

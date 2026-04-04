@@ -7,4 +7,4 @@
 script = ExtResource("1")
 formation_name = "L5 Scatter Ring"
 grid_columns = 15
-template_index = 7
+template_index = 17

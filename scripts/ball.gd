@@ -7,8 +7,8 @@ signal split_requested(pos: Vector2, count: int)
 
 const BASE_SPEED: float = 400.0
 const MIN_VERTICAL_RATIO: float = 0.3
-const PADDLE_FOLLOW_OFFSET_Y: float = -40.0
-const POST_BOUNCE_CLEARANCE_Y: float = -12.0
+const BALL_RADIUS: float = 10.0
+const PADDLE_CLEARANCE: float = 2.0
 const AOE_RADIUS: float = 80.0
 
 @export var damage: int = 5
@@ -59,7 +59,7 @@ func setup(paddle: Paddle) -> void:
 
 func _follow_paddle() -> void:
 	if _paddle:
-		global_position = _paddle.global_position + Vector2(0.0, PADDLE_FOLLOW_OFFSET_Y)
+		global_position = _paddle.global_position + Vector2(0.0, -(Paddle.ARC_HEIGHT + BALL_RADIUS + PADDLE_CLEARANCE))
 
 
 func _launch() -> void:
@@ -153,12 +153,10 @@ func _handle_paddle_bounce(paddle: Paddle, _col: KinematicCollision2D) -> void:
 	# Map t to an angle: left edge = -70deg, center = straight up, right edge = +70deg
 	var max_angle: float = deg_to_rad(70.0)
 	var angle: float = lerpf(-max_angle, max_angle, t)
-
-	# Always points upward — guaranteed by -cos which is always negative
 	_direction = Vector2(sin(angle), -cos(angle)).normalized()
 
 	# Place ball above the paddle to prevent re-collision
-	global_position.y = paddle.global_position.y - Paddle.ARC_HEIGHT + POST_BOUNCE_CLEARANCE_Y
+	global_position.y = paddle.global_position.y - Paddle.ARC_HEIGHT - BALL_RADIUS - PADDLE_CLEARANCE
 
 
 func _axis_reflect(collision: KinematicCollision2D) -> void:

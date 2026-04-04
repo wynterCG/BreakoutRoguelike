@@ -2,9 +2,54 @@
 
 [ext_resource type="Script" uid="uid://dlbj8i58tot74" path="res://scripts/data/formation_data.gd" id="1"]
 [ext_resource type="Script" uid="uid://3vg13iowvvar" path="res://scripts/data/formation_cell.gd" id="1_hbsh7"]
+[ext_resource type="Resource" uid="uid://7jki2u0aute2" path="res://data/monsters/shaman.tres" id="2_5jn6g"]
+[ext_resource type="Resource" uid="uid://btnwnxlxs807j" path="res://data/monsters/shield.tres" id="3_0rrrs"]
+[ext_resource type="Resource" path="res://data/monsters/knight.tres" id="4_hs5ab"]
+[ext_resource type="Resource" uid="uid://y551syelrvln" path="res://data/monsters/slime.tres" id="5_lc22b"]
+
+[sub_resource type="Resource" id="Resource_ie3hh"]
+script = ExtResource("1_hbsh7")
+grid_position = Vector2i(7, 0)
+role = &"support"
+monster_override = ExtResource("2_5jn6g")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_acrxm"]
+script = ExtResource("1_hbsh7")
+grid_position = Vector2i(5, 1)
+role = &"tank"
+monster_override = ExtResource("3_0rrrs")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_rlxfm"]
+script = ExtResource("1_hbsh7")
+grid_position = Vector2i(9, 1)
+role = &"tank"
+monster_override = ExtResource("3_0rrrs")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_v8bhp"]
+script = ExtResource("1_hbsh7")
+grid_position = Vector2i(4, 2)
+role = &"tank"
+monster_override = ExtResource("4_hs5ab")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_dk2sa"]
+script = ExtResource("1_hbsh7")
+grid_position = Vector2i(10, 2)
+role = &"tank"
+monster_override = ExtResource("4_hs5ab")
+size_scale = Vector2(1.5, 1)
+
+[sub_resource type="Resource" id="Resource_10nvx"]
+script = ExtResource("1_hbsh7")
+grid_position = Vector2i(7, 3)
+monster_override = ExtResource("5_lc22b")
+size_scale = Vector2(1.5, 1)
 
 [resource]
 script = ExtResource("1")
 formation_name = "L4 Diamond"
 grid_columns = 15
-template_index = 3
+cells = Array[ExtResource("1_hbsh7")]([SubResource("Resource_ie3hh"), SubResource("Resource_acrxm"), SubResource("Resource_rlxfm"), SubResource("Resource_v8bhp"), SubResource("Resource_dk2sa"), SubResource("Resource_10nvx")])

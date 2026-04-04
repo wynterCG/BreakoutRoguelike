@@ -18,7 +18,7 @@ const GAME_HEIGHT: float = 720.0
 const ARENA_WIDTH: float = 980.0
 const ARENA_HEIGHT: float = 200.0
 const GRID_OFFSET: Vector2 = Vector2(145.0, 60.0)
-const PADDLE_Y: float = 650.0
+const PADDLE_Y: float = 640.0
 const HP_BAR_Y: float = 700.0
 const BACK_WALL_Y: float = 700.0
 const PREVIEW_SCALE: float = 0.38
@@ -381,13 +381,17 @@ func _update_arena_preview() -> void:
 	_draw_preview_rect(Vector2(0, 0), Vector2(20, GAME_HEIGHT), wall_color)       # left
 	_draw_preview_rect(Vector2(GAME_WIDTH - 20, 0), Vector2(20, GAME_HEIGHT), wall_color) # right
 
-	# Paddle
-	var paddle_w: float = 200.0
-	_draw_preview_rect(
-		Vector2(GAME_WIDTH / 2.0 - paddle_w / 2.0, PADDLE_Y - 15),
-		Vector2(paddle_w, 30),
-		Color(0.2, 0.6, 1.0)
-	)
+	# Paddle (circle)
+	var paddle_r: float = 30.0 * PREVIEW_SCALE
+	var paddle_center: Vector2 = Vector2(GAME_WIDTH / 2.0 * PREVIEW_SCALE, PADDLE_Y * PREVIEW_SCALE)
+	var paddle_circle: Polygon2D = Polygon2D.new()
+	var paddle_points: PackedVector2Array = PackedVector2Array()
+	for i: int in range(16):
+		var angle: float = TAU * float(i) / 16.0
+		paddle_points.append(paddle_center + Vector2(cos(angle) * paddle_r, sin(angle) * paddle_r))
+	paddle_circle.polygon = paddle_points
+	paddle_circle.color = Color(0.2, 0.6, 1.0)
+	_arena_preview.add_child(paddle_circle)
 
 	# HP bar
 	_draw_preview_rect(

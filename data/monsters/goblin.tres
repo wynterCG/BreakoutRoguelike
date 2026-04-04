@@ -7,5 +7,5 @@ script = ExtResource("1")
 monster_name = "Goblin"
 hp = 10
 color = Color(0.6, 0.8, 0.2, 1)
-min_level = 6
+min_level = 3
 role = "front"

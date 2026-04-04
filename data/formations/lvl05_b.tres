@@ -7,4 +7,4 @@
 script = ExtResource("1")
 formation_name = "L5 Arch"
 grid_columns = 15
-template_index = 6
+template_index = 11

@@ -7,4 +7,4 @@
 script = ExtResource("1")
 formation_name = "L4 Wings"
 grid_columns = 15
-template_index = 5
+template_index = 10
