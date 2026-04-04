@@ -1,8 +1,11 @@
 extends CharacterBody2D
 class_name Block
 
+const DamageNumberScene: GDScript = preload("res://scripts/ui/damage_number.gd")
+
 signal destroyed
 signal projectile_spawned(projectile: Area2D, spawn_pos: Vector2)
+signal killed(block_position: Vector2)
 
 const BLOCK_WIDTH: float = 60.0
 const BLOCK_HEIGHT: float = 24.0
@@ -22,6 +25,11 @@ static var _FALLBACK_COLORS: Array[Color] = [
 var _total_hp: int = 1
 var _block_size: Vector2 = Vector2(BLOCK_WIDTH, BLOCK_HEIGHT)
 var _paddle_ref: Paddle = null
+var _burn_timer: float = 0.0
+var _burn_dps: float = 0.0
+var _burn_accumulator: float = 0.0
+var _poison_count: int = 0
+var _killed_by_explosion: bool = false
 
 @onready var _background: ColorRect = $Background
 @onready var _fill_bar: ColorRect = $Background/FillBar
@@ -77,6 +85,7 @@ func _ready() -> void:
 
 	_health.health_changed.connect(_on_health_changed)
 	_health.died.connect(_on_died)
+	set_process(false)
 
 	# Initialize movement
 	if monster_data:
@@ -98,6 +107,29 @@ func set_paddle(paddle: Paddle) -> void:
 	_paddle_ref = paddle
 
 
+func apply_burn(dps: float, duration: float) -> void:
+	_burn_dps = dps
+	_burn_timer = duration
+	set_process(true)
+
+
+func apply_poison(stacks: int) -> void:
+	_poison_count += stacks
+
+
+func _process(delta: float) -> void:
+	if _burn_timer <= 0.0 or not _health.is_alive():
+		set_process(false)
+		return
+	_burn_timer -= delta
+	_burn_accumulator += _burn_dps * delta
+	if _burn_accumulator >= 1.0:
+		var tick_damage: int = int(_burn_accumulator)
+		_burn_accumulator -= float(tick_damage)
+		_health.take_damage(tick_damage)
+		DamageNumberScene.spawn(get_tree().root, global_position, tick_damage, Color(1.0, 0.5, 0.1))
+
+
 func _physics_process(delta: float) -> void:
 	var move_velocity: Vector2 = _movement.get_movement_velocity(global_position, delta)
 	if move_velocity != Vector2.ZERO:
@@ -113,7 +145,13 @@ func get_block_size() -> Vector2:
 
 
 func hit(amount: int) -> void:
-	_health.take_damage(amount)
+	var total: int = amount + _poison_count
+	_health.take_damage(total)
+	# Damage number
+	var dmg_color: Color = Color.WHITE
+	if _poison_count > 0:
+		dmg_color = Color(0.6, 1.0, 0.3)
+	DamageNumberScene.spawn(get_tree().root, global_position, total, dmg_color)
 
 
 func _on_health_changed(_new_hp: int, _new_max: int) -> void:
@@ -122,6 +160,20 @@ func _on_health_changed(_new_hp: int, _new_max: int) -> void:
 
 func _on_died() -> void:
 	_shooting.set_physics_process(false)
+
+	# Explosive Death (only if not killed by another explosion — prevents infinite chains)
+	if UpgradeManager.explosive_death_damage > 0 and not _killed_by_explosion:
+		var blocks: Array[Node] = get_tree().get_nodes_in_group("blocks")
+		for block_node: Node in blocks:
+			if block_node == self:
+				continue
+			if block_node is Node2D and block_node.has_method("hit"):
+				var dist: float = (block_node as Node2D).global_position.distance_to(global_position)
+				if dist <= 100.0:
+					block_node._killed_by_explosion = true
+					block_node.hit(UpgradeManager.explosive_death_damage)
+
+	killed.emit(global_position)
 	destroyed.emit()
 	call_deferred("queue_free")
 

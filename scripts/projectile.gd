@@ -19,7 +19,13 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	global_position += _direction * _speed * delta
+	# Slow Field: reduce speed near paddle
+	var effective_speed: float = _speed
+	if UpgradeManager.slow_field > 0.0 and global_position.y > 400.0:
+		var slow_factor: float = 1.0 - UpgradeManager.slow_field
+		effective_speed *= slow_factor
+
+	global_position += _direction * effective_speed * delta
 
 	# Destroy before ouch zone or off-screen
 	if global_position.y > DESTROY_Y:

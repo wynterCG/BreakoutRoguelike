@@ -11,10 +11,14 @@ const PADDLE_MIN_Y: float = 450.0
 const PADDLE_MAX_Y: float = 680.0
 
 signal hit_by_projectile(damage: int)
+signal laser_fired(x_position: float, damage: int)
 
 var _screen_width: float = 0.0
 var _use_touch: bool = false
 var _touch_target: Vector2 = Vector2(640.0, 640.0)
+var _laser_timer: float = 7.0
+var _shield_timer: float = 0.0
+var _shield_active: bool = true
 
 @onready var _collision: CollisionPolygon2D = $CollisionPolygon2D
 @onready var _visual: Polygon2D = $Polygon2D
@@ -86,6 +90,19 @@ func _physics_process(delta: float) -> void:
 	position.x = clampf(position.x, min_x, max_x)
 	position.y = clampf(position.y, PADDLE_MIN_Y, PADDLE_MAX_Y)
 
+	# Paddle Laser
+	if UpgradeManager.laser_damage > 0:
+		_laser_timer -= delta
+		if _laser_timer <= 0.0:
+			_laser_timer = 7.0
+			laser_fired.emit(position.x, UpgradeManager.laser_damage)
+
+	# Shield recharge
+	if UpgradeManager.shield_charges > 0 and not _shield_active:
+		_shield_timer -= delta
+		if _shield_timer <= 0.0:
+			_shield_active = true
+
 
 func _generate_arc_points(width: float) -> PackedVector2Array:
 	var points: PackedVector2Array = PackedVector2Array()
@@ -103,5 +120,11 @@ func _generate_arc_points(width: float) -> PackedVector2Array:
 
 func _on_hurt_zone_area_entered(area: Area2D) -> void:
 	if area.is_in_group("projectiles"):
+		if _shield_active:
+			# Shield absorbs the hit
+			_shield_active = false
+			_shield_timer = 15.0
+			area.queue_free()
+			return
 		hit_by_projectile.emit(area.damage)
 		area.queue_free()

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_name = "Poison"
+description = "Hit monsters take +1 extra damage on every subsequent ball hit. Permanent."
+category = &"offense"
+effect_id = &"poison"
+value = 1.0

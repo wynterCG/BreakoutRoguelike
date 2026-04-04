@@ -22,6 +22,14 @@ const STAT_FORMATS: Dictionary = {
 	&"ball_speed": ["Ball Speed", "+%.0f%%", "ball_speed_bonus"],
 	&"paddle_width": ["Paddle Width", "+%.0f%%", "paddle_width_bonus"],
 	&"thorns": ["Thorns Damage", "%d", "thorns_damage"],
+	&"burn": ["Burn DPS", "%.1f/s", "burn_dps"],
+	&"laser": ["Laser Damage", "%d", "laser_damage"],
+	&"chain_lightning": ["Chain Targets", "%d", "chain_count"],
+	&"poison": ["Poison Stacks", "+%d", "poison_stacks"],
+	&"explosive_death": ["Death Explosion", "%d", "explosive_death_damage"],
+	&"shield": ["Shield Charges", "%d", "shield_charges"],
+	&"hp_on_kill": ["HP on Kill", "+%d", "hp_on_kill"],
+	&"slow_field": ["Slow Field", "%.0f%%", "slow_field"],
 }
 
 var _upgrade: UpgradeData = null

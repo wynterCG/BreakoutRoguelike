@@ -105,6 +105,31 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 
 		collider.hit(effective_damage)
 
+		# Burn
+		if UpgradeManager.burn_dps > 0.0 and collider.has_method("apply_burn"):
+			collider.apply_burn(UpgradeManager.burn_dps, 5.0)
+
+		# Poison
+		if UpgradeManager.poison_stacks > 0 and collider.has_method("apply_poison"):
+			collider.apply_poison(UpgradeManager.poison_stacks)
+
+		# Chain Lightning
+		if UpgradeManager.chain_count > 0 and collider is Node2D:
+			var chain_damage: int = maxi(effective_damage / 2, 1)
+			var chain_pos: Vector2 = (collider as Node2D).global_position
+			var chain_targets: int = 0
+			var blocks: Array[Node] = get_tree().get_nodes_in_group("blocks")
+			for block_node: Node in blocks:
+				if block_node == collider:
+					continue
+				if chain_targets >= UpgradeManager.chain_count:
+					break
+				if block_node is Node2D and block_node.has_method("hit"):
+					var dist: float = (block_node as Node2D).global_position.distance_to(chain_pos)
+					if dist <= 120.0:
+						block_node.hit(chain_damage)
+						chain_targets += 1
+
 		# Lifesteal
 		if UpgradeManager.lifesteal_percent > 0.0:
 			var heal_amount: int = maxi(int(float(effective_damage) * UpgradeManager.lifesteal_percent), 1)
@@ -219,3 +244,5 @@ func reset_to_paddle() -> void:
 	velocity = Vector2.ZERO
 	_split_hit_counter = 0
 	_follow_paddle()
+
+

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_name = "HP on Kill"
+description = "Heal 3 HP when a monster dies."
+category = &"defense"
+effect_id = &"hp_on_kill"
+value = 3.0

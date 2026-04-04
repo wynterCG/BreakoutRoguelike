@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+upgrade_name = "Explosive Death"
+description = "When a monster dies, deals 5 damage to all neighbors."
+category = &"offense"
+effect_id = &"explosive_death"
+value = 5.0

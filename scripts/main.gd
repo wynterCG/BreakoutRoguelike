@@ -40,6 +40,7 @@ func _ready() -> void:
 	_player_health.died.connect(_on_player_died)
 	_upgrade_selection.all_picks_done.connect(_on_all_picks_done)
 	_paddle.hit_by_projectile.connect(_on_paddle_hit_by_projectile)
+	_paddle.laser_fired.connect(_on_laser_fired)
 	_load_monster_types()
 	_spawn_enemies()
 	_spawn_ball()
@@ -57,6 +58,7 @@ func _physics_process(delta: float) -> void:
 			_regen_accumulator -= regen_interval
 			_player_health.heal(1)
 			_update_hp_bar()
+			DamageNumber.spawn(self, Vector2(640.0, HP_BAR_Y - 15.0), 1, Color(0.4, 1.0, 0.4))
 
 
 func _setup_hp_bar() -> void:
@@ -178,6 +180,7 @@ func _spawn_from_formation(formation: FormationData) -> void:
 		block.position = pixel_pos
 		block.destroyed.connect(_on_block_destroyed)
 		block.projectile_spawned.connect(_on_projectile_spawned)
+		block.killed.connect(_on_block_killed)
 		_block_container.add_child(block)
 		_blocks_remaining += 1
 
@@ -223,6 +226,7 @@ func _spawn_fallback_grid() -> void:
 			block.position = Vector2(offset_x + float(col) * spacing_x, GRID_Y_OFFSET + float(row) * spacing_y)
 			block.destroyed.connect(_on_block_destroyed)
 			block.projectile_spawned.connect(_on_projectile_spawned)
+			block.killed.connect(_on_block_killed)
 			_block_container.add_child(block)
 			_blocks_remaining += 1
 
@@ -317,6 +321,7 @@ func _on_ball_hit_back_wall(ball_damage: int) -> void:
 		return
 	var reduced: int = maxi(int(float(ball_damage) * (1.0 - UpgradeManager.damage_reduction)), 1)
 	_player_health.take_damage(reduced)
+	DamageNumber.spawn(self, Vector2(640.0, HP_BAR_Y - 10.0), reduced, Color(1.0, 0.2, 0.2))
 
 	# Thorns: damage a random block when back wall is hit
 	if UpgradeManager.thorns_damage > 0:
@@ -332,6 +337,7 @@ func _on_paddle_hit_by_projectile(damage: int) -> void:
 		return
 	var reduced: int = maxi(int(float(damage) * (1.0 - UpgradeManager.damage_reduction)), 1)
 	_player_health.take_damage(reduced)
+	DamageNumber.spawn(self, Vector2(640.0, HP_BAR_Y - 15.0), reduced, Color(1.0, 0.3, 0.3))
 
 
 func _on_projectile_spawned(projectile: Area2D, spawn_pos: Vector2) -> void:
@@ -339,9 +345,40 @@ func _on_projectile_spawned(projectile: Area2D, spawn_pos: Vector2) -> void:
 	projectile.global_position = spawn_pos
 
 
+func _on_block_killed(_block_position: Vector2) -> void:
+	# HP on Kill
+	if UpgradeManager.hp_on_kill > 0:
+		_player_health.heal(UpgradeManager.hp_on_kill)
+		_update_hp_bar()
+		DamageNumber.spawn(self, Vector2(640.0, HP_BAR_Y - 15.0), UpgradeManager.hp_on_kill, Color(0.2, 1.0, 0.2))
+
+
+func _on_laser_fired(x_pos: float, laser_damage: int) -> void:
+	var blocks: Array[Node] = get_tree().get_nodes_in_group("blocks")
+	var half_width: float = 15.0
+	for block_node: Node in blocks:
+		if block_node is Node2D and block_node.has_method("hit"):
+			var bx: float = (block_node as Node2D).global_position.x
+			if absf(bx - x_pos) <= half_width:
+				block_node.hit(laser_damage)
+
+	# Visual: bright vertical line from paddle to top
+	var laser_line: ColorRect = ColorRect.new()
+	laser_line.position = Vector2(x_pos - 2.0, 0.0)
+	laser_line.size = Vector2(4.0, _paddle.position.y)
+	laser_line.color = Color(0.3, 0.8, 1.0, 0.8)
+	add_child(laser_line)
+
+	# Fade out and remove after 0.15 seconds
+	var tween: Tween = create_tween()
+	tween.tween_property(laser_line, "color:a", 0.0, 0.15)
+	tween.tween_callback(laser_line.queue_free)
+
+
 func _on_ball_heal_player(amount: int) -> void:
 	_player_health.heal(amount)
 	_update_hp_bar()
+	DamageNumber.spawn(self, Vector2(640.0, HP_BAR_Y - 15.0), amount, Color(0.2, 1.0, 0.2))
 
 
 func _on_ball_split_requested(pos: Vector2, count: int) -> void:
